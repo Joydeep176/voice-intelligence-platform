@@ -1,0 +1,53 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets/
+credentials*.json
+
+# Node / build
+node_modules/
+dist/
+build/
+.turbo/
+.vite/
+coverage/
+*.tsbuildinfo
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+
+# Test artefacts
+playwright-report/
+test-results/
+blob-report/
+
+# Local storage, recordings and generated media/artefacts (never commit real recordings or transcripts)
+/storage/
+/.local-storage/
+/data/
+/tmp/
+**/generated-fixtures/
+exports/
+
+# Claude Code personal settings
+.claude/settings.local.json
