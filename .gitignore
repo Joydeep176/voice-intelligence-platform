@@ -43,11 +43,15 @@ blob-report/
 
 # Local storage, recordings and generated media/artefacts (never commit real recordings or transcripts)
 /storage/
-/.local-storage/
+.local-storage/
 /data/
 /tmp/
 **/generated-fixtures/
 exports/
+# Temporary and generated audio (only synthetic fixtures are committed, under explicit fixture paths)
+*.tmp
+tmp-audio/
+**/generated-audio/
 
 # Claude Code personal settings
 .claude/settings.local.json

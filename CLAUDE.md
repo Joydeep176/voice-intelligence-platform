@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Multilingual (English / Hindi / Hinglish) AI Voice Intelligence Platform. **Documentation and decisions only: no application code, scaffolding or dependencies exist yet. Application implementation has NOT been approved.** Do not create source code, install dependencies, provision infrastructure or connect providers without explicit user approval. Never describe an integration as implemented or tested unless its code and passing tests exist.
+Multilingual (English / Hindi / Hinglish) AI Voice Intelligence Platform. **Phase 1 (platform foundation) is implemented; see `docs/development/PHASE1_FOUNDATION.md`.** Later phases (agents, LangGraph, transcription, research, reporting) are NOT approved: do not start them, add dependencies, provision infrastructure or connect providers without explicit user approval. Never describe an integration as implemented or tested unless its code and passing tests exist.
 
 ## Source of truth
 
@@ -27,11 +27,23 @@ Statuses are Accepted, Accepted provisionally, Interim, Proposed and Open. Anyth
 - Seven product agents (ADR-0001, ADR-0019): Audio Quality (diagnostics) · Transcription (incl. language ID, diarization, uncertainty) · Context Intelligence · Research · Fact Validation · Reporting · QA (independent, read-only). Decoding, normalisation, VAD and segmentation are a deterministic audio-service stage, **not** an agent. These are unrelated to the dev subagents in `.claude/agents/`.
 - Node/NestJS owns BullMQ and the job lifecycle. LangGraph orchestrates. Python is a separate audio service behind an internal API (ADR-0002, provisional until prototyped).
 - Non-negotiables: immutable provider output with versioned corrections and derivations (ADR-0007); `recorded`/`external`/`inferred` provenance on every report assertion; audio diagnostics kept separate from transcription uncertainty; snapshot evidence (never snippets) for verdicts; workspace isolation; bounded workers and cost ceilings.
-- Tooling (ADR-0005, not yet scaffolded): pnpm + Turborepo, uv, Drizzle. Test runners: Vitest (web, `packages/*`), Jest (NestJS apps), Pytest (audio service), Playwright (e2e).
+- Tooling (ADR-0005, scaffolded in Phase 1): pnpm + Turborepo, uv, Drizzle. Layout: `apps/{web,api,orchestrator}`, `packages/{contracts,db,config}`, `services/audio`, `infra/docker`. Test runners: Vitest (web, `packages/*`), Jest (NestJS apps), Pytest (audio service), Playwright (e2e).
 
 ## Commands
 
-None yet. Add build, lint, test and single-test commands here when scaffolding is approved and created.
+Full setup: `docs/development/SETUP.md`. pnpm only (never npm). Root `.env` from `.env.example`.
+
+| Task | Command |
+|---|---|
+| Install | `pnpm install` · `pnpm audio:sync` |
+| Infra (Postgres, Redis) | `pnpm infra:up` · `pnpm infra:down` |
+| Migrate / seed | `pnpm db:migrate` · `pnpm db:seed` · new migration: `pnpm db:generate` |
+| Run | `pnpm --filter @vip/api dev` · `pnpm --filter @vip/orchestrator dev` · `pnpm --filter @vip/web dev` · `pnpm audio:dev` |
+| Build / lint / types | `pnpm build` · `pnpm lint` · `pnpm typecheck` · `pnpm format:check` · `pnpm audio:lint` |
+| Tests | `pnpm test` (unit) · `pnpm test:integration` (needs infra) · `pnpm test:e2e` · `pnpm audio:test` |
+| Single test | `pnpm --filter @vip/api test -- <path>` · `pnpm --filter @vip/web test -- <path>` · `uv run --directory services/audio pytest <path>::<name>` |
+
+Jest runs with `node --experimental-vm-modules` because NestJS 12 is ESM-only and the Nest apps are CommonJS (`require(esm)`). TypeScript is pinned to 6.0.x (tooling peers).
 
 ## Working rules
 

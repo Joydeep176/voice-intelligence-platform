@@ -1,6 +1,6 @@
 # Deployment Architecture
 
-Status: **Approved targets (Docker Compose locally; AWS ECS + RDS + S3 in production). Details tagged *Proposed* are not approved.** Nothing is provisioned. IaC/CI: OD-17.
+Status: **Approved targets (Docker Compose locally; AWS ECS + RDS + S3 in production). Details tagged *Proposed* are not approved.** Nothing is provisioned in AWS. IaC/CI: OD-17. Phase 1 local stack: `infra/docker/compose.yaml` runs `postgres` (pgvector 0.8.7 on PostgreSQL 18), `redis` (noeviction, AOF) and, under the `audio` profile, `audio-service`; `web`, `api` and `orchestrator` run on the host via pnpm in Phase 1.
 
 ## 1. Local development (Docker Compose)
 

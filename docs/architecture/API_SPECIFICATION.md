@@ -1,6 +1,8 @@
 # API Specification
 
-Status: **Design, not implemented.** REST/JSON served by `apps/api`. An OpenAPI document will be generated from the controllers once they exist. Route shapes are *Proposed* unless they implement an approved requirement (SRS IDs cited).
+Status: **Partly implemented (Phase 1).** Implemented: §2 `POST /recordings`, `GET /recordings/{id}/upload`, `PUT /recordings/{id}/upload/parts/{n}`, `POST /recordings/{id}/upload/complete`, `GET /recordings`, `GET /recordings/{id}`; §3 `GET /runs/{runId}`; §8 health probes plus `GET /api/v1/health` (aggregate, below). Authentication is a development principal only (OD-08b). Everything else is design. Details and limitations: `docs/development/PHASE1_FOUNDATION.md`.
+
+REST/JSON served by `apps/api`. An OpenAPI document will be generated from the controllers once they exist. Route shapes are *Proposed* unless they implement an approved requirement (SRS IDs cited).
 
 ## 1. Conventions
 
@@ -19,7 +21,7 @@ Status: **Design, not implemented.** REST/JSON served by `apps/api`. An OpenAPI 
 | GET | `/recordings/{id}/upload` | Upload session: strategy, part size, **parts received**, expiry (resume) | FR-1.2 |
 | PUT | `/recordings/{id}/upload/parts/{n}` | Local chunk upload (dev) | FR-1.2 |
 | POST | `/recordings/{id}/upload/parts/{n}/url` | Presigned S3 part URL (cloud; re-issuable on resume) | FR-1.2 |
-| POST | `/recordings/{id}/upload/complete` | Finalise; triggers validation | FR-1.3 |
+| POST | `/recordings/{id}/upload/complete` | Finalise. Phase 1: concatenates parts, records SHA-256, checks the file signature against the declared type (shallow), sets `uploaded` and creates a run with status `created` (ADR-0025). Deep validation (FR-1.3) comes with the audio-service probe | FR-1.3 |
 | GET | `/recordings` · `/recordings/{id}` | List / detail (status, validation, latest run) | — |
 | GET | `/recordings/{id}/audio` | Short-lived signed playback URL (audited) | SEC-8 |
 | DELETE | `/recordings/{id}` | `202`; async deletion across all stores | SEC-6 |
@@ -79,7 +81,8 @@ Research cannot be disabled per run (ADR-0009).
 | Method | Path | Purpose | Req |
 |---|---|---|---|
 | GET | `/audit-events` | Workspace audit log, admin role (OD-27) | SEC-8 |
-| GET | `/api/v1/health/live` · `/api/v1/health/ready` | Probes (unauthenticated; outside the workspace prefix) | — |
+| GET | `/api/v1/health/live` · `/api/v1/health/ready` | Probes (unauthenticated; outside the workspace prefix). `ready` = Postgres and Redis reachable | — |
+| GET | `/api/v1/health` | Aggregate health: `status` (`ok` \| `degraded` \| `down`), version, environment, and per-dependency status (`postgres`, `redis`, `audio-service`) with latency and a content-free reason code. `503` only when a required dependency (Postgres, Redis) is down. Added by the Phase 1 brief | — |
 
 ## 9. Status codes
 

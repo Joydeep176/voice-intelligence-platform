@@ -1,6 +1,6 @@
 # Low-Level Design (LLD)
 
-Status: **Design. Nothing is implemented.** Tooling follows ADR-0005. Integration follows ADR-0002 (provisional until prototyped). Items tagged *Proposed* are not approved.
+Status: **Design; Phase 1 foundation implemented** (`docs/development/PHASE1_FOUNDATION.md`): §1 layout plus `packages/config`; `apps/api` modules `health`, `recordings`, `runs` (status read), `storage` (local), `audit` (write), `queue` (foundation-check producer), and a development-only principal instead of `auth`; `apps/orchestrator` with the foundation-check worker only; `services/audio` with probes and the prototype handshake below. Agents, graph, providers and pipeline queues are not implemented. Tooling follows ADR-0005. Integration follows ADR-0002 (provisional until prototyped). Items tagged *Proposed* are not approved.
 
 ## 1. Repository layout (*Proposed*, pnpm + Turborepo + uv)
 
@@ -53,7 +53,7 @@ docs/
 ### 2.3 `services/audio` (Python, deterministic service; no DB/Redis access; ADR-0002, ADR-0019)
 | Module | Responsibility |
 |---|---|
-| `api` | Internal HTTP adapter. Framework OD-23a (*Proposed* FastAPI). The contract is defined independently of the framework (§3.1) until the prototype validates the choice |
+| `api` | Internal HTTP adapter. FastAPI + uvicorn, provisionally (OD-23a, ADR-0023). The contract is defined independently of the framework (§3.1) until the prototype validates the choice |
 | `tasks` | In-process bounded task executor: concurrency limit, per-task timeout, memory budget, cancellation |
 | `probe` | ffprobe deep validation (step 1) |
 | `preprocess` | Step 2: streamed FFmpeg decoding and normalisation, VAD (method OD-29; WebRTC VAD and Silero VAD to be benchmarked), segmentation with overlap. Returns its configuration and tool-version metadata with every result |
@@ -70,6 +70,7 @@ docs/
 | GET | `/v1/tasks/{taskId}` | `{ status: queued\|running\|succeeded\|failed\|cancelled, progress: { fraction, processedMs, stage }, result?, error? }` |
 | DELETE | `/v1/tasks/{taskId}` | Cooperative cancellation |
 | GET | `/health/live`, `/health/ready` | Probes |
+| POST | `/v1/handshake` | **Implemented Phase 1 prototype.** `{ contractVersion, requestId }` → `{ contractVersion, serviceVersion, requestId, accepted }`; unknown version → `422 CONTRACT_VERSION_MISMATCH`. Used by the API health check to verify reachability and contract compatibility |
 
 - Results are JSON metadata plus storage URIs (artefacts written to object storage by the service). Node persists the metadata to Postgres.
 - Task state is in memory. If the service restarts, the task disappears (`404`); Node treats that as retryable and resubmits with the same idempotency key, within retry bounds.

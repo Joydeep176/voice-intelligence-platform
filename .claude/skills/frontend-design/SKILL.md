@@ -26,7 +26,7 @@ Guardrails in `.claude/rules/frontend.md` always apply. This skill adds the deta
 - **Confidence:** never invent numbers. Show a number only when a provider or model supplied it, and label its origin. Otherwise use qualitative wording (`evidence-presentation.md`).
 - **Languages:** English, Hindi and Hinglish, with correct Devanagari and mixed-script rendering everywhere.
 - **APIs:** look up library APIs with Context7 (and Motion patterns with the Motion MCP) before writing code. Never rely on memory for version-specific APIs.
-- **Inspect before `shadcn add`:** first check the item's dependencies (shadcn MCP `view_items_in_registries` / `get_add_command_for_items`). Components can pull in packages implicitly, for example `chart` → `recharts` (OD-36, Open), icons (`lucide-react`), toasts (`sonner`), `cmdk`, `vaul`. Only Radix primitives are covered by ADR-0022. Any other new package needs explicit approval before adding.
+- **Inspect before `shadcn add`:** first check the item's dependencies (shadcn MCP `view_items_in_registries` / `get_add_command_for_items`). Components can pull in packages implicitly, for example `chart` → `recharts` (OD-36, Open), toasts (`sonner`), `cmdk`, `vaul`. Only Radix primitives (ADR-0022), `lucide-react` (ADR-0024) and the shadcn CLI baseline (`cn`, `class-variance-authority`, `tw-animate-css`) are approved; preset font packages are removed (OD-38). Any other new package needs explicit approval before adding.
 - **No Motion agent skill:** do not install Motion's separate agent skill (`npx motion-ai`). This skill's `motion.md` already covers it, and a second copy would duplicate or conflict.
 
 ## Preferred Context7 library IDs

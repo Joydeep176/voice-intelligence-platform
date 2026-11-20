@@ -1,0 +1,34 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Shared versions. Reference them with "catalog:" in package.json.
+# TypeScript is pinned to 6.0.x: typescript-eslint requires <6.1, ts-jest <7, and @nestjs/cli uses ~6.0.
+catalog:
+  typescript: ~6.0.3
+  turbo: ^2.11.13
+  prettier: ^3.10.1
+  zod: ^4.6.7
+  vitest: ^5.1.1
+  '@types/node': ^26.6.6
+  eslint: ^10.15.0
+  '@eslint/js': ^10.0.1
+  typescript-eslint: ^8.73.0
+  globals: ^17.14.0
+  drizzle-orm: ^0.45.4
+  pg: ^8.23.1
+  '@types/pg': ^8.23.1
+
+# Dependency build scripts are denied unless reviewed and listed here.
+allowBuilds:
+  # Reviewed: postinstall only verifies the platform binary. Dev-only (via drizzle-kit, vite).
+  esbuild: true
+  # Reviewed and denied: prebuilt binaries ship as optional deps; scripts are only a compile fallback.
+  '@parcel/watcher': false
+  msgpackr-extract: false
+
+# pnpm's minimum release age (supply-chain protection) is kept at its default with no exclusions.
+
+minimumReleaseAgeExclude:
+  - '@testing-library/jest-dom@8.0.0'
+  - '@testing-library/user-event@14.6.13'

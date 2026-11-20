@@ -1,0 +1,7 @@
+{
+  "type": "about:blank",
+  "title": "Contract version mismatch",
+  "status": 422,
+  "code": "CONTRACT_VERSION_MISMATCH",
+  "detail": "Unsupported contract version."
+}

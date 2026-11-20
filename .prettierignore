@@ -1,0 +1,13 @@
+pnpm-lock.yaml
+**/dist/**
+**/coverage/**
+**/drizzle/meta/**
+.turbo/
+services/
+docs/
+.claude/
+CLAUDE.md
+playwright-report/
+test-results/
+apps/web/src/components/ui/**
+.mcp.json

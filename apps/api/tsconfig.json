@@ -1,0 +1,5 @@
+{
+  "extends": "@vip/config/tsconfig/nest.json",
+  "compilerOptions": { "noEmit": true },
+  "include": ["src", "test"]
+}

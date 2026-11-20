@@ -1,6 +1,6 @@
 # Database Design
 
-Status: **Logical model, not implemented.** PostgreSQL + Drizzle ORM (ADR-0005; pgvector compatibility to be verified). The pgvector extension is enabled, but **no embedding tables exist** until OD-06 is revisited (ADR-0011). Items tagged *Proposed* are not approved.
+Status: **Logical model; Phase 1 subset implemented** (`packages/db`): `workspaces` (id, name, timestamps), `recordings` (no `validation_error` codes beyond `MEDIA_SIGNATURE_MISMATCH` yet), `upload_sessions`, `consent_attestations` (without `scope`), `pipeline_runs` (id, workspace_id, recording_id, status, current_node, error, retry_count, started_at, finished_at, timestamps; the other columns arrive with the pipeline) and `audit_events`. Enum values are imported from `@vip/contracts`. pgvector is enabled by migration `0000_enable_pgvector` (ADR-0005 check: covered by the db integration test). PostgreSQL + Drizzle ORM (ADR-0005; pgvector compatibility to be verified). The pgvector extension is enabled, but **no embedding tables exist** until OD-06 is revisited (ADR-0011). Items tagged *Proposed* are not approved.
 
 ## 1. Conventions
 
@@ -61,7 +61,7 @@ pipeline_runs 1─* reports 1─* report_assertions 1─* assertion_refs ; repor
 - **audio_diagnostic_flags**: `id`, `run_id`, `start_ms`, `end_ms`, `kind` (`noise|clipping|distortion|dropout|silence|low_level`), `severity`, `measurement_refs` (jsonb).
 
 ### Runs
-- **pipeline_runs**: `id`, `workspace_id`, `recording_id`, `preprocessing_id`, `parent_run_id` (nullable), `source_transcript_version_id` (nullable; set for corrected-transcript runs, ADR-0020), `status` (`queued|running|cancelling|cancelled|completed|failed|needs_review`), `has_limitations` (bool), `options` (jsonb: language hints, `report_language` en|hi), `config_snapshot` (jsonb: providers, models, prompt versions, bounds), `current_node`, `cancel_requested_at`, `retry_count`, `cost_ceiling`, `cost_total`, `error` (jsonb: code + node, no content), `started_at`, `finished_at`.
+- **pipeline_runs**: `id`, `workspace_id`, `recording_id`, `preprocessing_id`, `parent_run_id` (nullable), `source_transcript_version_id` (nullable; set for corrected-transcript runs, ADR-0020), `status` (`created|queued|running|cancelling|cancelled|completed|failed|needs_review`; `created` = recorded at upload, not yet submitted to the pipeline, ADR-0025), `has_limitations` (bool), `options` (jsonb: language hints, `report_language` en|hi), `config_snapshot` (jsonb: providers, models, prompt versions, bounds), `current_node`, `cancel_requested_at`, `retry_count`, `cost_ceiling`, `cost_total`, `error` (jsonb: code + node, no content), `started_at`, `finished_at`.
 - **pipeline_stage_runs**: `id`, `run_id`, `node`, `attempt`, `status`, `progress` (jsonb), `job_ids` (jsonb), `started_at`, `finished_at`, `error`.
 - **llm_calls**: `id`, `run_id`, `node`, `model`, `input_tokens`, `output_tokens`, `cost_estimate`, `prompt_version`, `occurred_at`. No prompt or response text.
 

@@ -1,6 +1,6 @@
 # Testing Strategy
 
-Status: **Approved tools and allocation.** No tests or test tooling exist yet.
+Status: **Approved tools and allocation. Tooling set up in Phase 1** (Vitest 5, Jest 30 with `--experimental-vm-modules`, Pytest 9, Playwright). Integration tests use the Compose Postgres (`*_test` database, reset per run) and Redis logical DB 15. Commands: `docs/development/SETUP.md` §5.
 
 ## 1. Tool allocation
 

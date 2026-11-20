@@ -1,0 +1,41 @@
+{
+  "name": "@vip/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NestJS HTTP API under /api/v1 (HLD \u00a75). CommonJS app consuming ESM packages (Node >= 24.9).",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json && (tsc -p tsconfig.build.json --watch --preserveWatchOutput & node --watch --env-file-if-exists=../../.env dist/main.js)",
+    "start": "node --env-file-if-exists=../../.env dist/main.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test": "node --experimental-vm-modules --disable-warning=ExperimentalWarning ./node_modules/jest/bin/jest.js --selectProjects unit",
+    "test:integration": "node --experimental-vm-modules --disable-warning=ExperimentalWarning --env-file-if-exists=../../.env ./node_modules/jest/bin/jest.js --selectProjects integration --runInBand",
+    "foundation-check": "node --env-file-if-exists=../../.env dist/scripts/foundation-check.js"
+  },
+  "dependencies": {
+    "@nestjs/common": "^12.5.1",
+    "@nestjs/core": "^12.5.1",
+    "@nestjs/platform-express": "^12.5.1",
+    "@vip/contracts": "workspace:*",
+    "@vip/db": "workspace:*",
+    "bullmq": "~6.7.6",
+    "ioredis": "^6.0.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^12.5.1",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "catalog:",
+    "@types/supertest": "^7.2.1",
+    "@vip/config": "workspace:*",
+    "eslint": "catalog:",
+    "jest": "^30.5.2",
+    "supertest": "^7.3.2",
+    "ts-jest": "^29.4.15",
+    "typescript": "catalog:"
+  }
+}

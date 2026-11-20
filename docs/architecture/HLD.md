@@ -153,7 +153,7 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-20 | Research privacy | Research mandatory; query minimisation and privacy controls | Accepted | ADR-0009 |
 | OD-21 | Worker bounds | Required; numeric values set in configuration | Accepted | ADR-0010 |
 | OD-22 | Transcript corrections | Versioned; never overwrite provider output; display names separate from machine IDs | Accepted | ADR-0007 |
-| OD-23a | Python service framework | FastAPI preferred. The service contract stays framework-independent until a prototype validates the choice | Proposed | ADR-0002 (constraint) |
+| OD-23a | Python service framework | FastAPI + uvicorn, provisionally; the service contract stays framework-independent (ADR-0002) until the prototype validates the choice | Accepted provisionally (prototype) | ADR-0023 |
 | OD-23b | Service-to-service authentication | — | Open | — |
 | OD-24a | Storage of translations/transliterations | Original preserved; translation and transliteration stored separately | Accepted | ADR-0007 |
 | OD-24b | How translations/transliterations are generated and triggered | — | Open | — |
@@ -174,6 +174,8 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-38 | Fonts, including a Devanagari-capable face | No candidate selected (system font stack until decided) | Open | — |
 | OD-39 | Server-side waveform peaks artefact and API endpoint | Precompute waveform peaks per preprocessing version in the audio service and serve them by time range, so the browser never decodes long recordings. For later consideration; not part of the current architecture | Proposed | — |
 | OD-40 | shadcn/ui component base (primitive library) | Radix UI; scaffold with `shadcn init --base radix` because the CLI now defaults to Base UI | Accepted | ADR-0022 |
+| OD-41 | Icon library | `lucide-react` (shadcn default) | Accepted | ADR-0024 |
+| OD-42 | Run record at upload | Completing an upload creates a `pipeline_runs` row with the new status `created` (not yet submitted to the pipeline) | Accepted | ADR-0025 |
 
 Frontend dependencies (OD-33 to OD-38) are **not** part of the approved stack in §2. Each needs separate approval before installation.
 
@@ -183,4 +185,5 @@ Frontend dependencies (OD-33 to OD-38) are **not** part of the approved stack in
 - ADR-0017 research adapter and evidence: Accepted (snapshot retention under OD-09b)
 - ADR-0018 progress propagation: Accepted provisionally (prototype; transport OD-16)
 - ADR-0021 parallel Audio Quality and Transcription: Accepted provisionally (graph validation)
+- ADR-0025 run record at upload (`created` status): Accepted
 - ADR-0014 run control (safe cancellation, bounded retries, one targeted research retry): Accepted
