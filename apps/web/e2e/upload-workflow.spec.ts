@@ -46,9 +46,10 @@ test('uploads a synthetic recording and shows it with an honest processing statu
 
   await page.getByRole('link', { name: 'View recording' }).click();
   await expect(page.getByRole('heading', { name })).toBeVisible();
-  await expect(page.getByText('Uploaded', { exact: true })).toBeVisible();
+  // The status badge; the "Uploaded" date label (<dt>) on the same page also matches plain text.
+  await expect(page.locator('[data-slot="badge"]', { hasText: /^Uploaded$/ })).toBeVisible();
   await expect(page.getByText('Not started')).toBeVisible();
-  await expect(page.getByText('Not yet determined')).toBeVisible();
+  await expect(page.getByText('Not yet determined', { exact: true })).toBeVisible();
   await page.screenshot({
     path: `${SHOTS}/${testInfo.project.name}-04-recording-detail.png`,
     fullPage: true,

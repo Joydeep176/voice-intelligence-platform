@@ -55,3 +55,9 @@ tmp-audio/
 
 # Claude Code personal settings
 .claude/settings.local.json
+
+# Developer tooling output (Graphify graph: local paths, regenerable)
+graphify-out/
+# Impeccable generated artefacts (keep the project config with telemetry off)
+.impeccable/*
+!.impeccable/config.json

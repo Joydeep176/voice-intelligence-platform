@@ -1,0 +1,56 @@
+# Graphify (dev tooling only): code-only graph of apps/, packages/, services/, infra/.
+# .gitignore is also honoured; these patterns only exclude more.
+
+# Dependencies, builds, caches, virtual envs
+node_modules/
+dist/
+build/
+.turbo/
+.vite/
+coverage/
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+pnpm-lock.yaml
+uv.lock
+
+# Graph output, tool config, docs (code-only build)
+graphify-out/
+.claude/
+.impeccable/
+docs/
+
+# Secrets and environment
+.env
+.env.*
+*.pem
+*.key
+*.p12
+secrets/
+credentials*.json
+
+# Recordings, media, local storage, model weights
+storage/
+.local-storage/
+data/
+tmp-audio/
+**/generated-audio/
+**/generated-fixtures/
+*.wav
+*.mp3
+*.m4a
+*.flac
+*.ogg
+*.opus
+*.aac
+*.webm
+*.mp4
+*.mov
+*.onnx
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.ckpt

@@ -1,0 +1,7 @@
+# Developer tooling
+
+Dev-only tools. They never override `docs/`, ADRs, `CLAUDE.md` or other rules, and none is an application dependency.
+
+- **Graphify** (CLI `graphify`, pinned with `uv tool`; graph in `graphify-out/`, gitignored). Use it for cross-file architecture, dependency and impact questions: `graphify affected "<Symbol>"`, `graphify path "<A>" "<B>"`, `graphify explain "<Symbol>"`, then `graphify query "<question>"` for broad questions (output is truncated, so narrow the query rather than raise the budget). Verify every important finding against the source before relying on it. Skip it for single-file or already-located changes, where reading the file is cheaper. The graph is stale if its commit (`graphify-out/GRAPH_REPORT.md`) differs from `HEAD`; refresh it with `graphify update .`. Keep it code-only and local: no LLM backend, Cloud, push exporters or hooks.
+- **Skill precedence.** UI work: the `frontend-design` skill and `frontend` rule first; `impeccable` only for critique/audit/polish within them (no hooks, telemetry off). Tests: `TESTING_STRATEGY.md` with the `tdd` skill. Decisions and ADRs: only `record-architecture-decision`. Reviews: built-in `/code-review` for bugs, `mp-code-review` for standards/spec, the `architecture-reviewer` agent for conformance. `condom` is review-only.
+- Vendored skills, their source commits and local edits are listed in `.claude/skills/VENDORED.md`.

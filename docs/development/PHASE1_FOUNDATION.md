@@ -1,6 +1,6 @@
 # Phase 1: Platform foundation
 
-Status: **Implemented foundation; acceptance pending the container-based checks listed in §8.**
+Status: **Implemented foundation; all required acceptance checks passed on 2026-11-20 (§8).** Formal Phase 1 closure is the user's decision.
 Decisions made for Phase 1: ADR-0023 (FastAPI, provisional), ADR-0024 (lucide-react), ADR-0025 (`created` run status).
 
 ## 1. What exists
@@ -80,6 +80,41 @@ Not production-ready. Missing before any production use: identity provider and a
 
 ## 8. Acceptance status
 
-See the Phase 1 report for the checklist with actual results. Items depending on Docker
-(Postgres/Redis integration tests, migrations against a live database, Playwright end-to-end)
-require a container runtime on the development machine.
+Verified on 2026-11-20 on macOS (Apple Silicon) with Docker Engine 29.9.3 and Compose v5.7.0,
+following §2 and §5 of `SETUP.md`. Results below are from actual runs against the final working tree
+unless marked otherwise.
+
+**Infrastructure.** `pnpm infra:up` started `pgvector/pgvector:0.8.7-pg18-trixie` and
+`redis:8.8.4-alpine`, both healthy and bound to 127.0.0.1. Databases `vip` and `vip_test` exist,
+the `vector` extension (0.8.7) is enabled, `pnpm db:migrate` applied both migrations (6 tables) and
+`pnpm db:seed` created the development workspace. Redis answers `PING` with
+`maxmemory-policy noeviction`.
+
+| Check | Command | Result |
+|---|---|---|
+| Unit tests | `pnpm test` | 82 passed, 0 failed, 0 skipped (contracts 15, db 4, api 44, orchestrator 3, web 16) |
+| Integration tests | `pnpm test:integration` (with `pnpm audio:dev`) | 22 passed, 0 failed, 0 skipped (db 7, api 11, orchestrator 4) |
+| Live queue check | `pnpm --filter @vip/api run foundation-check` with the orchestrator running | Passed: job round-tripped, `processedBy: orchestrator` (run before the e2e locator correction; that change touches no code the check uses) |
+| End-to-end | `pnpm test:e2e` | 5 passed, 0 failed, 1 skipped by design (dark-mode capture runs on desktop only) |
+| Python tests | `pnpm audio:test` | 17 passed, 0 failed, 0 skipped (1 Starlette deprecation warning, §6) |
+| Lint, types, format | `pnpm lint` · `pnpm typecheck` · `pnpm format:check` · `pnpm audio:lint` | All passed |
+| Build | `pnpm build` | 5 of 5 tasks succeeded |
+
+End-to-end screenshots (desktop 01–06, mobile 01–05) are written to
+`apps/web/test-results/screenshots/` (git-ignored).
+
+**E2E correction.** The first e2e run failed the upload workflow on both projects: two text
+locators in `apps/web/e2e/upload-workflow.spec.ts` matched more than one element (the "Uploaded"
+status badge and the "Uploaded" date label; the "Not yet determined" duration value and the
+timeline's "Duration not yet determined"). The locators were narrowed to the intended elements with
+equally strict assertions. No application code or UI copy changed.
+
+**Not executed.** The optional containerised audio service (`--profile audio`).
+
+**Remaining non-blocking issues.**
+- On mobile, the "Upload complete" toast overlaps the Timeline card on the recording detail page.
+- Each e2e run adds two synthetic recordings to the development database and `.local-storage/`.
+- `getByText('Not started')` in the e2e test is a substring match and could become ambiguous if
+  similar text is added.
+- The audio-service client builds the handshake request body without validating it against the
+  `HandshakeRequest` schema (the service validates it; responses are validated client-side).
