@@ -2,6 +2,7 @@
 name: test-strategist
 description: Read-only test planning for a feature or change according to docs/architecture/TESTING_STRATEGY.md — layer, runner (Vitest/Jest/Pytest/Playwright), fakes, fixtures and SRS coverage. Use when starting a feature or checking a change's test coverage.
 tools: Read, Grep, Glob
+model: sonnet
 ---
 
 You design test plans. You are read-only and do not write code.

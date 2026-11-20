@@ -18,6 +18,7 @@ const BUDGET = {
   css: 20 * KB, // all CSS (gzip)
   preloadedFonts: { count: 2, bytes: 80 * KB },
   allFonts: 200 * KB,
+  threeD: 250 * KB, // lazy dashboard hero scene incl. three.js, beyond already-loaded code (gzip)
 };
 
 const dist = resolve(import.meta.dirname, '..', 'dist');
@@ -95,6 +96,30 @@ check(
   BUDGET.combinedJs,
 );
 for (const r of routes) check(`Route chunk ${r.key}`, r.own, BUDGET.routeChunk);
+
+// 3D hero (ADR-0031/0032): must be a lazy chunk, never in a render-critical closure, and within budget.
+const HERO_SCENE = 'src/components/hero-3d/hero-scene.ts';
+const heroInManifest = HERO_SCENE in manifest;
+const heroDynamicallyImported = Object.values(manifest).some((c) =>
+  (c.dynamicImports ?? []).includes(HERO_SCENE),
+);
+const heroInCriticalClosure =
+  base.has(HERO_SCENE) ||
+  routes.some((r) => closure(r.key, new Set(base)).has(HERO_SCENE)) ||
+  [...base].some((k) => (manifest[k].imports ?? []).includes(HERO_SCENE));
+check(
+  `3D hero scene (${HERO_SCENE}) is reachable only as a dynamic import${
+    heroInManifest ? '' : ' - MISSING from manifest: nothing dynamically imports it yet'
+  }`,
+  heroInManifest && heroDynamicallyImported && !heroInCriticalClosure ? 1 : 0,
+  1,
+  { expectExactly: true },
+);
+if (heroInManifest) {
+  const heroKeys = closure(HERO_SCENE);
+  for (const k of base) heroKeys.delete(k); // shared code already loaded
+  check('3D hero chunk (lazy)', jsBytes(heroKeys), BUDGET.threeD);
+}
 
 const cssFiles = [...new Set(Object.values(manifest).flatMap((c) => c.css ?? []))];
 check(

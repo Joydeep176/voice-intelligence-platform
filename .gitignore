@@ -53,8 +53,9 @@ exports/
 tmp-audio/
 **/generated-audio/
 
-# Claude Code personal settings
+# Claude Code personal settings and local model-routing usage logs
 .claude/settings.local.json
+.claude/usage/
 
 # Developer tooling output (Graphify graph: local paths, regenerable)
 graphify-out/

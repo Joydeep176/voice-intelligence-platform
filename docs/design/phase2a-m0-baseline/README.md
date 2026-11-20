@@ -141,7 +141,7 @@ The check also fails if the Motion features stop being a separately loaded defer
 | Total blocking time, 4× CPU                                    | ≤ 100 ms                           | ~26 ms (current build: ~115 ms) |
 | axe: serious or critical violations                            | 0 in every scan                    | 2 rules          |
 
-"Today (with R1)" is the M0 measurement; the M1 results are in `docs/design/phase2a-m1/README.md` §3.
+"Today (with R1)" is the M0 measurement; the M1 results are in `docs/design/phase2a-m1/README.md` §3 and the M2 results (including the measured 3D chunk) in `docs/design/phase2a-m2/README.md` §3.
 The M0 estimate of about 17 KB for Motion was low: Motion 14 measured about 15 KB render-critical plus
 18 KB deferred, which led to the amendment above. The pre-R1 build already exceeded the blocking-time
 budget at 4× CPU; R1 brings it within budget.

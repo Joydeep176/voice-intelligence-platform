@@ -167,7 +167,7 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-31 | SRS assumptions A-1 (batch only) and A-2 (three languages only) | As stated in SRS §2.3 | Proposed | — |
 | OD-32 | Run A1 and A2 in parallel after preprocessing | Independent parallel branches; downstream agents wait for their required upstream results. Subject to graph-level validation | Accepted provisionally (graph validation) | ADR-0021 |
 | OD-33 | Motion (`motion`) for UI animation | Approved, free features only (no Motion+); `LazyMotion` by default; reduced motion respected | Accepted | ADR-0026 |
-| OD-34a | Three.js + React Three Fiber for 3D views | Approved for the desktop dashboard hero and an opt-in pipeline explorer only; lazy-loaded after first paint on capable desktops; mobile and reduced-motion users get the 2D SVG version | Accepted | ADR-0027 |
+| OD-34a | Three.js + React Three Fiber for 3D views | Approved for the desktop dashboard hero and an opt-in pipeline explorer only; lazy-loaded after first paint on capable desktops; mobile and reduced-motion users get the 2D SVG version; hero added in M2 using three.js without R3F (budget), pipeline explorer in M6b | Accepted | ADR-0027, ADR-0031 (timing), ADR-0032 (hero library) |
 | OD-34b | Drei (React Three Fiber helpers) | Not approved; each helper needs separate approval | Open | — |
 | OD-35 | Waveform / timeline rendering library | No candidate selected (a dependency-free canvas renderer is possible) | Open | — |
 | OD-36 | Charting library | No candidate selected | Open | — |
@@ -180,7 +180,7 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-43 | Automated accessibility testing | `@axe-core/playwright` as an `apps/web` development-only dependency; no serious or critical violations | Accepted | ADR-0029 |
 | OD-44 | Brand accents versus semantic colours | Brand accents and gradients only in app chrome, never in evidence surfaces; provenance, audio diagnostics and transcription uncertainty keep separate token families | Accepted | ADR-0030 |
 
-Frontend dependencies OD-33 (ADR-0026), OD-34a (ADR-0027) and OD-38 (ADR-0028) are approved within their ADRs' limits. OD-34b and OD-35 to OD-37 are **not** approved; each needs separate approval before installation.
+Frontend dependencies OD-33 (ADR-0026), OD-34a (ADR-0027, amended by ADR-0031/0032) and OD-38 (ADR-0028) are approved within their ADRs' limits. OD-34b and OD-35 to OD-37 are **not** approved; each needs separate approval before installation.
 
 **Design ADRs:**
 - ADR-0015 preprocessing versions: Accepted

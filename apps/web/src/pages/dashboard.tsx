@@ -1,184 +1,64 @@
-import type { HealthResponse, RecordingMetadata } from '@vip/contracts';
-import { CircleDashed, FolderOpen, type LucideIcon, Upload, XCircle } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { RecordingsTable } from '@/components/recordings-table';
-import { EmptyState, ErrorState, LoadingRows, PageHeader } from '@/components/states';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { RecordingMetadata } from '@vip/contracts';
+import { Capabilities } from '@/components/dashboard/capabilities';
+import { Hero } from '@/components/dashboard/hero';
+import { KpiCards, type Loaded } from '@/components/dashboard/kpi-cards';
+import { RecentRecordings } from '@/components/dashboard/recent-recordings';
+import { SystemHealth } from '@/components/dashboard/system-health';
 import { api } from '@/lib/api';
-import { Link } from '@/lib/router';
-import { useAsync } from '@/lib/use-async';
-import { cn } from 'cn';
 
-const SAMPLE = 100;
+const PAGE = 100;
+const MAX_PAGES = 5;
 
-function Stat({
-  label,
-  value,
-  icon: Icon,
-  hint,
-}: {
-  label: string;
-  value: string;
-  icon: LucideIcon;
-  hint: string;
-}) {
-  return (
-    <Card size="sm">
-      <CardHeader>
-        <CardDescription className="flex items-center gap-2">
-          <Icon aria-hidden className="size-4" />
-          {label}
-        </CardDescription>
-        <CardTitle className="text-3xl font-semibold tabular-nums">{value}</CardTitle>
-      </CardHeader>
-      <CardContent className="text-muted-foreground text-xs">{hint}</CardContent>
-    </Card>
-  );
-}
+/** No count endpoint exists: load up to 500 recent recordings and say so when more remain. */
+function useRecordings() {
+  const [state, setState] = useState<Loaded>({ status: 'loading' });
+  const [nonce, setNonce] = useState(0);
 
-function summarise(items: RecordingMetadata[]) {
-  return {
-    total: items.length,
-    awaiting: items.filter((r) => r.latestRun?.status === 'created').length,
-    rejected: items.filter((r) => r.status === 'invalid').length,
-  };
-}
+  useEffect(() => {
+    const controller = new AbortController();
+    void (async () => {
+      try {
+        const items: RecordingMetadata[] = [];
+        let cursor: string | null = null;
+        for (let page = 0; page < MAX_PAGES; page += 1) {
+          const res = await api.listRecordings({ limit: PAGE, cursor }, controller.signal);
+          items.push(...res.items);
+          cursor = res.nextCursor;
+          if (cursor === null) break;
+        }
+        if (!controller.signal.aborted)
+          setState({ status: 'success', items, partial: cursor !== null });
+      } catch (error) {
+        if (!controller.signal.aborted) setState({ status: 'error', error });
+      }
+    })();
+    return () => controller.abort();
+  }, [nonce]);
 
-const DEP_LABEL: Record<HealthResponse['dependencies'][number]['name'], string> = {
-  postgres: 'Database',
-  redis: 'Job queue',
-  'audio-service': 'Audio service',
-};
-
-function SystemStatus() {
-  const health = useAsync((signal) => api.health(signal), [], 30_000);
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>System status</CardTitle>
-        <CardDescription>Live from the API health endpoint.</CardDescription>
-        {health.status === 'success' ? (
-          <CardAction>
-            <Badge variant="outline" className="capitalize">
-              {health.data.status}
-            </Badge>
-          </CardAction>
-        ) : null}
-      </CardHeader>
-      <CardContent>
-        {health.status === 'loading' ? <LoadingRows rows={3} label="Checking services" /> : null}
-        {health.status === 'error' ? (
-          <ErrorState error={health.error} onRetry={health.reload} title="API unreachable" />
-        ) : null}
-        {health.status === 'success' ? (
-          <ul className="grid gap-2.5">
-            {health.data.dependencies.map((d) => (
-              <li key={d.name} className="flex items-center gap-2 text-sm">
-                <span
-                  aria-hidden
-                  className={cn(
-                    'size-2 rounded-full',
-                    d.status === 'up' ? 'bg-success' : 'bg-destructive',
-                  )}
-                />
-                <span>{DEP_LABEL[d.name]}</span>
-                <span className="text-muted-foreground ml-auto text-xs tabular-nums">
-                  {d.status === 'up' ? `Up · ${d.latencyMs ?? 0} ms` : 'Down'}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </CardContent>
-    </Card>
-  );
+  const reload = useCallback(() => {
+    setState({ status: 'loading' });
+    setNonce((n) => n + 1);
+  }, []);
+  return useMemo(() => ({ state, reload }), [state, reload]);
 }
 
 export default function DashboardPage() {
-  const recordings = useAsync((signal) => api.listRecordings({ limit: SAMPLE }, signal), []);
-  const items = recordings.status === 'success' ? recordings.data.items : [];
-  const more = recordings.status === 'success' && recordings.data.nextCursor !== null;
-  const stats = summarise(items);
-  const count = (n: number) => (recordings.status === 'success' ? `${n}${more ? '+' : ''}` : '—');
-
+  const { state, reload } = useRecordings();
   return (
-    <div className="grid gap-6">
-      <PageHeader
-        title="Overview"
-        description="Upload consented or synthetic recordings and follow their processing status."
-        actions={
-          <Button asChild>
-            <Link to="/recordings/new">
-              <Upload aria-hidden data-icon="inline-start" />
-              Upload recording
-            </Link>
-          </Button>
-        }
-      />
-
-      <section aria-label="Summary" className="grid gap-4 sm:grid-cols-3">
-        <Stat
-          label="Recordings"
-          value={count(stats.total)}
-          icon={FolderOpen}
-          hint={more ? `Showing the latest ${SAMPLE}` : 'In this workspace'}
-        />
-        <Stat
-          label="Awaiting analysis"
-          value={count(stats.awaiting)}
-          icon={CircleDashed}
-          hint="Stored; analysis pipeline not available yet"
-        />
-        <Stat
-          label="Rejected uploads"
-          value={count(stats.rejected)}
-          icon={XCircle}
-          hint="Content did not match the declared format"
-        />
-      </section>
-
-      <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent recordings</CardTitle>
-            <CardAction>
-              <Button variant="ghost" size="sm" asChild>
-                <Link to="/recordings">View all</Link>
-              </Button>
-            </CardAction>
-          </CardHeader>
-          <CardContent>
-            {recordings.status === 'loading' ? <LoadingRows label="Loading recordings" /> : null}
-            {recordings.status === 'error' ? (
-              <ErrorState error={recordings.error} onRetry={recordings.reload} />
-            ) : null}
-            {recordings.status === 'success' && items.length === 0 ? (
-              <EmptyState
-                icon={<FolderOpen aria-hidden />}
-                title="No recordings yet"
-                description="Upload a synthetic or explicitly consented audio file to get started."
-                action={
-                  <Button asChild size="sm">
-                    <Link to="/recordings/new">Upload recording</Link>
-                  </Button>
-                }
-              />
-            ) : null}
-            {items.length > 0 ? (
-              <RecordingsTable items={items.slice(0, 5)} caption="Most recent recordings" />
-            ) : null}
-          </CardContent>
-        </Card>
-        <SystemStatus />
+    <div className="grid gap-8">
+      <Hero />
+      <KpiCards data={state} />
+      {state.status === 'success' && state.partial ? (
+        <p className="text-muted-foreground -mt-4 text-xs">
+          Counts cover the 500 most recent recordings.
+        </p>
+      ) : null}
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
+        <RecentRecordings data={state} onRetry={reload} />
+        <SystemHealth />
       </div>
+      <Capabilities />
     </div>
   );
 }

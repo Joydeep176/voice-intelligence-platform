@@ -45,6 +45,10 @@ Full setup: `docs/development/SETUP.md`. pnpm only (never npm). Root `.env` from
 
 Jest runs with `node --experimental-vm-modules` because NestJS 12 is ESM-only and the Nest apps are CommonJS (`require(esm)`). TypeScript is pinned to 6.0.x (tooling peers).
 
+## Model routing (dev tooling)
+
+For delegable engineering work, follow the `model-router` skill: Haiku for read-only/format-only tasks, Sonnet for implementation, Opus for architecture, security, data integrity and high-risk review. A hook in `.claude/settings.json` enforces model floors and logs usage (`node .claude/hooks/model-routing.mjs report`). Explicit user model choices always win. Routing never widens scope. Details: `docs/development/MODEL_ROUTING.md`.
+
 ## Working rules
 
 - Preserve existing behaviour. Keep changes scoped to the task. No unrequested refactors.
