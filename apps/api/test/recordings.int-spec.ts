@@ -1,5 +1,6 @@
 import {
   DEV_CONSENT_STATEMENT_VERSION,
+  PlaybackUrl,
   ProcessingStatus,
   RecordingMetadata,
   RecordingUploadResponse,
@@ -208,6 +209,46 @@ describe('recording upload workflow (integration: Postgres + Redis + local stora
       await handle.close();
     }
     await http().get(`${base}/runs/6f1c1f9e-6a3e-4c55-9a4e-2f1f2d0f7b10`).expect(404);
+  });
+
+  it('issues signed playback URLs and streams audio with Range support (ADR-0033)', async () => {
+    const pending = await create(wav);
+    await http().get(`${base}/recordings/${pending.recording.id}/audio`).expect(409);
+
+    const created = await create(wav);
+    const id = created.recording.id;
+    await uploadAll(id, wav, 4096);
+    await http().post(`${base}/recordings/${id}/upload/complete`).expect(200);
+    const issued = await http().get(`${base}/recordings/${id}/audio`).expect(200);
+    expect(PlaybackUrl.parse(issued.body).url).toMatch(/^\/api\/v1\/media\/recordings\//);
+    expect(issued.headers['cache-control']).toBe('no-store');
+    expect(JSON.stringify(issued.body)).not.toMatch(/local:\/\/|storage/i);
+
+    const url: string = issued.body.url;
+    const full = await http().get(url).buffer(true).expect(200);
+    expect(full.body).toEqual(wav);
+    expect(full.headers['content-type']).toBe('audio/wav');
+    const part = await http().get(url).set('Range', 'bytes=44-99').buffer(true).expect(206);
+    expect(part.body).toEqual(wav.subarray(44, 100));
+    expect(part.headers['content-range']).toBe(`bytes 44-99/${wav.length}`);
+    await http()
+      .get(url)
+      .set('Range', `bytes=${wav.length}-`)
+      .expect(416)
+      .expect('content-range', `bytes */${wav.length}`);
+
+    const tampered = `${url.slice(0, -2)}${url.endsWith('AA') ? 'BB' : 'AA'}`;
+    await http().get(tampered).expect(404);
+    await http().get('/api/v1/media/recordings/garbage').expect(404);
+
+    const db = createDb(process.env.TEST_DATABASE_URL!, { maxConnections: 1 });
+    try {
+      const events = await db.db.select().from(auditEvents).where(eq(auditEvents.resourceId, id));
+      expect(events.filter((e) => e.action === 'recording.playback_url_issued')).toHaveLength(1);
+      expect(JSON.stringify(events)).not.toContain(url.split('/').pop()!);
+    } finally {
+      await db.close();
+    }
   });
 
   it('paginates the recording list with a cursor', async () => {

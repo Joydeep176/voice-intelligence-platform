@@ -44,6 +44,12 @@ const EnvSchema = z
     UPLOAD_SESSION_TTL_MINUTES: z.coerce.number().int().positive().default(1440),
     AUDIO_SERVICE_URL: z.url(),
     AUDIO_SERVICE_TIMEOUT_MS: z.coerce.number().int().min(100).max(60_000).default(3000),
+    /** HMAC key for playback URLs (ADR-0033). Required, no default; never logged. */
+    MEDIA_URL_SIGNING_SECRET: z
+      .string()
+      .min(32)
+      .refine((v) => !v.startsWith('change-me'), 'placeholder secret'),
+    MEDIA_URL_TTL_SECONDS: z.coerce.number().int().min(30).max(3600).default(300),
     QUEUE_FOUNDATION_ATTEMPTS: z.coerce.number().int().min(1).max(10).default(3),
     QUEUE_FOUNDATION_BACKOFF_MS: z.coerce.number().int().min(100).max(60_000).default(1000),
   })
@@ -64,6 +70,7 @@ export interface AppConfig {
   storage: { driver: 'local'; localRoot: string };
   upload: { maxBytes: number; partSizeBytes: number; sessionTtlMinutes: number };
   audioService: { url: string; timeoutMs: number };
+  playback: { signingSecret: string; urlTtlSeconds: number };
   queues: { foundation: { attempts: number; backoffMs: number } };
 }
 
@@ -114,6 +121,7 @@ export function loadConfig(env: NodeJS.ProcessEnv): AppConfig {
       url: e.AUDIO_SERVICE_URL.replace(/\/$/, ''),
       timeoutMs: e.AUDIO_SERVICE_TIMEOUT_MS,
     },
+    playback: { signingSecret: e.MEDIA_URL_SIGNING_SECRET, urlTtlSeconds: e.MEDIA_URL_TTL_SECONDS },
     queues: {
       foundation: {
         attempts: e.QUEUE_FOUNDATION_ATTEMPTS,

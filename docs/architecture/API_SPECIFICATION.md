@@ -23,8 +23,14 @@ REST/JSON served by `apps/api`. An OpenAPI document will be generated from the c
 | POST | `/recordings/{id}/upload/parts/{n}/url` | Presigned S3 part URL (cloud; re-issuable on resume) | FR-1.2 |
 | POST | `/recordings/{id}/upload/complete` | Finalise. Phase 1: concatenates parts, records SHA-256, checks the file signature against the declared type (shallow), sets `uploaded` and creates a run with status `created` (ADR-0025). Deep validation (FR-1.3) comes with the audio-service probe | FR-1.3 |
 | GET | `/recordings` · `/recordings/{id}` | List / detail (status, validation, latest run) | — |
-| GET | `/recordings/{id}/audio` | Short-lived signed playback URL (audited) | SEC-8 |
+| GET | `/recordings/{id}/audio` | Short-lived signed playback URL (audited), ADR-0033. `200 { url, expiresAt }`: `url` is a same-origin relative path to the media route below, valid for `MEDIA_URL_TTL_SECONDS` (default 300). `Cache-Control: no-store`. Unknown or other-workspace recording → `404`. Status not `uploaded`/`valid` → `409 INVALID_STATE_TRANSITION`. Each issuance writes `recording.playback_url_issued`; if the audit write fails, no URL is issued | SEC-8 |
 | DELETE | `/recordings/{id}` | `202`; async deletion across all stores | SEC-6 |
+
+### 2.1 Media (outside the workspace prefix; ADR-0033)
+
+| Method | Path | Purpose | Req |
+|---|---|---|---|
+| GET | `/api/v1/media/recordings/{token}` | Streams a recording's original audio. The HMAC-signed `token` (recording, workspace, expiry) is the capability; the browser's `<audio>` element cannot send auth headers.<br>• **Checks per request:** ownership and playable status are re-checked on every request. Any failure is a uniform `404` (malformed, bad signature, expired, missing, wrong workspace, not playable).<br>• **Range:** single `Range` → `206` + `Content-Range`; none → `200` + `Accept-Ranges: bytes`; unsatisfiable → `416` + `Content-Range: bytes */size`; multi-range → `200` full.<br>• **Headers:** `Content-Type` from the validated stored MIME type, `X-Content-Type-Options: nosniff`, `Cache-Control: private, no-store`, `Content-Disposition: inline` (no filename), `Cross-Origin-Resource-Policy: same-origin`, `Referrer-Policy: no-referrer`.<br>• **Exposure and audit:** no storage paths or credentials are exposed, and range requests are not audited individually.<br>• **Outstanding:** production authentication (OD-08b), authorisation (OD-27), rate limiting, and S3 (presigned GET) for the cloud deployment | SEC-2, SEC-8 |
 
 ## 3. Runs
 

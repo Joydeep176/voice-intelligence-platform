@@ -5,7 +5,12 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Readable } from 'node:stream';
 import { LocalStorageService } from './local-storage.service';
-import { InvalidStorageKeyError, ObjectTooLargeError, StorageKeys } from './storage.service';
+import {
+  InvalidStorageKeyError,
+  ObjectNotFoundError,
+  ObjectTooLargeError,
+  StorageKeys,
+} from './storage.service';
 
 const sha = (b: Buffer) => createHash('sha256').update(b).digest('hex');
 
@@ -59,6 +64,41 @@ describe('LocalStorageService', () => {
     await storage.writeObject('d/x', Readable.from([Buffer.from('x')]), { maxBytes: 1 });
     await storage.deleteObjects(['d/x', 'd/missing']);
     expect(existsSync(join(root, 'd', 'x'))).toBe(false);
+  });
+
+  describe('statObject / openReadStream', () => {
+    const data = Buffer.from('0123456789');
+    const readAll = async (s: Readable) => Buffer.concat(await s.toArray());
+    beforeEach(async () => {
+      await storage.writeObject('m/obj', Readable.from([data]), { maxBytes: 100 });
+    });
+
+    it('reports the size', async () => {
+      expect(await storage.statObject('m/obj')).toEqual({ sizeBytes: 10 });
+    });
+
+    it('streams the whole object or an inclusive range', async () => {
+      expect(await readAll(await storage.openReadStream('m/obj'))).toEqual(data);
+      expect(await readAll(await storage.openReadStream('m/obj', { start: 2, end: 4 }))).toEqual(
+        Buffer.from('234'),
+      );
+      expect(await readAll(await storage.openReadStream('m/obj', { start: 9, end: 9 }))).toEqual(
+        Buffer.from('9'),
+      );
+    });
+
+    it('rejects missing objects and directories without exposing paths', async () => {
+      await expect(storage.statObject('m/missing')).rejects.toBeInstanceOf(ObjectNotFoundError);
+      await expect(storage.openReadStream('m/missing')).rejects.toBeInstanceOf(ObjectNotFoundError);
+      await expect(storage.statObject('m')).rejects.toBeInstanceOf(ObjectNotFoundError);
+      const error = await storage.statObject('m/missing').catch((e: Error) => e);
+      expect((error as Error).message).not.toContain(root);
+    });
+
+    it.each(['../x', 'a/../b', '/abs', 'A/B', 'a//b', ''])('rejects key %j', async (key) => {
+      await expect(storage.statObject(key)).rejects.toBeInstanceOf(InvalidStorageKeyError);
+      await expect(storage.openReadStream(key)).rejects.toBeInstanceOf(InvalidStorageKeyError);
+    });
   });
 
   it('builds keys only from IDs', () => {

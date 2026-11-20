@@ -54,3 +54,8 @@ tmp-audio/
 *.bin
 *.safetensors
 *.ckpt
+
+# External agent-tool folders (untracked; not project code). Added 2026-11-20 to keep the graph code-only.
+.agents/
+.codex/
+AGENTS.md

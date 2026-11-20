@@ -11,7 +11,7 @@ const DEP_LABEL: Record<HealthResponse['dependencies'][number]['name'], string> 
 };
 
 const SUMMARY = {
-  ok: { text: 'All systems operational', dot: 'bg-success' },
+  ok: { text: 'Core services operational', dot: 'bg-success' },
   degraded: { text: 'Some services degraded', dot: 'bg-warning' },
   down: { text: 'Service outage', dot: 'bg-destructive' },
 } as const;

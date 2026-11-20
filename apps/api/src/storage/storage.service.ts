@@ -13,6 +13,13 @@ export class ObjectTooLargeError extends Error {
   }
 }
 
+export class ObjectNotFoundError extends Error {
+  constructor() {
+    super('Object not found');
+    this.name = 'ObjectNotFoundError';
+  }
+}
+
 export class InvalidStorageKeyError extends Error {
   constructor() {
     super('Invalid storage key');
@@ -37,6 +44,10 @@ export abstract class StorageService {
   abstract composeObject(sourceKeys: readonly string[], destKey: string): Promise<StoredObject>;
   /** Reads up to `length` bytes from the start of the object. */
   abstract readHead(key: string, length: number): Promise<Buffer>;
+  /** Size of the object. Rejects with ObjectNotFoundError if it does not exist. */
+  abstract statObject(key: string): Promise<{ sizeBytes: number }>;
+  /** Streams the object, or the inclusive byte range `[start, end]`. Rejects with ObjectNotFoundError. */
+  abstract openReadStream(key: string, range?: { start: number; end: number }): Promise<Readable>;
   /** Deletes objects; missing objects are ignored. */
   abstract deleteObjects(keys: readonly string[]): Promise<void>;
   /** Opaque URI stored in the database (never shown to users). */

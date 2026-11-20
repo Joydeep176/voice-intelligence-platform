@@ -8,6 +8,7 @@ import { configureApp } from './bootstrap';
 import { APP_CONFIG, loadConfig } from './config/app-config';
 import { HealthController } from './health/health.controller';
 import { HealthService } from './health/health.service';
+import { PlaybackService } from './playback/playback.service';
 import { RecordingsController } from './recordings/recordings.controller';
 import { RecordingsService } from './recordings/recordings.service';
 
@@ -24,6 +25,7 @@ const config = loadConfig({
   REDIS_URL: 'redis://127.0.0.1:1',
   AUDIO_SERVICE_URL: 'http://127.0.0.1:1',
   LOG_LEVEL: 'fatal',
+  MEDIA_URL_SIGNING_SECRET: 'test-only-media-url-signing-secret-000000000000',
 });
 
 const healthy: HealthResponse = {
@@ -42,6 +44,7 @@ const healthy: HealthResponse = {
 describe('HTTP layer', () => {
   let app: NestExpressApplication;
   const recordings = { create: jest.fn(), list: jest.fn(), get: jest.fn() };
+  const playback = { issue: jest.fn() };
   const health = { full: jest.fn(), readiness: jest.fn() };
 
   beforeAll(async () => {
@@ -51,6 +54,7 @@ describe('HTTP layer', () => {
         { provide: APP_CONFIG, useValue: config },
         { provide: HealthService, useValue: health },
         { provide: RecordingsService, useValue: recordings },
+        { provide: PlaybackService, useValue: playback },
         WorkspaceAccessGuard,
       ],
     }).compile();
@@ -98,6 +102,32 @@ describe('HTTP layer', () => {
       .expect(404);
     await request(app.getHttpServer()).get('/api/v1/workspaces/not-a-uuid/recordings').expect(404);
     expect(recordings.list).not.toHaveBeenCalled();
+  });
+
+  it('issues a playback URL with no-store, validated against the contract', async () => {
+    const issued = {
+      url: '/api/v1/media/recordings/abc.def',
+      expiresAt: '2026-11-20T10:05:00.000Z',
+    };
+    playback.issue.mockResolvedValue(issued);
+    const id = '6f1c1f9e-6a3e-4c55-9a4e-2f1f2d0f7b10';
+    const res = await request(app.getHttpServer())
+      .get(`/api/v1/workspaces/${WS}/recordings/${id}/audio`)
+      .expect(200);
+    expect(res.body).toEqual(issued);
+    expect(res.headers['cache-control']).toBe('no-store');
+    expect(playback.issue).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'dev-local' }),
+      WS,
+      id,
+    );
+    await request(app.getHttpServer())
+      .get(`/api/v1/workspaces/${WS}/recordings/not-a-uuid/audio`)
+      .expect(404);
+    await request(app.getHttpServer())
+      .get('/api/v1/workspaces/00000000-0000-4000-8000-0000000000ff/recordings/' + id + '/audio')
+      .expect(404);
+    expect(playback.issue).toHaveBeenCalledTimes(1);
   });
 
   it('requires consent before anything else (SEC-1)', async () => {

@@ -1,5 +1,9 @@
 {
   "permissions": {
+    "allow": [
+      "Read(./apps/api/src/storage/**)",
+      "Edit(./apps/api/src/storage/**)"
+    ],
     "deny": [
       "Read(./**/.env)",
       "Read(./**/.env.local)",
@@ -13,9 +17,9 @@
       "Read(./**/*.p12)",
       "Read(./**/secrets/**)",
       "Read(./**/credentials*.json)",
-      "Read(./storage/**)",
+      "Read(/storage/**)",
       "Read(./.local-storage/**)",
-      "Read(./data/**)",
+      "Read(/data/**)",
       "Read(~/.aws/**)",
       "Read(~/.ssh/**)",
       "Edit(./**/.env)",

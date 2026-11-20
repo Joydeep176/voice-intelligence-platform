@@ -6,6 +6,7 @@ const base = {
   DATABASE_URL: 'postgres://u:secret-password@127.0.0.1:5432/vip',
   REDIS_URL: 'redis://127.0.0.1:6379',
   AUDIO_SERVICE_URL: 'http://127.0.0.1:8001/',
+  MEDIA_URL_SIGNING_SECRET: 'test-only-media-url-signing-secret-000000000000',
 };
 
 describe('loadConfig', () => {
@@ -30,6 +31,35 @@ describe('loadConfig', () => {
       expect((error as Error).message).toContain('DATABASE_URL');
       expect((error as Error).message).not.toContain('secret-password');
     }
+  });
+
+  describe('playback signing', () => {
+    it('is required, at least 32 characters and not the placeholder', () => {
+      const { MEDIA_URL_SIGNING_SECRET: _omit, ...without } = base;
+      expect(() => loadConfig(without)).toThrow(ConfigError);
+      expect(() => loadConfig({ ...base, MEDIA_URL_SIGNING_SECRET: 'x'.repeat(31) })).toThrow(
+        ConfigError,
+      );
+      try {
+        loadConfig({ ...base, MEDIA_URL_SIGNING_SECRET: `change-me-${'x'.repeat(40)}` });
+        throw new Error('expected failure');
+      } catch (error) {
+        expect(error).toBeInstanceOf(ConfigError);
+        expect((error as Error).message).toContain('MEDIA_URL_SIGNING_SECRET');
+        expect((error as Error).message).not.toContain('change-me');
+      }
+    });
+
+    it('defaults the TTL to 300 seconds and bounds it to 30-3600', () => {
+      expect(loadConfig(base).playback.urlTtlSeconds).toBe(300);
+      expect(loadConfig({ ...base, MEDIA_URL_TTL_SECONDS: '30' }).playback.urlTtlSeconds).toBe(30);
+      expect(loadConfig({ ...base, MEDIA_URL_TTL_SECONDS: '3600' }).playback.urlTtlSeconds).toBe(
+        3600,
+      );
+      for (const bad of ['29', '3601', '1.5', 'abc']) {
+        expect(() => loadConfig({ ...base, MEDIA_URL_TTL_SECONDS: bad })).toThrow(ConfigError);
+      }
+    });
   });
 
   it('parses CORS origins as a list of URLs', () => {

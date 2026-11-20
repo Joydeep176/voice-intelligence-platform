@@ -1,0 +1,67 @@
+{
+  "desktop-1440-dark": {
+    "a5Pressed": "true",
+    "header": {
+      "codeX": 11,
+      "plannedX": 54
+    },
+    "hOverflow": 0,
+    "axe": []
+  },
+  "desktop-1440-light": {
+    "a5Pressed": "true",
+    "header": {
+      "codeX": 11,
+      "plannedX": 54
+    },
+    "hOverflow": 0,
+    "axe": []
+  },
+  "desktop-1280-dark-recording": {
+    "a5Pressed": "true",
+    "header": {
+      "codeX": 11,
+      "plannedX": 84
+    },
+    "hOverflow": 0,
+    "context": true,
+    "axe": []
+  },
+  "tablet-820-light": {
+    "a5Pressed": "true",
+    "header": {
+      "codeX": 11,
+      "plannedX": 50
+    },
+    "hOverflow": 0,
+    "axe": []
+  },
+  "mobile-412-dark": {
+    "a5Pressed": "true",
+    "header": {
+      "codeX": 11,
+      "plannedX": 299
+    },
+    "hOverflow": 0,
+    "axe": []
+  },
+  "mobile-412-light-recording": {
+    "a5Pressed": "true",
+    "header": {
+      "codeX": 11,
+      "plannedX": 299
+    },
+    "hOverflow": 0,
+    "context": true,
+    "axe": []
+  },
+  "mobile-360-dark": {
+    "a5Pressed": "true",
+    "header": {
+      "codeX": 11,
+      "plannedX": 247
+    },
+    "hOverflow": 0,
+    "axe": []
+  }
+}

@@ -8,6 +8,7 @@ import {
   DEV_CONSENT_STATEMENT_VERSION,
   HandshakeRequest,
   HandshakeResponse,
+  PlaybackUrl,
   ProcessingStatus,
   RecordingMetadata,
   RunStatus,
@@ -127,5 +128,25 @@ describe('audio-service contract fixtures (shared with Pytest)', () => {
     expect(HandshakeRequest.safeParse(fixture('handshake-request.invalid.json')).success).toBe(
       false,
     );
+  });
+});
+
+describe('PlaybackUrl', () => {
+  it('accepts a same-origin media path with an ISO expiry', () => {
+    expect(
+      PlaybackUrl.safeParse({
+        url: '/api/v1/media/recordings/abc.def',
+        expiresAt: '2026-11-20T10:05:00.000Z',
+      }).success,
+    ).toBe(true);
+  });
+
+  it('rejects absolute or foreign URLs and bad expiry', () => {
+    const expiresAt = '2026-11-20T10:05:00.000Z';
+    expect(PlaybackUrl.safeParse({ url: 'https://evil.test/x', expiresAt }).success).toBe(false);
+    expect(PlaybackUrl.safeParse({ url: '/api/v1/other/abc', expiresAt }).success).toBe(false);
+    expect(
+      PlaybackUrl.safeParse({ url: '/api/v1/media/recordings/a.b', expiresAt: 'soon' }).success,
+    ).toBe(false);
   });
 });

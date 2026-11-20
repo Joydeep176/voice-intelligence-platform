@@ -99,6 +99,8 @@ and reports invalid **names** only (never values).
 | `UPLOAD_MAX_BYTES` | api | 2 GiB: interim development default (OD-10 Open) |
 | `UPLOAD_PART_SIZE_BYTES` | api | 8 MiB (min 1 KiB, max 64 MiB) |
 | `UPLOAD_SESSION_TTL_MINUTES` | api | 1440 |
+| `MEDIA_URL_SIGNING_SECRET` | api | **Required**, ≥ 32 characters, no default (ADR-0033). Generate your own with `openssl rand -base64 48`; never commit it. The API refuses to start without it. Tests use a separate test-only value |
+| `MEDIA_URL_TTL_SECONDS` | api | 300 (30–3600): lifetime of signed playback URLs |
 | `AUDIO_SERVICE_URL`, `AUDIO_SERVICE_TIMEOUT_MS` | api | `http://127.0.0.1:8001`, 3000 ms |
 | `AUDIO_SERVICE_PORT` | Compose | 8001 |
 | `AUDIO_SERVICE_ENV`, `AUDIO_SERVICE_LOG_LEVEL`, `AUDIO_SERVICE_HOST`, `AUDIO_SERVICE_MAX_REQUEST_BYTES` | audio service | Optional; defaults in `services/audio/src/audio_service/config.py` |

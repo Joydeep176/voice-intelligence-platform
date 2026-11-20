@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatDuration } from '@/lib/format';
 import { cn } from 'cn';
 import type { TimelineData } from './types';
 
@@ -42,7 +43,18 @@ const TRACKS: Track[] = [
  * tracks. Phase 1 renders the layout only. No waveform is computed and no audio is decoded
  * in the browser.
  */
-export function TimelinePlaceholder({ data }: { data: TimelineData }) {
+export function TimelinePlaceholder({
+  data,
+  positionMs = null,
+}: {
+  data: TimelineData;
+  /** Current playback position. The playhead is drawn only when the duration is known. */
+  positionMs?: number | null;
+}) {
+  const playheadPct =
+    data.durationMs && data.durationMs > 0 && positionMs !== null
+      ? Math.min(100, Math.max(0, (positionMs / data.durationMs) * 100))
+      : null;
   return (
     <Card>
       <CardHeader>
@@ -60,27 +72,53 @@ export function TimelinePlaceholder({ data }: { data: TimelineData }) {
           tabIndex={0}
           className="focus-visible:ring-ring/50 overflow-x-auto rounded-md outline-none focus-visible:ring-3"
         >
-          <div className="min-w-[32rem]">
+          <div className="relative sm:min-w-[32rem]">
             <div
               aria-hidden
-              className="text-muted-foreground mb-2 ml-44 flex justify-between text-xs tabular-nums"
+              className="text-muted-foreground mb-2 flex sm:ml-[11.25rem] justify-between text-xs tabular-nums"
             >
               <span>0:00</span>
-              <span>{data.durationMs === null ? 'Duration not yet determined' : ''}</span>
+              <span>
+                {data.durationMs === null
+                  ? 'Duration not yet determined'
+                  : formatDuration(data.durationMs)}
+              </span>
             </div>
             <ul className="grid gap-2">
               {TRACKS.map((track) => (
-                <li key={track.id} className="grid grid-cols-[10.5rem_1fr] items-center gap-3">
+                <li
+                  key={track.id}
+                  className="grid gap-1.5 sm:grid-cols-[10.5rem_1fr] sm:items-center sm:gap-3"
+                >
                   <span className="flex items-center gap-2 text-sm font-medium">
                     <span aria-hidden className={cn('size-2.5 rounded-full', track.swatch)} />
                     {track.label}
                   </span>
-                  <div className="bg-muted/50 text-muted-foreground flex h-9 items-center rounded-md border border-dashed px-3 text-xs">
+                  <div className="bg-muted/50 text-muted-foreground relative flex min-h-9 items-center rounded-md border border-dashed px-3 py-1.5 text-xs">
                     {track.empty}
+                    {playheadPct !== null ? (
+                      <div
+                        aria-hidden
+                        className="bg-primary pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 rounded-full sm:hidden"
+                        style={{ left: `${playheadPct}%` }}
+                      />
+                    ) : null}
                   </div>
                 </li>
               ))}
             </ul>
+            {playheadPct !== null ? (
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-y-0 right-0 left-[11.25rem] hidden sm:block"
+              >
+                <div
+                  data-testid="timeline-playhead"
+                  className="bg-primary absolute inset-y-0 w-0.5 -translate-x-1/2 rounded-full"
+                  style={{ left: `${playheadPct}%` }}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       </CardContent>

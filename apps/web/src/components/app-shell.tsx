@@ -7,6 +7,7 @@ import {
   PanelLeftOpen,
   ShieldAlert,
   Upload,
+  Workflow,
 } from 'lucide-react';
 import { type CSSProperties, type ReactNode, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -38,6 +39,12 @@ const NAV = [
     label: 'Recordings',
     icon: FolderOpen,
     match: (r: Route) => r.name === 'recordings' || r.name === 'recording',
+  },
+  {
+    to: '/pipeline',
+    label: 'Pipeline',
+    icon: Workflow,
+    match: (r: Route) => r.name === 'pipeline',
   },
   {
     to: '/recordings/new',

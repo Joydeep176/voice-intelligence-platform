@@ -26,6 +26,7 @@ describe('AudioServiceClient (stub server)', () => {
         REDIS_URL: 'redis://127.0.0.1:1',
         AUDIO_SERVICE_URL: `http://127.0.0.1:${port}`,
         AUDIO_SERVICE_TIMEOUT_MS: '200',
+        MEDIA_URL_SIGNING_SECRET: 'test-only-media-url-signing-secret-000000000000',
       }),
     );
   });

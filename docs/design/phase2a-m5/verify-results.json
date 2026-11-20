@@ -1,0 +1,127 @@
+{
+  "desktop-dark": {
+    "duration": 20,
+    "playedTo": 0.508323,
+    "pausedState": true,
+    "afterSeek": 18,
+    "sliderValueText": "0:18 of 0:20",
+    "mediaAfterSeek": [],
+    "issueRequests": 1,
+    "mediaStatuses": [
+      206
+    ],
+    "texts": {
+      "notYetDetermined": 1,
+      "notStarted": 1,
+      "recordingDetails": 1,
+      "transcriptHeading": 6,
+      "audioQuality": 3,
+      "uncertainty": 2
+    },
+    "axe": [],
+    "axeNeedsReview": [
+      "color-contrast"
+    ],
+    "recheckAfterTimelineFix": {
+      "horizontalOverflowPx": 0,
+      "axe": [],
+      "position": "0:08 of 0:20"
+    }
+  },
+  "desktop-light": {
+    "duration": 20,
+    "issueRequests": 1,
+    "mediaStatuses": [
+      206
+    ],
+    "texts": {
+      "notYetDetermined": 1,
+      "notStarted": 1,
+      "recordingDetails": 1,
+      "transcriptHeading": 6,
+      "audioQuality": 3,
+      "uncertainty": 2
+    },
+    "axe": [],
+    "axeNeedsReview": [
+      "color-contrast"
+    ],
+    "recheckAfterTimelineFix": {
+      "horizontalOverflowPx": 0,
+      "axe": [],
+      "position": "0:08 of 0:20"
+    }
+  },
+  "tablet-dark": {
+    "duration": 20,
+    "issueRequests": 1,
+    "mediaStatuses": [
+      206
+    ],
+    "texts": {
+      "notYetDetermined": 1,
+      "notStarted": 1,
+      "recordingDetails": 1,
+      "transcriptHeading": 6,
+      "audioQuality": 3,
+      "uncertainty": 2
+    },
+    "axe": [],
+    "axeNeedsReview": [
+      "color-contrast"
+    ],
+    "recheckAfterTimelineFix": {
+      "horizontalOverflowPx": 0,
+      "axe": [],
+      "position": "0:08 of 0:20"
+    }
+  },
+  "mobile-dark": {
+    "duration": 20,
+    "issueRequests": 1,
+    "mediaStatuses": [
+      206
+    ],
+    "texts": {
+      "notYetDetermined": 1,
+      "notStarted": 1,
+      "recordingDetails": 1,
+      "transcriptHeading": 6,
+      "audioQuality": 3,
+      "uncertainty": 2
+    },
+    "axe": [],
+    "axeNeedsReview": [
+      "color-contrast"
+    ],
+    "recheckAfterTimelineFix": {
+      "horizontalOverflowPx": 0,
+      "axe": [],
+      "position": "0:08 of 0:20"
+    }
+  },
+  "mobile-light": {
+    "duration": 20,
+    "issueRequests": 1,
+    "mediaStatuses": [
+      206
+    ],
+    "texts": {
+      "notYetDetermined": 1,
+      "notStarted": 1,
+      "recordingDetails": 1,
+      "transcriptHeading": 6,
+      "audioQuality": 3,
+      "uncertainty": 2
+    },
+    "axe": [],
+    "axeNeedsReview": [
+      "color-contrast"
+    ],
+    "recheckAfterTimelineFix": {
+      "horizontalOverflowPx": 0,
+      "axe": [],
+      "position": "0:08 of 0:20"
+    }
+  }
+}

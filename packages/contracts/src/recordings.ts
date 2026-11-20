@@ -112,5 +112,12 @@ export const UploadPartResponse = z.object({
 });
 export type UploadPartResponse = z.infer<typeof UploadPartResponse>;
 
+/** `GET /recordings/{id}/audio` response: a short-lived same-origin signed playback URL (ADR-0033). */
+export const PlaybackUrl = z.object({
+  url: z.string().startsWith('/api/v1/media/recordings/'),
+  expiresAt: IsoDateTime,
+});
+export type PlaybackUrl = z.infer<typeof PlaybackUrl>;
+
 export const RecordingList = paginated(RecordingMetadata);
 export type RecordingList = z.infer<typeof RecordingList>;

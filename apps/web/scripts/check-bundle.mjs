@@ -7,14 +7,16 @@ import process from 'node:process';
 import { gzipSync } from 'node:zlib';
 
 const KB = 1024;
+// Amended 2026-11-20 (user decision, M6): combined 190→205, route chunk 25→30. Render-critical (175) and
+// deferred Motion (20) still cap combined at 195 in practice.
 const BUDGET = {
   // JavaScript, gzip, worst page route. Render-critical = needed for the first render:
   // entry + chunks it statically imports + the route chunk and its static imports.
   renderCriticalJs: 175 * KB,
   // Deferred = Motion's animation features, fetched asynchronously after first render.
   deferredMotionJs: 20 * KB,
-  combinedJs: 190 * KB, // render-critical + deferred for the same route
-  routeChunk: 25 * KB, // each lazily loaded route chunk (gzip)
+  combinedJs: 205 * KB, // render-critical + deferred for the same route
+  routeChunk: 30 * KB, // each lazily loaded route chunk (gzip)
   css: 20 * KB, // all CSS (gzip)
   preloadedFonts: { count: 2, bytes: 80 * KB },
   allFonts: 200 * KB,

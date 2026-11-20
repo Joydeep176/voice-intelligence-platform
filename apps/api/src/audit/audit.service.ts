@@ -3,7 +3,10 @@ import { auditEvents, type Database } from '@vip/db';
 import { DB } from '../database/database.module';
 
 export type AuditAction =
-  'recording.upload_started' | 'recording.upload_completed' | 'recording.upload_rejected';
+  | 'recording.upload_started'
+  | 'recording.upload_completed'
+  | 'recording.upload_rejected'
+  | 'recording.playback_url_issued';
 
 export interface AuditEntry {
   workspaceId: string;

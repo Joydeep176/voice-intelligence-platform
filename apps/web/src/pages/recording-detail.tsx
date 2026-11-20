@@ -1,26 +1,18 @@
-import { ArrowLeft, FileQuestion } from 'lucide-react';
+import { ArrowLeft, ChevronRight, FileQuestion } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ProcessingStatusPanel } from '@/components/processing-status';
 import { EmptyState, ErrorState, PageHeader } from '@/components/states';
 import { RecordingStatusBadge } from '@/components/status-badge';
-import { TimelinePlaceholder } from '@/components/timeline/timeline-placeholder';
+import { RecordingPlayback } from '@/components/recording/audio-player';
+import { RecordingOverview } from '@/components/recording/recording-overview';
+import { TranscriptCard } from '@/components/recording/transcript-card';
 import { ApiRequestError, api } from '@/lib/api';
-import { formatBytes, formatDateTime, formatDuration, shortHash } from '@/lib/format';
 import { Link } from '@/lib/router';
 import { useAsync } from '@/lib/use-async';
 
 const POLL_MS = 10_000;
-
-function Detail({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="grid gap-1">
-      <dt className="text-muted-foreground text-xs">{label}</dt>
-      <dd className="text-sm font-medium break-all">{children}</dd>
-    </div>
-  );
-}
 
 function SeparateChannel({ title, description }: { title: string; description: string }) {
   return (
@@ -68,46 +60,43 @@ export default function RecordingDetailPage({ id }: { id: string }) {
   const r = state.data;
   return (
     <div className="grid gap-6">
-      <div>
-        <Button asChild variant="ghost" size="sm" className="-ml-2">
+      <div className="grid gap-2">
+        <Button asChild variant="ghost" size="sm" className="-ml-2 w-fit">
           <Link to="/recordings">
             <ArrowLeft aria-hidden data-icon="inline-start" />
-            Recordings
+            Back to recordings
           </Link>
         </Button>
+        <nav aria-label="Breadcrumb">
+          <ol className="text-muted-foreground flex min-w-0 items-center gap-1.5 text-xs">
+            <li>
+              <Link
+                to="/recordings"
+                className="hover:text-foreground underline-offset-4 hover:underline"
+              >
+                Recordings
+              </Link>
+            </li>
+            <li aria-hidden>
+              <ChevronRight className="size-3" />
+            </li>
+            <li aria-current="page" className="min-w-0 truncate">
+              {r.originalFilename}
+            </li>
+          </ol>
+        </nav>
       </div>
       <PageHeader title={r.originalFilename} actions={<RecordingStatusBadge status={r.status} />} />
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
-        <div className="grid min-w-0 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recording details</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <dl className="grid gap-4 sm:grid-cols-2">
-                <Detail label="Format">{r.mimeType}</Detail>
-                <Detail label="Size">
-                  <span className="tabular-nums">{formatBytes(r.sizeBytes)}</span>
-                </Detail>
-                <Detail label="Duration">{formatDuration(r.durationMs)}</Detail>
-                <Detail label="Uploaded">
-                  <time dateTime={r.createdAt}>{formatDateTime(r.createdAt)}</time>
-                </Detail>
-                <Detail label="SHA-256">
-                  <span className="font-mono text-xs" title={r.sha256 ?? undefined}>
-                    {shortHash(r.sha256)}
-                  </span>
-                </Detail>
-                <Detail label="Recording ID">
-                  <span className="font-mono text-xs">{r.id}</span>
-                </Detail>
-              </dl>
-            </CardContent>
-          </Card>
-          <TimelinePlaceholder
-            data={{ durationMs: r.durationMs, speakers: [], diagnostics: [], uncertainties: [] }}
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="grid min-w-0 content-start gap-6">
+          <RecordingPlayback
+            key={r.id}
+            recordingId={r.id}
+            status={r.status}
+            durationMs={r.durationMs}
           />
+          <TranscriptCard />
           {/* Audio limitations and transcription uncertainty are separate sections (FR-9.3). */}
           <div className="grid gap-4 sm:grid-cols-2">
             <SeparateChannel
@@ -120,10 +109,14 @@ export default function RecordingDetailPage({ id }: { id: string }) {
             />
           </div>
         </div>
-        <ProcessingStatusPanel
-          run={r.latestRun}
-          uploaded={r.status === 'uploaded' || r.status === 'valid'}
-        />
+        <div className="grid min-w-0 content-start gap-6">
+          <ProcessingStatusPanel
+            run={r.latestRun}
+            recordingId={r.id}
+            uploaded={r.status === 'uploaded' || r.status === 'valid'}
+          />
+          <RecordingOverview r={r} />
+        </div>
       </div>
     </div>
   );

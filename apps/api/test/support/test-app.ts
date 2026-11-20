@@ -66,6 +66,7 @@ export async function createTestApp(overrides: Record<string, string> = {}): Pro
     UPLOAD_MAX_BYTES: String(1024 * 1024),
     AUDIO_SERVICE_URL: process.env.AUDIO_SERVICE_URL ?? 'http://127.0.0.1:8001',
     AUDIO_SERVICE_TIMEOUT_MS: '1000',
+    MEDIA_URL_SIGNING_SECRET: 'test-only-media-url-signing-secret-000000000000',
     ...overrides,
   });
   const moduleRef = await Test.createTestingModule({

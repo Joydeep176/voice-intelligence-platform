@@ -7,6 +7,7 @@ import { type AnchorHTMLAttributes, type MouseEvent, useSyncExternalStore } from
 export type Route =
   | { name: 'dashboard' }
   | { name: 'recordings' }
+  | { name: 'pipeline' }
   | { name: 'upload' }
   | { name: 'recording'; id: string }
   | { name: 'not-found' };
@@ -17,6 +18,7 @@ export function matchRoute(pathname: string): Route {
   const path = pathname.replace(/\/+$/, '') || '/';
   if (path === '/') return { name: 'dashboard' };
   if (path === '/recordings') return { name: 'recordings' };
+  if (path === '/pipeline') return { name: 'pipeline' };
   if (path === '/recordings/new') return { name: 'upload' };
   const m = /^\/recordings\/([^/]+)$/.exec(path);
   if (m?.[1] && UUID.test(m[1])) return { name: 'recording', id: m[1] };

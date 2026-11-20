@@ -16,6 +16,7 @@ const config = (url: string) =>
     REDIS_URL: 'redis://127.0.0.1:1',
     AUDIO_SERVICE_URL: url,
     AUDIO_SERVICE_TIMEOUT_MS: '1500',
+    MEDIA_URL_SIGNING_SECRET: 'test-only-media-url-signing-secret-000000000000',
   });
 
 describe('audio service client (integration)', () => {

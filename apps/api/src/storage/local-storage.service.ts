@@ -1,11 +1,12 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { createReadStream, createWriteStream } from 'node:fs';
-import { mkdir, open, rename, rm } from 'node:fs/promises';
+import { mkdir, open, rename, rm, stat } from 'node:fs/promises';
 import { dirname, resolve, sep } from 'node:path';
 import { type Readable, Transform, type TransformCallback } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import {
   InvalidStorageKeyError,
+  ObjectNotFoundError,
   ObjectTooLargeError,
   StorageService,
   type StoredObject,
@@ -30,6 +31,14 @@ class MeasuringTransform extends Transform {
     this.hash.update(chunk);
     callback(null, chunk);
   }
+}
+
+function toNotFound(error: unknown): Error {
+  if (error instanceof ObjectNotFoundError) return error;
+  const code = (error as NodeJS.ErrnoException | undefined)?.code;
+  return code === 'ENOENT' || code === 'ENOTDIR' || code === 'EISDIR'
+    ? new ObjectNotFoundError()
+    : new Error('Storage read failed'); // never expose the underlying path
 }
 
 /**
@@ -85,6 +94,31 @@ export class LocalStorageService extends StorageService {
     } finally {
       await handle.close();
     }
+  }
+
+  async statObject(key: string): Promise<{ sizeBytes: number }> {
+    const path = this.pathFor(key);
+    try {
+      const info = await stat(path);
+      if (!info.isFile()) throw new ObjectNotFoundError();
+      return { sizeBytes: info.size };
+    } catch (error) {
+      throw toNotFound(error);
+    }
+  }
+
+  async openReadStream(key: string, range?: { start: number; end: number }): Promise<Readable> {
+    const path = this.pathFor(key);
+    let handle;
+    try {
+      handle = await open(path, 'r');
+      if (!(await handle.stat()).isFile()) throw new ObjectNotFoundError();
+    } catch (error) {
+      await handle?.close().catch(() => undefined);
+      throw toNotFound(error);
+    }
+    // The stream owns the descriptor and closes it on end, error or destroy.
+    return handle.createReadStream(range ? { start: range.start, end: range.end } : undefined);
   }
 
   async deleteObjects(keys: readonly string[]): Promise<void> {

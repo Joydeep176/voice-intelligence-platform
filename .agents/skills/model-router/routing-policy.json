@@ -1,0 +1,166 @@
+{
+  "$comment": "Single source of truth for model routing. Read by the model-router skill, enforced by .claude/hooks/model-routing.mjs, checked by .claude/hooks/tests. Model aliases verified on Claude Code 2.1.329 (haiku=claude-haiku-5-5, sonnet=claude-sonnet-5-5, opus=claude-opus-5-5). See docs/development/MODEL_ROUTING.md.",
+  "models": ["haiku", "sonnet", "opus"],
+  "categories": {
+    "inspect": {
+      "tier": "haiku",
+      "floor": "haiku",
+      "agents": ["quick-inspector", "Explore"],
+      "covers": "Reading files, simple code search, repository inventory, configuration inspection, simple log analysis, summaries of known information. Read-only."
+    },
+    "docs-format": {
+      "tier": "haiku",
+      "floor": "haiku",
+      "agents": ["documentation-agent"],
+      "covers": "Formatting, typo and README corrections, small isolated documentation edits that change no described behaviour."
+    },
+    "docs-technical": {
+      "tier": "sonnet",
+      "floor": "sonnet",
+      "agents": ["documentation-agent"],
+      "covers": "Documentation that explains technical implementation or must stay in sync with code behaviour."
+    },
+    "frontend": {
+      "tier": "sonnet",
+      "floor": "sonnet",
+      "agents": ["frontend-engineer"],
+      "covers": "React components, UI improvements, frontend features, routine frontend bug fixes and small/medium refactors in apps/web."
+    },
+    "backend": {
+      "tier": "sonnet",
+      "floor": "sonnet",
+      "agents": ["backend-engineer"],
+      "covers": "Routine NestJS implementation, API integration, contracts usage, routine backend bug fixes and small/medium refactors."
+    },
+    "tests": {
+      "tier": "sonnet",
+      "floor": "sonnet",
+      "agents": ["test-engineer"],
+      "covers": "Unit, integration, E2E and regression tests."
+    },
+    "code-review": {
+      "tier": "sonnet",
+      "floor": "sonnet",
+      "agents": ["general-purpose"],
+      "covers": "Standard bug-focused review of routine changes. High-risk changes need an opus-floor review category instead."
+    },
+    "performance": {
+      "tier": "sonnet",
+      "floor": "sonnet",
+      "agents": ["performance-reviewer"],
+      "covers": "Bundle analysis, frontend performance and routine optimisation."
+    },
+    "planning": {
+      "tier": "opus",
+      "floor": "sonnet",
+      "agents": ["Plan"],
+      "covers": "Implementation planning for multi-step work. Opus for complex or high-risk plans; sonnet acceptable for routine plans. Read-only."
+    },
+    "architecture": {
+      "tier": "opus",
+      "floor": "opus",
+      "agents": ["architecture-reviewer"],
+      "covers": "Architecture design and review, ADR and OD conformance, cross-service integration decisions, major dependency changes."
+    },
+    "security": {
+      "tier": "opus",
+      "floor": "opus",
+      "agents": ["security-reviewer"],
+      "covers": "Security, authentication, authorisation, workspace isolation, privacy, secrets handling."
+    },
+    "data-integrity": {
+      "tier": "opus",
+      "floor": "opus",
+      "agents": ["security-reviewer", "architecture-reviewer"],
+      "covers": "Database integrity and migration design, data provenance, transcript immutability and versioning, deletion completeness."
+    },
+    "complex-debug": {
+      "tier": "opus",
+      "floor": "opus",
+      "agents": ["general-purpose"],
+      "covers": "Complex or cross-module debugging, concurrency problems (queues, races, retries), difficult investigations."
+    },
+    "perf-investigation": {
+      "tier": "opus",
+      "floor": "opus",
+      "agents": ["performance-reviewer", "general-purpose"],
+      "covers": "Difficult performance investigations escalated from the performance category."
+    },
+    "final-review": {
+      "tier": "opus",
+      "floor": "opus",
+      "agents": ["architecture-reviewer", "security-reviewer"],
+      "covers": "Production-readiness and milestone reviews, and independent review of high-risk work implemented on sonnet."
+    }
+  },
+  "routingAgents": {
+    "quick-inspector": { "model": "haiku", "writes": false },
+    "documentation-agent": { "model": "haiku", "writes": true },
+    "frontend-engineer": { "model": "sonnet", "writes": true },
+    "backend-engineer": { "model": "sonnet", "writes": true },
+    "test-engineer": { "model": "sonnet", "writes": true },
+    "performance-reviewer": { "model": "sonnet", "writes": false },
+    "architecture-reviewer": { "model": "opus", "writes": false },
+    "security-reviewer": { "model": "opus", "writes": false }
+  },
+  "builtinAgents": {
+    "general-purpose": { "writes": true },
+    "Explore": { "writes": false },
+    "Plan": { "writes": false }
+  },
+  "opusDomainTerms": [
+    "security",
+    "authenticat",
+    "authoriz",
+    "authoris",
+    "permission",
+    "secret",
+    "credential",
+    "privacy",
+    "encrypt",
+    "migration",
+    "schema",
+    "drizzle",
+    "provenance",
+    "transcript version",
+    "immutab",
+    "workspace isolation",
+    "deletion",
+    "concurrency",
+    "race condition",
+    "deadlock",
+    "architecture",
+    "adr-"
+  ],
+  "signalExemptCategories": ["inspect", "docs-technical"],
+  "reviewCategories": ["code-review", "performance", "planning"],
+  "highRiskTerms": [
+    "security",
+    "authenticat",
+    "authoriz",
+    "authoris",
+    "permission",
+    "secret",
+    "credential",
+    "password",
+    "privacy",
+    "encrypt",
+    "migration",
+    "schema",
+    "drizzle",
+    "provenance",
+    "transcript version",
+    "immutab",
+    "workspace isolation",
+    "workspace_id",
+    "deletion",
+    "concurrency",
+    "race condition",
+    "deadlock",
+    "architecture",
+    "adr-",
+    "dependency",
+    "bullmq",
+    "langgraph"
+  ]
+}

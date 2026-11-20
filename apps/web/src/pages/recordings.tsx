@@ -1,10 +1,18 @@
 import type { RecordingMetadata } from '@vip/contracts';
-import { FolderOpen, Upload } from 'lucide-react';
-import { useState } from 'react';
+import { FolderOpen, SearchX, Upload } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
 import { RecordingsTable } from '@/components/recordings-table';
+import {
+  FILTERS,
+  filterCounts,
+  visibleRecordings,
+  type SortKey,
+  type StatusFilter,
+} from '@/components/recordings/model';
+import { RecordingsToolbar } from '@/components/recordings/toolbar';
 import { EmptyState, ErrorState, LoadingRows, PageHeader } from '@/components/states';
 import { useToast } from '@/components/toaster';
 import { api, describeError } from '@/lib/api';
@@ -19,10 +27,29 @@ export default function RecordingsPage() {
     null,
   );
   const [loadingMore, setLoadingMore] = useState(false);
+  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState<StatusFilter>('all');
+  const [sort, setSort] = useState<SortKey>('newest');
   const { notify } = useToast();
 
-  const items = first.status === 'success' ? [...first.data.items, ...(extra?.items ?? [])] : [];
+  const firstItems = first.status === 'success' ? first.data.items : null;
+  const extraItems = extra?.items;
+  const items = useMemo(
+    () => (firstItems ? [...firstItems, ...(extraItems ?? [])] : []),
+    [firstItems, extraItems],
+  );
   const cursor = extra ? extra.cursor : first.status === 'success' ? first.data.nextCursor : null;
+
+  const counts = useMemo(() => filterCounts(items), [items]);
+  const shown = useMemo(
+    () => visibleRecordings(items, query, filter, sort),
+    [items, query, filter, sort],
+  );
+  const filtered = query.trim() !== '' || filter !== 'all';
+  const clearFilters = () => {
+    setQuery('');
+    setFilter('all');
+  };
 
   const loadMore = async () => {
     setLoadingMore(true);
@@ -47,7 +74,7 @@ export default function RecordingsPage() {
     <div className="grid gap-6">
       <PageHeader
         title="Recordings"
-        description="Every recording in this workspace, newest first."
+        description="Every recording in this workspace, with its upload and processing status."
         actions={
           <Button asChild>
             <Link to="/recordings/new">
@@ -86,19 +113,63 @@ export default function RecordingsPage() {
         />
       ) : null}
       {items.length > 0 ? (
-        <Card>
-          <CardContent>
-            <RecordingsTable items={items} caption="Recordings" />
-            {cursor ? (
-              <div className="mt-4 flex justify-center">
-                <Button variant="outline" onClick={() => void loadMore()} disabled={loadingMore}>
-                  {loadingMore ? <Spinner data-icon="inline-start" /> : null}
-                  Load more
-                </Button>
-              </div>
+        <div className="grid gap-3">
+          <RecordingsToolbar
+            query={query}
+            onQuery={setQuery}
+            filter={filter}
+            onFilter={setFilter}
+            counts={counts}
+            sort={sort}
+            onSort={setSort}
+          />
+          <div className="text-muted-foreground flex flex-wrap items-center gap-x-2 text-xs">
+            <p aria-live="polite" className="tabular-nums">
+              {filtered
+                ? `Showing ${shown.length} of ${items.length} loaded`
+                : `${items.length} ${items.length === 1 ? 'recording' : 'recordings'} loaded`}
+              {cursor ? ' · more available' : ''}
+            </p>
+            {filtered && cursor ? (
+              <p>Filters apply to loaded recordings. Load more to include older ones.</p>
             ) : null}
-          </CardContent>
-        </Card>
+          </div>
+          {shown.length === 0 ? (
+            <EmptyState
+              icon={<SearchX aria-hidden />}
+              title="No recordings match"
+              description={`Nothing loaded matches ${
+                query.trim() ? `“${query.trim()}”` : 'your search'
+              }${
+                filter !== 'all'
+                  ? ` with status ${FILTERS.find((f) => f.key === filter)?.label}`
+                  : ''
+              }.`}
+              action={
+                <Button variant="outline" size="sm" onClick={clearFilters}>
+                  Clear filters
+                </Button>
+              }
+            />
+          ) : (
+            <Card className="py-0">
+              <CardContent className="px-0">
+                <RecordingsTable items={shown} caption="Recordings" />
+              </CardContent>
+            </Card>
+          )}
+          {cursor ? (
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-muted-foreground text-xs tabular-nums">
+                {items.length} loaded
+              </span>
+              <Button variant="outline" onClick={() => void loadMore()} disabled={loadingMore}>
+                {loadingMore ? <Spinner data-icon="inline-start" /> : null}
+                Load more
+              </Button>
+            </div>
+          ) : null}
+        </div>
       ) : null}
     </div>
   );

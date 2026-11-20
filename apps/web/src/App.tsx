@@ -10,6 +10,7 @@ import { ThemeProvider } from '@/lib/theme';
 // Route-level code splitting (performance.md).
 const DashboardPage = lazy(() => import('@/pages/dashboard'));
 const RecordingsPage = lazy(() => import('@/pages/recordings'));
+const PipelinePage = lazy(() => import('@/pages/pipeline'));
 const UploadPage = lazy(() => import('@/pages/upload'));
 const RecordingDetailPage = lazy(() => import('@/pages/recording-detail'));
 const NotFoundPage = lazy(() => import('@/pages/not-found'));
@@ -17,6 +18,7 @@ const NotFoundPage = lazy(() => import('@/pages/not-found'));
 const TITLES = {
   dashboard: 'Overview',
   recordings: 'Recordings',
+  pipeline: 'Pipeline',
   upload: 'Upload recording',
   recording: 'Recording',
   'not-found': 'Not found',
@@ -33,6 +35,8 @@ function CurrentPage() {
         return <DashboardPage />;
       case 'recordings':
         return <RecordingsPage />;
+      case 'pipeline':
+        return <PipelinePage />;
       case 'upload':
         return <UploadPage />;
       case 'recording':

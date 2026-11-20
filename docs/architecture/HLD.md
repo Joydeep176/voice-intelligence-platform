@@ -179,6 +179,7 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-42 | Run record at upload | Completing an upload creates a `pipeline_runs` row with the new status `created` (not yet submitted to the pipeline) | Accepted | ADR-0025 |
 | OD-43 | Automated accessibility testing | `@axe-core/playwright` as an `apps/web` development-only dependency; no serious or critical violations | Accepted | ADR-0029 |
 | OD-44 | Brand accents versus semantic colours | Brand accents and gradients only in app chrome, never in evidence surfaces; provenance, audio diagnostics and transcription uncertainty keep separate token families | Accepted | ADR-0030 |
+| OD-45 | Recording playback access | Short-lived HMAC-signed playback URLs issued per workspace recording (audited); media route streams with HTTP Range; uniform 404; required signing secret. Production auth (OD-08b), authorisation (OD-27), rate limiting and S3 support outstanding | Accepted | ADR-0033 |
 
 Frontend dependencies OD-33 (ADR-0026), OD-34a (ADR-0027, amended by ADR-0031/0032) and OD-38 (ADR-0028) are approved within their ADRs' limits. OD-34b and OD-35 to OD-37 are **not** approved; each needs separate approval before installation.
 

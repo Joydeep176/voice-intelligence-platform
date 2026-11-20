@@ -32,8 +32,13 @@ docs/
 | `analysis` | Diagnostics, topics, entities, claims, sources, validations |
 | `reports` | Report versions (HTML rendering data), QA results, exports |
 | `audit` | Append-only audit writer + admin read |
-| `storage` | `StorageService`: `LocalStorage` / `S3Storage`, signed URLs |
+| `storage` | `StorageService`: `LocalStorage` / `S3Storage` (S3 not implemented). Keys built from IDs only, validated and contained in the root. `statObject` and `openReadStream(key, range?)` serve playback (ADR-0033); an S3 version maps to ranged GetObject or presigned GETs |
 | `queue` | BullMQ producers + `QueueEvents` subscriber for progress |
+
+- **Playback** (`playback` module, ADR-0033): HMAC-SHA256 signed, short-lived (`MEDIA_URL_TTL_SECONDS`, default 300) tokens bind recording, workspace and expiry.
+  - **Issuance:** under the workspace route, audited, fail closed.
+  - **Media route** `/api/v1/media/recordings/{token}`: verifies the token in constant time, re-checks ownership and status, and streams through `StorageService` with HTTP Range. Every failure is a uniform 404.
+  - **Logs:** tokens never appear, because request logs record route patterns only.
 
 ### 2.2 `apps/orchestrator`
 | Module | Responsibility |

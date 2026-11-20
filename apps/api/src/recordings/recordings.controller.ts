@@ -11,22 +11,25 @@ import {
   Put,
   Query,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import {
   CreateRecordingRequest,
   PaginationQuery,
+  PlaybackUrl,
   type RecordingList,
   type RecordingMetadata,
   type RecordingUploadResponse,
   type UploadPartResponse,
   type UploadSession,
 } from '@vip/contracts';
-import type { Request } from 'express';
+import type { Request, Response } from 'express';
 import { CurrentPrincipal, type Principal } from '../auth/principal';
 import { WorkspaceAccessGuard } from '../auth/workspace-access.guard';
 import { AppException } from '../common/app-exception';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
+import { PlaybackService } from '../playback/playback.service';
 import { RecordingsService } from './recordings.service';
 
 const uuidParam = new ParseUUIDPipe({ exceptionFactory: () => AppException.notFound('Recording') });
@@ -58,7 +61,10 @@ class ConsentFirstPipe extends ZodValidationPipe<typeof CreateRecordingRequest> 
 @Controller('workspaces/:workspaceId/recordings')
 @UseGuards(WorkspaceAccessGuard)
 export class RecordingsController {
-  constructor(@Inject(RecordingsService) private readonly recordings: RecordingsService) {}
+  constructor(
+    @Inject(RecordingsService) private readonly recordings: RecordingsService,
+    @Inject(PlaybackService) private readonly playback: PlaybackService,
+  ) {}
 
   @Post()
   @HttpCode(201)
@@ -84,6 +90,18 @@ export class RecordingsController {
     @Param('id', uuidParam) id: string,
   ): Promise<RecordingMetadata> {
     return this.recordings.get(workspaceId, id);
+  }
+
+  /** Issues a short-lived signed playback URL (ADR-0033). Audited; fails closed. */
+  @Get(':id/audio')
+  async audio(
+    @CurrentPrincipal() principal: Principal,
+    @Param('workspaceId') workspaceId: string,
+    @Param('id', uuidParam) id: string,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<PlaybackUrl> {
+    res.setHeader('Cache-Control', 'no-store');
+    return PlaybackUrl.parse(await this.playback.issue(principal, workspaceId, id));
   }
 
   @Get(':id/upload')

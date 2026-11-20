@@ -121,7 +121,7 @@ after it. It is replaced by three strict JavaScript budgets:
 - **Deferred Motion JS** (≤ 20 KB): Motion's animation features (`src/lib/motion-features.ts`), fetched
   asynchronously after first render (ADR-0026). Not needed for the first render; until it arrives,
   elements render in their final state without animation.
-- **Combined route JS** (≤ 190 KB): render-critical plus deferred for the same route, so the total
+- **Combined route JS** (≤ 205 KB): render-critical plus deferred for the same route, so the total
   download is also capped.
 
 The check also fails if the Motion features stop being a separately loaded deferred chunk.
@@ -130,8 +130,8 @@ The check also fails if the Motion features stop being a separately loaded defer
 | -------------------------------------------------------------- | ---------------------------------- | ---------------- |
 | Render-critical JS (entry + shared + route)                    | ≤ 175 KB gzip                      | ~159 KB          |
 | Deferred Motion JS (after first render)                        | ≤ 20 KB gzip                       | 0 (no Motion yet) |
-| Combined route JS (render-critical + deferred)                 | ≤ 190 KB gzip                      | ~159 KB          |
-| Any route chunk                                                | ≤ 25 KB gzip                       | ≤ 5.8 KB         |
+| Combined route JS (render-critical + deferred)                 | ≤ 205 KB gzip                      | ~159 KB          |
+| Any route chunk                                                | ≤ 30 KB gzip                       | ≤ 5.8 KB         |
 | CSS                                                            | ≤ 20 KB gzip                       | 10.7 KB          |
 | Fonts preloaded on first paint                                 | ≤ 2 files, ≤ 80 KB total (WOFF2)   | 0 (system fonts) |
 | All font files                                                 | ≤ 200 KB, loaded on demand         | 0                |
@@ -140,6 +140,8 @@ The check also fails if the Motion features stop being a separately loaded defer
 | CLS                                                            | ≤ 0.05                             | 0                |
 | Total blocking time, 4× CPU                                    | ≤ 100 ms                           | ~26 ms (current build: ~115 ms) |
 | axe: serious or critical violations                            | 0 in every scan                    | 2 rules          |
+
+Amended 2026-11-20 (user decision at the end of M6): combined 190 → 205 KB and route chunk 25 → 30 KB. Because render-critical (≤ 175 KB) and deferred Motion (≤ 20 KB) are unchanged, combined cannot exceed 195 KB while they pass, so render-critical is now the binding limit. Details: `docs/design/phase2a-m6/README.md` §5.
 
 "Today (with R1)" is the M0 measurement; the M1 results are in `docs/design/phase2a-m1/README.md` §3 and the M2 results (including the measured 3D chunk) in `docs/design/phase2a-m2/README.md` §3.
 The M0 estimate of about 17 KB for Motion was low: Motion 14 measured about 15 KB render-critical plus

@@ -1,5 +1,5 @@
 import type { ProcessingStatus } from '@vip/contracts';
-import { CheckCircle2, CircleDashed } from 'lucide-react';
+import { ArrowRight, CheckCircle2, CircleDashed } from 'lucide-react';
 import {
   Card,
   CardAction,
@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { formatDateTime } from '@/lib/format';
+import { Link } from '@/lib/router';
 import { RunStatusBadge } from './status-badge';
 
 /** Workflow steps (HLD §3). Only ingestion exists in Phase 1; the rest are shown as planned. */
@@ -27,9 +28,11 @@ const STEPS = [
 export function ProcessingStatusPanel({
   run,
   uploaded,
+  recordingId,
 }: {
   run: ProcessingStatus | null;
   uploaded: boolean;
+  recordingId?: string;
 }) {
   return (
     <Card>
@@ -67,6 +70,15 @@ export function ProcessingStatusPanel({
             );
           })}
         </ol>
+        {recordingId ? (
+          <Link
+            to={`/pipeline?recording=${recordingId}`}
+            className="text-primary focus-visible:ring-ring/50 mt-4 inline-flex items-center gap-1 rounded-sm text-sm font-medium underline-offset-4 outline-none hover:underline focus-visible:ring-3"
+          >
+            View pipeline
+            <ArrowRight aria-hidden className="size-3.5" />
+          </Link>
+        ) : null}
       </CardContent>
     </Card>
   );
