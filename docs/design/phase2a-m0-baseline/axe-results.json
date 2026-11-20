@@ -1,0 +1,585 @@
+[
+  {
+    "viewport": "desktop",
+    "theme": "light",
+    "screen": "dashboard",
+    "simulated": false,
+    "screenshot": "desktop-light-dashboard.png",
+    "axeVersion": "4.14.1",
+    "passes": 39,
+    "incomplete": 0,
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "wcag2aa",
+          "wcag143"
+        ],
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 5,
+        "targets": [
+          "tr:nth-child(1) > .md\\:table-cell.hidden > .bg-muted.\\[a\\]\\:hover\\:bg-secondary\\/80[data-variant=\"secondary\"]",
+          "tr:nth-child(2) > .md\\:table-cell.hidden > .bg-muted.\\[a\\]\\:hover\\:bg-secondary\\/80[data-variant=\"secondary\"]",
+          "tr:nth-child(3) > .md\\:table-cell.hidden > .bg-muted.\\[a\\]\\:hover\\:bg-secondary\\/80[data-variant=\"secondary\"]"
+        ]
+      }
+    ],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "light",
+    "screen": "recordings",
+    "simulated": false,
+    "screenshot": "desktop-light-recordings.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "wcag2aa",
+          "wcag143"
+        ],
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 8,
+        "targets": [
+          "tr:nth-child(1) > .md\\:table-cell.hidden > .bg-muted.\\[a\\]\\:hover\\:bg-secondary\\/80[data-slot=\"badge\"]",
+          "tr:nth-child(2) > .md\\:table-cell.hidden > .bg-muted.\\[a\\]\\:hover\\:bg-secondary\\/80[data-slot=\"badge\"]",
+          "tr:nth-child(3) > .md\\:table-cell.hidden > .bg-muted.\\[a\\]\\:hover\\:bg-secondary\\/80[data-slot=\"badge\"]"
+        ]
+      }
+    ],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "light",
+    "screen": "upload",
+    "simulated": false,
+    "screenshot": "desktop-light-upload.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "light",
+    "screen": "upload-ready",
+    "simulated": false,
+    "screenshot": "desktop-light-upload-ready.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "light",
+    "screen": "recording-detail",
+    "simulated": false,
+    "screenshot": "desktop-light-recording-detail.png",
+    "axeVersion": "4.14.1",
+    "passes": 37,
+    "incomplete": 0,
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "wcag2aa",
+          "wcag143"
+        ],
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 1,
+        "targets": [
+          ".bg-muted"
+        ]
+      }
+    ],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "light",
+    "screen": "not-found",
+    "simulated": false,
+    "screenshot": "desktop-light-not-found.png",
+    "axeVersion": "4.14.1",
+    "passes": 31,
+    "incomplete": 0,
+    "violations": [
+      {
+        "id": "page-has-heading-one",
+        "impact": "moderate",
+        "tags": [
+          "best-practice"
+        ],
+        "help": "Page should contain a level-one heading",
+        "nodes": 1,
+        "targets": [
+          "html"
+        ]
+      }
+    ],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "light",
+    "screen": "recordings-empty-simulated",
+    "simulated": true,
+    "screenshot": "desktop-light-recordings-empty-simulated.png",
+    "axeVersion": "4.14.1",
+    "passes": 34,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "light",
+    "screen": "recordings-error-simulated",
+    "simulated": true,
+    "screenshot": "desktop-light-recordings-error-simulated.png",
+    "axeVersion": "4.14.1",
+    "passes": 34,
+    "incomplete": 0,
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "wcag2aa",
+          "wcag143"
+        ],
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 2,
+        "targets": [
+          ".text-balance > p",
+          ".border-border"
+        ]
+      }
+    ],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "dark",
+    "screen": "dashboard",
+    "simulated": false,
+    "screenshot": "desktop-dark-dashboard.png",
+    "axeVersion": "4.14.1",
+    "passes": 39,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "dark",
+    "screen": "recordings",
+    "simulated": false,
+    "screenshot": "desktop-dark-recordings.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "dark",
+    "screen": "upload",
+    "simulated": false,
+    "screenshot": "desktop-dark-upload.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "dark",
+    "screen": "upload-ready",
+    "simulated": false,
+    "screenshot": "desktop-dark-upload-ready.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "dark",
+    "screen": "recording-detail",
+    "simulated": false,
+    "screenshot": "desktop-dark-recording-detail.png",
+    "axeVersion": "4.14.1",
+    "passes": 37,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "dark",
+    "screen": "not-found",
+    "simulated": false,
+    "screenshot": "desktop-dark-not-found.png",
+    "axeVersion": "4.14.1",
+    "passes": 31,
+    "incomplete": 0,
+    "violations": [
+      {
+        "id": "page-has-heading-one",
+        "impact": "moderate",
+        "tags": [
+          "best-practice"
+        ],
+        "help": "Page should contain a level-one heading",
+        "nodes": 1,
+        "targets": [
+          "html"
+        ]
+      }
+    ],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "dark",
+    "screen": "recordings-empty-simulated",
+    "simulated": true,
+    "screenshot": "desktop-dark-recordings-empty-simulated.png",
+    "axeVersion": "4.14.1",
+    "passes": 34,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "dark",
+    "screen": "recordings-error-simulated",
+    "simulated": true,
+    "screenshot": "desktop-dark-recordings-error-simulated.png",
+    "axeVersion": "4.14.1",
+    "passes": 34,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "light",
+    "screen": "dashboard",
+    "simulated": false,
+    "screenshot": "mobile-light-dashboard.png",
+    "axeVersion": "4.14.1",
+    "passes": 39,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "light",
+    "screen": "recordings",
+    "simulated": false,
+    "screenshot": "mobile-light-recordings.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "light",
+    "screen": "upload",
+    "simulated": false,
+    "screenshot": "mobile-light-upload.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "light",
+    "screen": "upload-ready",
+    "simulated": false,
+    "screenshot": "mobile-light-upload-ready.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "light",
+    "screen": "recording-detail",
+    "simulated": false,
+    "screenshot": "mobile-light-recording-detail.png",
+    "axeVersion": "4.14.1",
+    "passes": 37,
+    "incomplete": 0,
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "wcag2aa",
+          "wcag143"
+        ],
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 1,
+        "targets": [
+          ".bg-muted"
+        ]
+      },
+      {
+        "id": "scrollable-region-focusable",
+        "impact": "serious",
+        "tags": [
+          "wcag2a",
+          "wcag211",
+          "wcag213"
+        ],
+        "help": "Scrollable region must have keyboard access",
+        "nodes": 1,
+        "targets": [
+          ".overflow-x-auto"
+        ]
+      }
+    ],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "light",
+    "screen": "not-found",
+    "simulated": false,
+    "screenshot": "mobile-light-not-found.png",
+    "axeVersion": "4.14.1",
+    "passes": 31,
+    "incomplete": 0,
+    "violations": [
+      {
+        "id": "page-has-heading-one",
+        "impact": "moderate",
+        "tags": [
+          "best-practice"
+        ],
+        "help": "Page should contain a level-one heading",
+        "nodes": 1,
+        "targets": [
+          "html"
+        ]
+      }
+    ],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "light",
+    "screen": "recordings-empty-simulated",
+    "simulated": true,
+    "screenshot": "mobile-light-recordings-empty-simulated.png",
+    "axeVersion": "4.14.1",
+    "passes": 34,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "light",
+    "screen": "recordings-error-simulated",
+    "simulated": true,
+    "screenshot": "mobile-light-recordings-error-simulated.png",
+    "axeVersion": "4.14.1",
+    "passes": 34,
+    "incomplete": 0,
+    "violations": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "wcag2aa",
+          "wcag143"
+        ],
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 2,
+        "targets": [
+          ".text-balance > p",
+          ".border-border"
+        ]
+      }
+    ],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "light",
+    "screen": "nav-open",
+    "simulated": false,
+    "screenshot": "mobile-light-nav-open.png",
+    "axeVersion": "4.14.1",
+    "passes": 30,
+    "incomplete": 1,
+    "violations": [],
+    "incompleteIds": [
+      "aria-hidden-focus"
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "theme": "dark",
+    "screen": "dashboard",
+    "simulated": false,
+    "screenshot": "mobile-dark-dashboard.png",
+    "axeVersion": "4.14.1",
+    "passes": 39,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "dark",
+    "screen": "recordings",
+    "simulated": false,
+    "screenshot": "mobile-dark-recordings.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "dark",
+    "screen": "upload",
+    "simulated": false,
+    "screenshot": "mobile-dark-upload.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "dark",
+    "screen": "upload-ready",
+    "simulated": false,
+    "screenshot": "mobile-dark-upload-ready.png",
+    "axeVersion": "4.14.1",
+    "passes": 38,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "dark",
+    "screen": "recording-detail",
+    "simulated": false,
+    "screenshot": "mobile-dark-recording-detail.png",
+    "axeVersion": "4.14.1",
+    "passes": 37,
+    "incomplete": 0,
+    "violations": [
+      {
+        "id": "scrollable-region-focusable",
+        "impact": "serious",
+        "tags": [
+          "wcag2a",
+          "wcag211",
+          "wcag213"
+        ],
+        "help": "Scrollable region must have keyboard access",
+        "nodes": 1,
+        "targets": [
+          ".overflow-x-auto"
+        ]
+      }
+    ],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "dark",
+    "screen": "not-found",
+    "simulated": false,
+    "screenshot": "mobile-dark-not-found.png",
+    "axeVersion": "4.14.1",
+    "passes": 31,
+    "incomplete": 0,
+    "violations": [
+      {
+        "id": "page-has-heading-one",
+        "impact": "moderate",
+        "tags": [
+          "best-practice"
+        ],
+        "help": "Page should contain a level-one heading",
+        "nodes": 1,
+        "targets": [
+          "html"
+        ]
+      }
+    ],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "dark",
+    "screen": "recordings-empty-simulated",
+    "simulated": true,
+    "screenshot": "mobile-dark-recordings-empty-simulated.png",
+    "axeVersion": "4.14.1",
+    "passes": 34,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "dark",
+    "screen": "recordings-error-simulated",
+    "simulated": true,
+    "screenshot": "mobile-dark-recordings-error-simulated.png",
+    "axeVersion": "4.14.1",
+    "passes": 34,
+    "incomplete": 0,
+    "violations": [],
+    "incompleteIds": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "dark",
+    "screen": "nav-open",
+    "simulated": false,
+    "screenshot": "mobile-dark-nav-open.png",
+    "axeVersion": "4.14.1",
+    "passes": 30,
+    "incomplete": 1,
+    "violations": [],
+    "incompleteIds": [
+      "aria-hidden-focus"
+    ]
+  }
+]

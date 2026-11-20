@@ -1,9 +1,9 @@
 # Motion and interaction
 
 ## Library status
-**Motion (`motion` package) is an unapproved optional dependency (OD-33).** Until it is approved, use CSS transitions and Tailwind utilities, plus whatever animation the shadcn CLI generates for its components.
+**Motion (`motion` package) is approved (ADR-0026), free features only.** CSS transitions and Tailwind utilities stay the default for hovers, focus and simple state changes; Motion is for presence, layout and page-level transitions. Until the package is installed (Phase 2A M1), use CSS only.
 
-## If Motion is approved
+## Using Motion
 - Import from `motion/react` (React). `framer-motion` is the former package name; do not use it, even if an older docs snippet shows it.
 - Wrap the app in `<MotionConfig reducedMotion="user">` so transform/layout animations are disabled for users who prefer reduced motion. Use `useReducedMotion()` for custom cases.
 - For bundle size, prefer `LazyMotion` with `domAnimation` and the `m` component (`import * as m from "motion/react-m"`). Load the heavier feature set only where needed.

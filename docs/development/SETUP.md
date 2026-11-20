@@ -61,11 +61,12 @@ Optionally run the audio service in Docker instead: `docker compose -f infra/doc
 |---|---|---|
 | All unit tests (JS) | `pnpm test` | Vitest (web, packages), Jest (api, orchestrator) |
 | Integration (Postgres, Redis, audio service) | `pnpm test:integration` | needs `pnpm infra:up`, migrated test DB is reset automatically, and `pnpm audio:dev` for the audio-client test |
-| End-to-end | `pnpm test:e2e` | Playwright; needs infra up, migrated and seeded DB (starts API and web itself) |
+| End-to-end | `pnpm test:e2e` | Playwright, including the axe accessibility suite (`e2e/accessibility.spec.ts`, no serious/critical violations); needs infra up, migrated and seeded DB (starts API and web itself) |
 | Python | `pnpm audio:test` | Pytest |
 | Lint + types (JS) | `pnpm lint` · `pnpm typecheck` | ESLint 10, TypeScript 6.0 |
 | Lint + types (Python) | `pnpm audio:lint` | ruff, mypy (strict) |
 | Formatting | `pnpm format:check` / `pnpm format` | Prettier |
+| Web bundle budgets | `pnpm --filter @vip/web check:bundle` (after `pnpm build`) | Node script `apps/web/scripts/check-bundle.mjs`; limits in `docs/design/phase2a-m0-baseline/README.md` §5 |
 
 Single test examples:
 - Jest: `pnpm --filter @vip/api test -- src/storage/local-storage.service.spec.ts`
@@ -83,7 +84,7 @@ and reports invalid **names** only (never values).
 
 | Variable | Used by | Purpose / default |
 |---|---|---|
-| `NODE_ENV` | api, orchestrator, db CLI | `development` \| `test` \| `production`. The API refuses to start in production (no auth) |
+| `NODE_ENV` | api, orchestrator, db CLI | `development` \| `test` \| `production`. The API refuses to start in production (no auth). Not used by the web production build (see below) |
 | `LOG_LEVEL` | api, orchestrator | `info` |
 | `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, `POSTGRES_PORT` | Compose | Local database container |
 | `DATABASE_URL` | api, db CLI | Development database |
@@ -105,6 +106,15 @@ and reports invalid **names** only (never values).
 | `QUEUE_FOUNDATION_CONCURRENCY` | orchestrator | 2 |
 | `QUEUE_STALLED_INTERVAL_MS`, `QUEUE_MAX_STALLED_COUNT`, `QUEUE_LOCK_DURATION_MS`, `SHUTDOWN_TIMEOUT_MS` | orchestrator | 30 s, 1, 30 s, 10 s |
 | `VITE_DEV_WORKSPACE_ID` | web | Exposed to the browser (not a secret) |
+
+**`NODE_ENV` and the web build.** The web app reads environment files from the repository root
+(`envDir` in `apps/web/vite.config.ts`). Vite treats `NODE_ENV=development` in a `.env` file as a
+request for a development build, which would bundle React's development build into production output.
+The web `build` script therefore sets `NODE_ENV=production` for `vite build` only
+(`tsc -b && NODE_ENV=production vite build` in `apps/web/package.json`), so `pnpm build` and
+`pnpm --filter @vip/web build` always produce React's production build. The root `.env` keeps
+`NODE_ENV=development` for the API, orchestrator and db CLI; `pnpm --filter @vip/web dev` and Vitest are
+unaffected. The inline assignment is POSIX shell syntax (macOS and Linux shells).
 
 ## 7. Data hygiene
 

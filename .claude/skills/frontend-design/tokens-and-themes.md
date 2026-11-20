@@ -13,8 +13,11 @@ Define these as CSS variables with light and dark values, mapped in `@theme inli
 
 Every colour pair meets WCAG AA contrast in both themes. Colour is never the only signal (see `accessibility.md`).
 
+## Brand accents (ADR-0030)
+Brand accents and gradients (indigo, violet, blue, restrained cyan) appear only in app chrome: navigation, primary actions, the hero, the pipeline visualisation, empty states. They never appear in evidence surfaces (transcript, timeline tracks, report assertions, evidence and validation panels), where only the semantic token families above are used.
+
 ## Typography
-- One UI sans family and one monospace family. Font choice is OD-38 (Open): until approved, use a system font stack.
+- Fonts (ADR-0028): IBM Plex Sans (UI), IBM Plex Sans Devanagari (Hindi/Hinglish) and IBM Plex Mono, self-hosted WOFF2 with only the weights and subsets used. The system font stack stays as the fallback (and is used until the files are added in M1).
 - Hindi/Devanagari must render correctly: the stack must include a Devanagari-capable face. Never force Latin-only fonts on transcript or report text. Test mixed-script (Hinglish) lines for line height and clipping.
 - Timestamps, durations and counts use tabular numerals (`tabular-nums`).
 - A type scale defined once (Tailwind theme) and used consistently: page title, section title, body, caption, mono.

@@ -9,7 +9,7 @@ Status: **Approved tools and allocation. Tooling set up in Phase 1** (Vitest 5, 
 | **Vitest** | `apps/web` (with Testing Library) and all TypeScript packages under `packages/*` (e.g. `contracts`, `db` helpers) |
 | **Jest** | NestJS apps: `apps/api`, `apps/orchestrator` (unit, integration, e2e via supertest) |
 | **Pytest** | `services/audio` (processing modules and internal API contract) |
-| **Playwright** | Browser end-to-end against the Compose stack |
+| **Playwright** | Browser end-to-end against the Compose stack; automated accessibility checks with `@axe-core/playwright` (dev only, ADR-0029) |
 
 Each package uses exactly one runner. Do not mix runners within a package.
 

@@ -42,17 +42,17 @@ Validation, Reporting and an independent QA agent, orchestrated with LangGraph.
 
 ### Technology stack
 
-| Layer         | Technology                                                                                    |
-| ------------- | --------------------------------------------------------------------------------------------- |
-| Monorepo      | pnpm 12 workspaces, Turborepo, TypeScript 6.0, ESLint, Prettier (ADR-0005)                    |
-| Frontend      | React, TypeScript, Vite, Tailwind CSS, shadcn/ui on Radix (ADR-0022), lucide-react (ADR-0024) |
-| API           | NestJS (`apps/api`), zod contracts, Drizzle ORM                                               |
-| Worker        | NestJS standalone app (`apps/orchestrator`), BullMQ                                           |
-| Audio service | Python 3.12, FastAPI + uvicorn (provisional, ADR-0023), managed with uv                       |
-| Data          | PostgreSQL 18 with pgvector 0.8.7, Redis 8.8 (BullMQ only)                                    |
-| Storage       | Local filesystem (`.local-storage/`), behind an S3-ready `StorageService` interface           |
-| Local infra   | Docker Compose (`infra/docker/compose.yaml`)                                                  |
-| Tests         | Vitest, Jest, Pytest, Playwright                                                              |
+| Layer         | Technology                                                                                                                                              |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Monorepo      | pnpm 12 workspaces, Turborepo, TypeScript 6.0, ESLint, Prettier (ADR-0005)                                                                              |
+| Frontend      | React, TypeScript, Vite, Tailwind CSS, shadcn/ui on Radix (ADR-0022), lucide-react (ADR-0024), Motion (ADR-0026), self-hosted IBM Plex fonts (ADR-0028) |
+| API           | NestJS (`apps/api`), zod contracts, Drizzle ORM                                                                                                         |
+| Worker        | NestJS standalone app (`apps/orchestrator`), BullMQ                                                                                                     |
+| Audio service | Python 3.12, FastAPI + uvicorn (provisional, ADR-0023), managed with uv                                                                                 |
+| Data          | PostgreSQL 18 with pgvector 0.8.7, Redis 8.8 (BullMQ only)                                                                                              |
+| Storage       | Local filesystem (`.local-storage/`), behind an S3-ready `StorageService` interface                                                                     |
+| Local infra   | Docker Compose (`infra/docker/compose.yaml`)                                                                                                            |
+| Tests         | Vitest, Jest, Pytest, Playwright                                                                                                                        |
 
 ### What exists today
 
@@ -445,17 +445,18 @@ docker compose -f infra/docker/compose.yaml --env-file .env exec postgres sh -c 
 
 ## 9. Testing and quality checks
 
-| Command                 | What it checks                                                                  | Needs running                                                          |
-| ----------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `pnpm test`             | Unit tests: Vitest (web, contracts, db) and Jest (api, orchestrator)            | Nothing                                                                |
-| `pnpm test:integration` | Database, upload workflow, queue and audio-service client against real services | `pnpm infra:up` (migrated) and `pnpm audio:dev`                        |
-| `pnpm test:e2e`         | Playwright, desktop and mobile, against the real stack; also writes screenshots | `pnpm infra:up`, migrated and seeded. It starts the API and web itself |
-| `pnpm audio:test`       | Pytest for the audio service, including contract and architecture tests         | Nothing                                                                |
-| `pnpm lint`             | ESLint for every JavaScript package                                             | Nothing                                                                |
-| `pnpm typecheck`        | TypeScript for every JavaScript package                                         | Nothing                                                                |
-| `pnpm format:check`     | Prettier formatting                                                             | Nothing                                                                |
-| `pnpm audio:lint`       | ruff (lint and format) and mypy (strict) for the audio service                  | Nothing                                                                |
-| `pnpm build`            | Builds packages and apps                                                        | Nothing                                                                |
+| Command                               | What it checks                                                                                                      | Needs running                                                          |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `pnpm test`                           | Unit tests: Vitest (web, contracts, db) and Jest (api, orchestrator)                                                | Nothing                                                                |
+| `pnpm test:integration`               | Database, upload workflow, queue and audio-service client against real services                                     | `pnpm infra:up` (migrated) and `pnpm audio:dev`                        |
+| `pnpm test:e2e`                       | Playwright, desktop and mobile, against the real stack, including axe accessibility checks; also writes screenshots | `pnpm infra:up`, migrated and seeded. It starts the API and web itself |
+| `pnpm audio:test`                     | Pytest for the audio service, including contract and architecture tests                                             | Nothing                                                                |
+| `pnpm lint`                           | ESLint for every JavaScript package                                                                                 | Nothing                                                                |
+| `pnpm typecheck`                      | TypeScript for every JavaScript package                                                                             | Nothing                                                                |
+| `pnpm format:check`                   | Prettier formatting                                                                                                 | Nothing                                                                |
+| `pnpm audio:lint`                     | ruff (lint and format) and mypy (strict) for the audio service                                                      | Nothing                                                                |
+| `pnpm build`                          | Builds packages and apps                                                                                            | Nothing                                                                |
+| `pnpm --filter @vip/web check:bundle` | Web bundle budgets (run after `pnpm build`)                                                                         | Nothing                                                                |
 
 Integration tests use the `_test` database (reset automatically) and Redis logical DB 15, so
 development data is never touched. The end-to-end tests reuse an API or web server that is already

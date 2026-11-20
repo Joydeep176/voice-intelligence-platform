@@ -44,17 +44,22 @@ export function EmptyState({
   title,
   description,
   action,
+  headingLevel,
 }: {
   icon: ReactNode;
   title: string;
   description: string;
   action?: ReactNode;
+  /** Use 1 when the empty state is the whole page, so the page still has a level-one heading. */
+  headingLevel?: 1;
 }) {
   return (
-    <Empty className="border">
+    <Empty className="bg-card/60 border shadow-xs">
       <EmptyHeader>
         <EmptyMedia variant="icon">{icon}</EmptyMedia>
-        <EmptyTitle>{title}</EmptyTitle>
+        <EmptyTitle>
+          {headingLevel === 1 ? <h1 className="text-base font-semibold">{title}</h1> : title}
+        </EmptyTitle>
         <EmptyDescription>{description}</EmptyDescription>
       </EmptyHeader>
       {action ? <EmptyContent>{action}</EmptyContent> : null}
@@ -89,9 +94,11 @@ export function PageHeader({
 }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-      <div className="grid gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
-        {description ? <p className="text-muted-foreground text-sm">{description}</p> : null}
+      <div className="grid gap-1.5">
+        <h1 className="text-[1.75rem] leading-tight font-semibold tracking-tight">{title}</h1>
+        {description ? (
+          <p className="text-muted-foreground max-w-prose text-sm">{description}</p>
+        ) : null}
       </div>
       {actions ? <div className="flex shrink-0 gap-2">{actions}</div> : null}
     </div>

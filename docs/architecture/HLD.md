@@ -13,7 +13,7 @@ A general-purpose multilingual AI Voice Intelligence Platform for **English, Hin
 
 | Concern | Technology |
 |---|---|
-| Frontend | React + TypeScript + Vite, Tailwind CSS + shadcn/ui (Radix UI base, ADR-0022) |
+| Frontend | React + TypeScript + Vite, Tailwind CSS + shadcn/ui (Radix UI base, ADR-0022), lucide-react (ADR-0024), Motion (ADR-0026), Three.js + React Three Fiber for the desktop 3D hero and pipeline explorer only (ADR-0027), IBM Plex fonts self-hosted (ADR-0028) |
 | Backend API | Node.js + NestJS + TypeScript |
 | AI orchestration | LangChain.js + LangGraph.js |
 | Primary LLM | Anthropic Claude API (model per agent configurable, ADR-0013) |
@@ -24,7 +24,7 @@ A general-purpose multilingual AI Voice Intelligence Platform for **English, Hin
 | Background processing | Redis + BullMQ, owned by Node/NestJS (ADR-0002) |
 | Object storage | Local filesystem (dev), Amazon S3 (cloud) |
 | Workspace tooling | pnpm + Turborepo, uv, Drizzle ORM (ADR-0005) |
-| Testing | Vitest, Jest, Pytest, Playwright |
+| Testing | Vitest, Jest, Pytest, Playwright (with `@axe-core/playwright` for accessibility, ADR-0029) |
 | Deployment | Docker Compose (local), AWS ECS + RDS + S3 (production) |
 
 ## 3. Workflow, deterministic stages and agents
@@ -166,18 +166,21 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-30 | Claim verdict taxonomy | `supported`, `contradicted`, `partially_supported`, `unverifiable`, `not_checkable` | Proposed | — |
 | OD-31 | SRS assumptions A-1 (batch only) and A-2 (three languages only) | As stated in SRS §2.3 | Proposed | — |
 | OD-32 | Run A1 and A2 in parallel after preprocessing | Independent parallel branches; downstream agents wait for their required upstream results. Subject to graph-level validation | Accepted provisionally (graph validation) | ADR-0021 |
-| OD-33 | Motion (`motion`) for UI animation | Proposed as an optional frontend dependency; not approved; no Motion+ (paid) features | Proposed | — |
-| OD-34 | Three.js + React Three Fiber + Drei for optional 3D views | Proposed as optional; lazy-loaded with a functional 2D alternative; not approved | Proposed | — |
+| OD-33 | Motion (`motion`) for UI animation | Approved, free features only (no Motion+); `LazyMotion` by default; reduced motion respected | Accepted | ADR-0026 |
+| OD-34a | Three.js + React Three Fiber for 3D views | Approved for the desktop dashboard hero and an opt-in pipeline explorer only; lazy-loaded after first paint on capable desktops; mobile and reduced-motion users get the 2D SVG version | Accepted | ADR-0027 |
+| OD-34b | Drei (React Three Fiber helpers) | Not approved; each helper needs separate approval | Open | — |
 | OD-35 | Waveform / timeline rendering library | No candidate selected (a dependency-free canvas renderer is possible) | Open | — |
 | OD-36 | Charting library | No candidate selected | Open | — |
 | OD-37 | List/transcript virtualisation library | No candidate selected | Open | — |
-| OD-38 | Fonts, including a Devanagari-capable face | No candidate selected (system font stack until decided) | Open | — |
+| OD-38 | Fonts, including a Devanagari-capable face | IBM Plex Sans, IBM Plex Sans Devanagari and IBM Plex Mono, self-hosted WOFF2 limited to the weights and subsets used; no font service | Accepted | ADR-0028 |
 | OD-39 | Server-side waveform peaks artefact and API endpoint | Precompute waveform peaks per preprocessing version in the audio service and serve them by time range, so the browser never decodes long recordings. For later consideration; not part of the current architecture | Proposed | — |
 | OD-40 | shadcn/ui component base (primitive library) | Radix UI; scaffold with `shadcn init --base radix` because the CLI now defaults to Base UI | Accepted | ADR-0022 |
 | OD-41 | Icon library | `lucide-react` (shadcn default) | Accepted | ADR-0024 |
 | OD-42 | Run record at upload | Completing an upload creates a `pipeline_runs` row with the new status `created` (not yet submitted to the pipeline) | Accepted | ADR-0025 |
+| OD-43 | Automated accessibility testing | `@axe-core/playwright` as an `apps/web` development-only dependency; no serious or critical violations | Accepted | ADR-0029 |
+| OD-44 | Brand accents versus semantic colours | Brand accents and gradients only in app chrome, never in evidence surfaces; provenance, audio diagnostics and transcription uncertainty keep separate token families | Accepted | ADR-0030 |
 
-Frontend dependencies (OD-33 to OD-38) are **not** part of the approved stack in §2. Each needs separate approval before installation.
+Frontend dependencies OD-33 (ADR-0026), OD-34a (ADR-0027) and OD-38 (ADR-0028) are approved within their ADRs' limits. OD-34b and OD-35 to OD-37 are **not** approved; each needs separate approval before installation.
 
 **Design ADRs:**
 - ADR-0015 preprocessing versions: Accepted

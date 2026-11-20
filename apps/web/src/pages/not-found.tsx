@@ -8,6 +8,7 @@ export default function NotFoundPage() {
     <EmptyState
       icon={<Compass aria-hidden />}
       title="Page not found"
+      headingLevel={1}
       description="The page you are looking for does not exist."
       action={
         <Button asChild size="sm">

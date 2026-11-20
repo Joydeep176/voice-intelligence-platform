@@ -11,4 +11,4 @@ Target: WCAG 2.2 AA.
 - Language: set `lang` on transcript and report segments (`hi`, `en`) so screen readers pronounce them correctly. Mixed segments use the dominant language with inline spans where known.
 - Respect `prefers-reduced-motion` (see `motion.md`) and support 200% zoom without loss of function.
 - Charts and visualisations have an accessible summary and a data-table or list alternative.
-- Test with keyboard only, a screen reader, and automated checks (axe via Playwright is a candidate; adding it is a dependency decision).
+- Test with keyboard only, a screen reader, and automated checks: `@axe-core/playwright` in the E2E suite (dev only, ADR-0029), with no serious or critical violations allowed.

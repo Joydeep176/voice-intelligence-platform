@@ -5,7 +5,7 @@ paths:
 
 # Frontend rules
 
-- React + TypeScript + Vite, Tailwind CSS and shadcn/ui only. Types from `packages/contracts`.
+- React + TypeScript + Vite, Tailwind CSS and shadcn/ui, plus only the frontend packages approved by ADR-0026 to ADR-0029 (Motion, Three.js + React Three Fiber within ADR-0027's limits, self-hosted IBM Plex fonts, `@axe-core/playwright` dev only). Types from `packages/contracts`.
 - Fetch transcripts by time range. Never load a whole long transcript at once.
 - Uploads: consent attestation plus a resumable multipart session (API §2).
 - Show provenance per report assertion. Render audio limitations and transcription uncertainty as separate sections.

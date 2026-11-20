@@ -1,0 +1,90 @@
+[
+  {
+    "build": "m1",
+    "cpu": 1,
+    "page": "dashboard",
+    "fcp": 72,
+    "lcp": 100,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 46.799999999813735,
+    "js": 586961
+  },
+  {
+    "build": "m1",
+    "cpu": 1,
+    "page": "recordings",
+    "fcp": 72,
+    "lcp": 72,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 44.5,
+    "js": 585298
+  },
+  {
+    "build": "m1",
+    "cpu": 1,
+    "page": "upload",
+    "fcp": 68,
+    "lcp": 96,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 43,
+    "js": 593629
+  },
+  {
+    "build": "m1",
+    "cpu": 1,
+    "page": "detail",
+    "fcp": 72,
+    "lcp": 108,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 47.10000000055879,
+    "js": 586583
+  },
+  {
+    "build": "m1",
+    "cpu": 4,
+    "page": "dashboard",
+    "fcp": 212,
+    "lcp": 308,
+    "cls": 0,
+    "tbt": 46,
+    "dcl": 116,
+    "js": 586961
+  },
+  {
+    "build": "m1",
+    "cpu": 4,
+    "page": "recordings",
+    "fcp": 200,
+    "lcp": 200,
+    "cls": 0,
+    "tbt": 38,
+    "dcl": 110.79999999981374,
+    "js": 585298
+  },
+  {
+    "build": "m1",
+    "cpu": 4,
+    "page": "upload",
+    "fcp": 204,
+    "lcp": 488,
+    "cls": 0,
+    "tbt": 38,
+    "dcl": 111.20000000018626,
+    "js": 593629
+  },
+  {
+    "build": "m1",
+    "cpu": 4,
+    "page": "detail",
+    "fcp": 196,
+    "lcp": 320,
+    "cls": 0,
+    "tbt": 34,
+    "dcl": 109.59999999962747,
+    "js": 586583
+  }
+]

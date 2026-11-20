@@ -53,7 +53,13 @@ export function TimelinePlaceholder({ data }: { data: TimelineData }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
+        {/* Focusable so keyboard users can scroll the tracks on narrow screens (WCAG 2.1.1). */}
+        <div
+          role="region"
+          aria-label="Timeline tracks"
+          tabIndex={0}
+          className="focus-visible:ring-ring/50 overflow-x-auto rounded-md outline-none focus-visible:ring-3"
+        >
           <div className="min-w-[32rem]">
             <div
               aria-hidden

@@ -3,6 +3,7 @@ import { AppShell } from '@/components/app-shell';
 import { LoadingRows } from '@/components/states';
 import { ToastProvider } from '@/components/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { MotionProvider, PageTransition } from '@/lib/motion';
 import { useRoute } from '@/lib/router';
 import { ThemeProvider } from '@/lib/theme';
 
@@ -26,32 +27,41 @@ function CurrentPage() {
   useEffect(() => {
     document.title = `${TITLES[route.name]} · Voice Intelligence Platform`;
   }, [route.name]);
-  switch (route.name) {
-    case 'dashboard':
-      return <DashboardPage />;
-    case 'recordings':
-      return <RecordingsPage />;
-    case 'upload':
-      return <UploadPage />;
-    case 'recording':
-      return <RecordingDetailPage key={route.id} id={route.id} />;
-    default:
-      return <NotFoundPage />;
-  }
+  const page = (() => {
+    switch (route.name) {
+      case 'dashboard':
+        return <DashboardPage />;
+      case 'recordings':
+        return <RecordingsPage />;
+      case 'upload':
+        return <UploadPage />;
+      case 'recording':
+        return <RecordingDetailPage key={route.id} id={route.id} />;
+      default:
+        return <NotFoundPage />;
+    }
+  })();
+  return (
+    <PageTransition routeKey={route.name === 'recording' ? `recording:${route.id}` : route.name}>
+      {page}
+    </PageTransition>
+  );
 }
 
 export function App() {
   return (
     <ThemeProvider>
-      <TooltipProvider delayDuration={300}>
-        <ToastProvider>
-          <AppShell>
-            <Suspense fallback={<LoadingRows label="Loading page" />}>
-              <CurrentPage />
-            </Suspense>
-          </AppShell>
-        </ToastProvider>
-      </TooltipProvider>
+      <MotionProvider>
+        <TooltipProvider delayDuration={300}>
+          <ToastProvider>
+            <AppShell>
+              <Suspense fallback={<LoadingRows label="Loading page" />}>
+                <CurrentPage />
+              </Suspense>
+            </AppShell>
+          </ToastProvider>
+        </TooltipProvider>
+      </MotionProvider>
     </ThemeProvider>
   );
 }

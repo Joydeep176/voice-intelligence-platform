@@ -1,0 +1,178 @@
+[
+  {
+    "build": "current",
+    "cpu": 1,
+    "page": "dashboard",
+    "fcp": 104,
+    "lcp": 416,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 58.90000000037253,
+    "js": 724264
+  },
+  {
+    "build": "current",
+    "cpu": 1,
+    "page": "recordings",
+    "fcp": 96,
+    "lcp": 408,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 53.200000000186265,
+    "js": 721138
+  },
+  {
+    "build": "current",
+    "cpu": 1,
+    "page": "upload",
+    "fcp": 108,
+    "lcp": 416,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 60.5,
+    "js": 729475
+  },
+  {
+    "build": "current",
+    "cpu": 1,
+    "page": "detail",
+    "fcp": 96,
+    "lcp": 444,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 54.10000000055879,
+    "js": 723726
+  },
+  {
+    "build": "current",
+    "cpu": 4,
+    "page": "dashboard",
+    "fcp": 308,
+    "lcp": 584,
+    "cls": 0,
+    "tbt": 121,
+    "dcl": 155.6000000005588,
+    "js": 724264
+  },
+  {
+    "build": "current",
+    "cpu": 4,
+    "page": "recordings",
+    "fcp": 288,
+    "lcp": 552,
+    "cls": 0,
+    "tbt": 108,
+    "dcl": 144.19999999925494,
+    "js": 721138
+  },
+  {
+    "build": "current",
+    "cpu": 4,
+    "page": "upload",
+    "fcp": 304,
+    "lcp": 572,
+    "cls": 0,
+    "tbt": 116,
+    "dcl": 158.29999999981374,
+    "js": 729475
+  },
+  {
+    "build": "current",
+    "cpu": 4,
+    "page": "detail",
+    "fcp": 304,
+    "lcp": 628,
+    "cls": 0,
+    "tbt": 112,
+    "dcl": 155.09999999962747,
+    "js": 723726
+  },
+  {
+    "build": "node_env-production",
+    "cpu": 1,
+    "page": "dashboard",
+    "fcp": 84,
+    "lcp": 384,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 40.09999999962747,
+    "js": 494769
+  },
+  {
+    "build": "node_env-production",
+    "cpu": 1,
+    "page": "recordings",
+    "fcp": 80,
+    "lcp": 372,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 39.90000000037253,
+    "js": 493068
+  },
+  {
+    "build": "node_env-production",
+    "cpu": 1,
+    "page": "upload",
+    "fcp": 80,
+    "lcp": 376,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 39.5,
+    "js": 500873
+  },
+  {
+    "build": "node_env-production",
+    "cpu": 1,
+    "page": "detail",
+    "fcp": 80,
+    "lcp": 404,
+    "cls": 0,
+    "tbt": 0,
+    "dcl": 41.200000000186265,
+    "js": 494286
+  },
+  {
+    "build": "node_env-production",
+    "cpu": 4,
+    "page": "dashboard",
+    "fcp": 204,
+    "lcp": 484,
+    "cls": 0,
+    "tbt": 27,
+    "dcl": 106.70000000018626,
+    "js": 494769
+  },
+  {
+    "build": "node_env-production",
+    "cpu": 4,
+    "page": "recordings",
+    "fcp": 196,
+    "lcp": 476,
+    "cls": 0,
+    "tbt": 25,
+    "dcl": 102.29999999981374,
+    "js": 493068
+  },
+  {
+    "build": "node_env-production",
+    "cpu": 4,
+    "page": "upload",
+    "fcp": 200,
+    "lcp": 480,
+    "cls": 0,
+    "tbt": 25,
+    "dcl": 103.20000000018626,
+    "js": 500873
+  },
+  {
+    "build": "node_env-production",
+    "cpu": 4,
+    "page": "detail",
+    "fcp": 200,
+    "lcp": 516,
+    "cls": 0,
+    "tbt": 26,
+    "dcl": 103.29999999981374,
+    "js": 494286
+  }
+]
