@@ -1,7 +1,7 @@
 # High-Level Design (HLD)
 
 Status: **Approved baseline + accepted ADRs + labelled proposals.** Text tagged *Proposed* is **not approved**. Decisions are in `docs/architecture/adr/` and tracked in §10.
-No application code exists; this document describes the target system.
+Implementation status: the Phase 1 foundation and the Phase 2A frontend are implemented; agents and the processing pipeline are not. This document describes the target system. See `docs/PROJECT_STATUS.md`.
 
 Related: [SRS](../SRS.md) · [LLD](LLD.md) · [Agents](AGENT_ARCHITECTURE.md) · [Database](DATABASE_DESIGN.md) · [API](API_SPECIFICATION.md) · [Deployment](DEPLOYMENT_ARCHITECTURE.md) · [Testing](TESTING_STRATEGY.md) · [Review](ARCHITECTURE_REVIEW.md)
 
@@ -16,7 +16,7 @@ A general-purpose multilingual AI Voice Intelligence Platform for **English, Hin
 | Frontend | React + TypeScript + Vite, Tailwind CSS + shadcn/ui (Radix UI base, ADR-0022), lucide-react (ADR-0024), Motion (ADR-0026), Three.js + React Three Fiber for the desktop 3D hero and pipeline explorer only (ADR-0027), IBM Plex fonts self-hosted (ADR-0028) |
 | Backend API | Node.js + NestJS + TypeScript |
 | AI orchestration | LangChain.js + LangGraph.js |
-| Primary LLM | Anthropic Claude API (model per agent configurable, ADR-0013) |
+| Primary LLM | Anthropic Claude API (model per agent configurable, ADR-0013). **Conflict flagged:** a paid runtime API is not allowed by ADR-0034; production LLM inference is OD-47 (Open) |
 | Speech-to-text | Configurable provider adapter (fake adapter first, ADR-0012) |
 | Audio processing | Python + FFmpeg + librosa + NumPy, as a separate deterministic service (ADR-0002, ADR-0019) |
 | Speaker diarization | pyannote.audio or managed provider, part of the transcription stage (benchmark before production, ADR-0012) |
@@ -25,7 +25,7 @@ A general-purpose multilingual AI Voice Intelligence Platform for **English, Hin
 | Object storage | Local filesystem (dev), Amazon S3 (cloud) |
 | Workspace tooling | pnpm + Turborepo, uv, Drizzle ORM (ADR-0005) |
 | Testing | Vitest, Jest, Pytest, Playwright (with `@axe-core/playwright` for accessibility, ADR-0029) |
-| Deployment | Docker Compose (local), AWS ECS + RDS + S3 (production) |
+| Deployment | Docker Compose (local), AWS ECS + RDS + S3 (production). **Conflict flagged (2026-11-21):** paid cloud infrastructure is not allowed by ADR-0034; the production deployment target is OD-48 (Open) |
 
 ## 3. Workflow, deterministic stages and agents
 
@@ -131,11 +131,11 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-02a | STT for development | Fake adapter | Interim | ADR-0012 |
 | OD-02b | STT production provider | Benchmark before selection | Open | — |
 | OD-03a | Diarization for development | Fake adapter | Interim | ADR-0012 |
-| OD-03b | Diarization production implementation, including the ADR-0016 thresholds and windowing algorithm | Benchmark pyannote.audio vs managed | Open | — |
+| OD-03b | Diarization production implementation, including the ADR-0016 thresholds and windowing algorithm | Benchmark pyannote.audio vs managed. **Conflict flagged:** a paid managed service is not allowed by ADR-0034 | Open | — |
 | OD-04 | Node ↔ Python integration | Node owns BullMQ/job lifecycle; LangGraph orchestrates; Python service behind an internal API | Accepted provisionally (prototype) | ADR-0002 |
-| OD-05 | Research provider | Assistant suggestion: Claude server-side web search/fetch behind the ADR-0017 interface | Open | — |
+| OD-05 | Research provider | Assistant suggestion: Claude server-side web search/fetch behind the ADR-0017 interface. **Conflict flagged:** this suggestion is a paid API and is not allowed by ADR-0034; the provider must be free and self-hostable | Open | — |
 | OD-06 | Embeddings | Not used until a retrieval use case is demonstrated | Interim | ADR-0011 |
-| OD-07 | Claude model per agent; cost | Configurable per agent; cost tracked per call and per run | Accepted | ADR-0013 |
+| OD-07 | Claude model per agent; cost | Configurable per agent; cost tracked per call and per run. **Conflict flagged:** assumes a paid Claude API, which ADR-0034 does not allow at runtime; to be resolved through OD-47 | Accepted | ADR-0013 |
 | OD-08a | Tenancy | Workspace-based ownership and isolation | Accepted | ADR-0003 |
 | OD-08b | Authentication provider | — | Open | — |
 | OD-09a | Development data | Synthetic or explicitly consented audio only | Interim | ADR-0004 |
@@ -180,6 +180,9 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-43 | Automated accessibility testing | `@axe-core/playwright` as an `apps/web` development-only dependency; no serious or critical violations | Accepted | ADR-0029 |
 | OD-44 | Brand accents versus semantic colours | Brand accents and gradients only in app chrome, never in evidence surfaces; provenance, audio diagnostics and transcription uncertainty keep separate token families | Accepted | ADR-0030 |
 | OD-45 | Recording playback access | Short-lived HMAC-signed playback URLs issued per workspace recording (audited); media route streams with HTTP Range; uniform 404; required signing secret. Production auth (OD-08b), authorisation (OD-27), rate limiting and S3 support outstanding | Accepted | ADR-0033 |
+| OD-46 | Spending | Zero additional spending: no paid runtime AI APIs (including the Anthropic API), subscriptions, paid services, commercial or paid-tier dependencies, paid datasets or cloud spend. Claude Code / Pro for development assistance only. Prefer local open-source models, free Hugging Face resources and self-hosted projects, after licence, hardware (Apple M2, 16 GB) and resource checks. Replacement providers are not selected | Accepted | ADR-0034 |
+| OD-47 | Production LLM inference runtime (within ADR-0034) | No candidate selected; to be decided before the agent phase | Open | — |
+| OD-48 | Production deployment target (within ADR-0034) | The approved AWS ECS + RDS + S3 target (HLD §2, SRS C-5, DEPLOYMENT_ARCHITECTURE) conflicts with ADR-0034's no-cloud-expenditure rule. Neither is changed; no replacement selected. S3 work under OD-45 depends on this | Open | — |
 
 Frontend dependencies OD-33 (ADR-0026), OD-34a (ADR-0027, amended by ADR-0031/0032) and OD-38 (ADR-0028) are approved within their ADRs' limits. OD-34b and OD-35 to OD-37 are **not** approved; each needs separate approval before installation.
 

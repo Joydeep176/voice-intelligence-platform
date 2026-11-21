@@ -38,6 +38,16 @@ const SCREENS: { name: string; path: string; ready: (page: Page) => Promise<void
     ready: (p) => expect(p.getByRole('heading', { name: 'Upload recording' })).toBeVisible(),
   },
   {
+    name: 'pipeline',
+    path: '/pipeline',
+    ready: (p) => expect(p.getByRole('heading', { name: 'Pipeline', level: 1 })).toBeVisible(),
+  },
+  {
+    name: 'reports',
+    path: '/reports',
+    ready: (p) => expect(p.getByRole('heading', { name: 'Reports', level: 1 })).toBeVisible(),
+  },
+  {
     name: 'not-found',
     path: '/this-page-does-not-exist',
     ready: (p) =>
@@ -71,6 +81,23 @@ for (const theme of ['light', 'dark'] as const) {
       await page.waitForLoadState('networkidle');
       await expectNoBlockingViolations(page);
     });
+
+    for (const kind of ['report', 'evidence'] as const) {
+      test(`${kind} page has no serious or critical violations`, async ({ page }) => {
+        await page.goto('/recordings');
+        await expect(page.getByRole('heading', { name: 'Recordings', level: 1 })).toBeVisible();
+        await page.waitForLoadState('networkidle');
+        const first = page.locator('table a[href^="/recordings/"]').first();
+        test.skip((await first.count()) === 0, 'No recordings in the development database');
+        const href = (await first.getAttribute('href'))!;
+        await page.goto(`${href}/${kind}`);
+        await expect(
+          page.getByRole('heading', { name: kind === 'report' ? 'Report' : 'Evidence', level: 1 }),
+        ).toBeVisible();
+        await page.waitForLoadState('networkidle');
+        await expectNoBlockingViolations(page);
+      });
+    }
 
     test('mobile navigation sheet has no serious or critical violations', async ({
       page,

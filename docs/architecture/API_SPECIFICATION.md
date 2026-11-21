@@ -1,6 +1,6 @@
 # API Specification
 
-Status: **Partly implemented (Phase 1).** Implemented: §2 `POST /recordings`, `GET /recordings/{id}/upload`, `PUT /recordings/{id}/upload/parts/{n}`, `POST /recordings/{id}/upload/complete`, `GET /recordings`, `GET /recordings/{id}`; §3 `GET /runs/{runId}`; §8 health probes plus `GET /api/v1/health` (aggregate, below). Authentication is a development principal only (OD-08b). Everything else is design. Details and limitations: `docs/development/PHASE1_FOUNDATION.md`.
+Status: **Partly implemented.** Every endpoint below carries an implementation status: **Implemented**, **Partially implemented** (with what is missing) or **Not implemented (designed only)**. Implemented: §2 `POST /recordings`, `GET /recordings`, `GET /recordings/{id}`, `GET /recordings/{id}/upload`, `PUT /recordings/{id}/upload/parts/{n}`, `POST /recordings/{id}/upload/complete`, `GET /recordings/{id}/audio`; §2.1 `GET /api/v1/media/recordings/{token}`; §8 health (`/api/v1/health`, `/live`, `/ready`). Partially implemented: §3 `GET /runs/{runId}`. Everything else is designed only. Authentication is a development principal only (OD-08b). Details and limitations: `docs/development/PHASE1_FOUNDATION.md`.
 
 REST/JSON served by `apps/api`. An OpenAPI document will be generated from the controllers once they exist. Route shapes are *Proposed* unless they implement an approved requirement (SRS IDs cited).
 
@@ -11,9 +11,13 @@ REST/JSON served by `apps/api`. An OpenAPI document will be generated from the c
 - Cursor pagination: `?limit=&cursor=` → `{ items, nextCursor }`.
 - Errors: RFC 9457 Problem Details with a stable `code`. Errors never echo transcript or audio content.
 - Schemas are zod schemas in `packages/contracts`.
+- While `AUTH_MODE=dev`, every request (health and media included) whose `Host` hostname is not loopback (`localhost`, `127.0.0.1`, `::1`) gets `403` with problem code `HOST_NOT_ALLOWED`. This is a DNS-rebinding defence for the unauthenticated development API.
+- Recording filenames are metadata only: control (C0, DEL, C1), bidirectional and path-separator characters are rejected with a validation error.
 - Security-relevant calls emit audit events (SEC-8).
 
 ## 2. Recordings, uploads and consent
+
+Implementation status: **Implemented** for `POST /recordings`, `GET /recordings/{id}/upload`, `PUT .../upload/parts/{n}`, `POST .../upload/complete`, `GET /recordings`, `GET /recordings/{id}` and `GET /recordings/{id}/audio`. **Not implemented (designed only):** `POST .../upload/parts/{n}/url` (S3 is not implemented) and `DELETE /recordings/{id}`.
 
 | Method | Path | Purpose | Req |
 |---|---|---|---|
@@ -28,11 +32,15 @@ REST/JSON served by `apps/api`. An OpenAPI document will be generated from the c
 
 ### 2.1 Media (outside the workspace prefix; ADR-0033)
 
+Implementation status: **Implemented** (development storage only; see Outstanding).
+
 | Method | Path | Purpose | Req |
 |---|---|---|---|
 | GET | `/api/v1/media/recordings/{token}` | Streams a recording's original audio. The HMAC-signed `token` (recording, workspace, expiry) is the capability; the browser's `<audio>` element cannot send auth headers.<br>• **Checks per request:** ownership and playable status are re-checked on every request. Any failure is a uniform `404` (malformed, bad signature, expired, missing, wrong workspace, not playable).<br>• **Range:** single `Range` → `206` + `Content-Range`; none → `200` + `Accept-Ranges: bytes`; unsatisfiable → `416` + `Content-Range: bytes */size`; multi-range → `200` full.<br>• **Headers:** `Content-Type` from the validated stored MIME type, `X-Content-Type-Options: nosniff`, `Cache-Control: private, no-store`, `Content-Disposition: inline` (no filename), `Cross-Origin-Resource-Policy: same-origin`, `Referrer-Policy: no-referrer`.<br>• **Exposure and audit:** no storage paths or credentials are exposed, and range requests are not audited individually.<br>• **Outstanding:** production authentication (OD-08b), authorisation (OD-27), rate limiting, and S3 (presigned GET) for the cloud deployment | SEC-2, SEC-8 |
 
 ## 3. Runs
+
+Implementation status: **Partially implemented.** `GET /runs/{runId}` returns a status snapshot only (`id`, `recordingId`, `status`, `currentStage`, `error`, `startedAt`, `completedAt`, timestamps). It has no per-stage status or progress, `hasLimitations` or cost total, and runs are only ever created in status `created` by upload completion. **Not implemented (designed only):** `POST /recordings/{id}/runs`, `GET /runs/{runId}/events`, `POST /runs/{runId}/cancel`, `POST /runs/{runId}/retry`.
 
 | Method | Path | Purpose | Req |
 |---|---|---|---|
@@ -46,11 +54,15 @@ Research cannot be disabled per run (ADR-0009).
 
 ## 4. Audio diagnostics (separate from transcription uncertainty)
 
+Implementation status: **Not implemented (designed only).**
+
 | Method | Path | Purpose | Req |
 |---|---|---|---|
 | GET | `/runs/{runId}/audio-diagnostics` | Audio Quality Agent output for the run (verdict, flags, summary) plus the objective measurements it was based on | FR-3.1–3.3 |
 
 ## 5. Transcript
+
+Implementation status: **Not implemented (designed only).**
 
 | Method | Path | Purpose | Req |
 |---|---|---|---|
@@ -65,6 +77,8 @@ Research cannot be disabled per run (ADR-0009).
 
 ## 6. Analysis, research and validation
 
+Implementation status: **Not implemented (designed only).**
+
 | Method | Path | Purpose | Req |
 |---|---|---|---|
 | GET | `/runs/{runId}/topics` | Topics (inferred, with spans) | FR-6.1 |
@@ -75,6 +89,8 @@ Research cannot be disabled per run (ADR-0009).
 
 ## 7. Reports
 
+Implementation status: **Not implemented (designed only).**
+
 | Method | Path | Purpose | Req |
 |---|---|---|---|
 | GET | `/runs/{runId}/report?version=` | Structured report model for in-app HTML rendering (assertions with provenance and refs) | FR-9.1–9.5 |
@@ -84,6 +100,8 @@ Research cannot be disabled per run (ADR-0009).
 
 ## 8. Audit and operations
 
+Implementation status: health endpoints (`/api/v1/health`, `/live`, `/ready`) **Implemented**. `GET /audit-events` **Not implemented (designed only)**.
+
 | Method | Path | Purpose | Req |
 |---|---|---|---|
 | GET | `/audit-events` | Workspace audit log, admin role (OD-27) | SEC-8 |
@@ -92,7 +110,7 @@ Research cannot be disabled per run (ADR-0009).
 
 ## 9. Status codes
 
-`200` · `201` · `202` · `400` · `401` · `403` · `404` (also cross-workspace) · `409` invalid state transition · `413` · `422` validation / consent · `429` · `5xx`.
+`200` · `201` · `202` · `400` · `401` · `403` · `404` (also cross-workspace) · `409` invalid state transition · `413` · `422` validation / consent · `429` · `5xx`. `403 HOST_NOT_ALLOWED` applies in dev mode (§1).
 
 ## 10. Not in scope without approval
 

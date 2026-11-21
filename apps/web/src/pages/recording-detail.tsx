@@ -1,14 +1,19 @@
-import { ArrowLeft, ChevronRight, FileQuestion } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { ProcessingStatusPanel } from '@/components/processing-status';
-import { EmptyState, ErrorState, PageHeader } from '@/components/states';
+import {
+  RECORDING_PAGE_CLASS,
+  RecordingBreadcrumb,
+  recordingStateFallback,
+} from '@/components/recording-frame';
+import { PageHeader } from '@/components/states';
 import { RecordingStatusBadge } from '@/components/status-badge';
 import { RecordingPlayback } from '@/components/recording/audio-player';
 import { RecordingOverview } from '@/components/recording/recording-overview';
 import { TranscriptCard } from '@/components/recording/transcript-card';
-import { ApiRequestError, api } from '@/lib/api';
+import { ReportCard } from '@/components/reports/report-card';
+import { api } from '@/lib/api';
 import { Link } from '@/lib/router';
 import { useAsync } from '@/lib/use-async';
 
@@ -29,62 +34,31 @@ export default function RecordingDetailPage({ id }: { id: string }) {
   // Polls in the background so status changes show up without a reload (progress stream: OD-16).
   const state = useAsync((signal) => api.getRecording(id, signal), [id], POLL_MS);
 
-  if (state.status === 'loading') {
-    return (
-      <div role="status" className="grid gap-6">
-        <span className="sr-only">Loading recording</span>
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-40 w-full" />
-        <Skeleton className="h-64 w-full" />
-      </div>
-    );
-  }
-  if (state.status === 'error') {
-    if (state.error instanceof ApiRequestError && state.error.status === 404) {
-      return (
-        <EmptyState
-          icon={<FileQuestion aria-hidden />}
-          title="Recording not found"
-          description="It may have been removed, or it belongs to another workspace."
-          action={
-            <Button asChild variant="outline" size="sm">
-              <Link to="/recordings">Back to recordings</Link>
-            </Button>
-          }
-        />
-      );
-    }
-    return <ErrorState error={state.error} onRetry={state.reload} />;
-  }
+  const fallback = recordingStateFallback(state, {
+    loadingLabel: 'Loading recording',
+    backTo: '/recordings',
+    backLabel: 'Back to recordings',
+    midHeight: 'h-40',
+  });
+  if (fallback) return fallback;
+  if (state.status !== 'success') return null;
 
   const r = state.data;
   return (
-    <div className="grid gap-6">
-      <div className="grid gap-2">
+    <div className={RECORDING_PAGE_CLASS}>
+      <div className="grid min-w-0 gap-2">
         <Button asChild variant="ghost" size="sm" className="-ml-2 w-fit">
           <Link to="/recordings">
             <ArrowLeft aria-hidden data-icon="inline-start" />
             Back to recordings
           </Link>
         </Button>
-        <nav aria-label="Breadcrumb">
-          <ol className="text-muted-foreground flex min-w-0 items-center gap-1.5 text-xs">
-            <li>
-              <Link
-                to="/recordings"
-                className="hover:text-foreground underline-offset-4 hover:underline"
-              >
-                Recordings
-              </Link>
-            </li>
-            <li aria-hidden>
-              <ChevronRight className="size-3" />
-            </li>
-            <li aria-current="page" className="min-w-0 truncate">
-              {r.originalFilename}
-            </li>
-          </ol>
-        </nav>
+        <RecordingBreadcrumb
+          items={[
+            { label: 'Recordings', to: '/recordings' },
+            { label: r.originalFilename, filename: true },
+          ]}
+        />
       </div>
       <PageHeader title={r.originalFilename} actions={<RecordingStatusBadge status={r.status} />} />
 
@@ -115,6 +89,7 @@ export default function RecordingDetailPage({ id }: { id: string }) {
             recordingId={r.id}
             uploaded={r.status === 'uploaded' || r.status === 'valid'}
           />
+          <ReportCard r={r} />
           <RecordingOverview r={r} />
         </div>
       </div>

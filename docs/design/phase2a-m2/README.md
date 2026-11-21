@@ -1,5 +1,7 @@
 # Phase 2A · M2: dashboard
 
+Acceptance: **Accepted.** Phase 2A was formally accepted on 2026-11-21 after consolidated validation (`../phase2a-validation/README.md` §7). The status line below is kept as written at the time.
+
 Status: **Implemented 2026-11-20; awaiting review.** Scope: the Overview page only. M3 (library), M4 (upload) and the
 recording-detail workspace are unchanged. Decisions: ADR-0031 (hero 3D in M2) and ADR-0032 (hero uses three.js without
 React Three Fiber).

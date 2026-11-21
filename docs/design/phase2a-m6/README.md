@@ -1,5 +1,7 @@
 # Phase 2A · M6: seven-agent pipeline visualisation
 
+Acceptance: **Accepted.** Phase 2A was formally accepted on 2026-11-21 after consolidated validation (`../phase2a-validation/README.md` §7). The status line below is kept as written at the time.
+
 Status: **Accepted and closed 2026-11-20** (after the refinements and budget amendment in §5). Frontend only. No backend, contract or dependency changes. No 3D.
 
 ## 1. What changed

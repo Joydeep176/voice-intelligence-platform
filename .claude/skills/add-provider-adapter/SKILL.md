@@ -9,6 +9,7 @@ Read first: LLD §3.2 (interfaces), §8 (config); ADR-0012 (fakes first, benchma
 
 ## Guardrails
 - Fake adapters are allowed. A real vendor needs user approval and an ADR. Never install SDKs speculatively.
+- Zero additional spending (ADR-0034): no paid APIs, SaaS, subscriptions or paid-tier/commercial dependencies at runtime. Candidates must be free, open-source or self-hosted, with licence, maintenance and Apple M2 16 GB resource checks recorded before approval.
 - Never describe a provider as working until its contract tests pass. Production use needs benchmark results.
 - Send vendors the minimum data. Document the data flow (SRS SEC-7).
 

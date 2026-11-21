@@ -173,9 +173,14 @@ export class RecordingsRepository {
   }
 
   /** Atomically records one received part (idempotent per part number). */
-  async markPartReceived(sessionId: string, partNumber: number, sizeBytes: number): Promise<void> {
+  async markPartReceived(
+    tx: Tx,
+    sessionId: string,
+    partNumber: number,
+    sizeBytes: number,
+  ): Promise<void> {
     const patch = JSON.stringify({ [String(partNumber)]: { sizeBytes } });
-    await this.db
+    await tx
       .update(uploadSessions)
       .set({ partsReceived: sql`${uploadSessions.partsReceived} || ${patch}::jsonb` })
       .where(and(eq(uploadSessions.id, sessionId), eq(uploadSessions.status, 'active')));

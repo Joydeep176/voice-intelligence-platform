@@ -48,6 +48,8 @@ export abstract class StorageService {
   abstract statObject(key: string): Promise<{ sizeBytes: number }>;
   /** Streams the object, or the inclusive byte range `[start, end]`. Rejects with ObjectNotFoundError. */
   abstract openReadStream(key: string, range?: { start: number; end: number }): Promise<Readable>;
+  /** Atomically renames `sourceKey` to `destKey`, replacing any existing object. */
+  abstract moveObject(sourceKey: string, destKey: string): Promise<void>;
   /** Deletes objects; missing objects are ignored. */
   abstract deleteObjects(keys: readonly string[]): Promise<void>;
   /** Opaque URI stored in the database (never shown to users). */
@@ -57,6 +59,8 @@ export abstract class StorageService {
 export const StorageKeys = {
   uploadPart: (recordingId: string, partNumber: number) =>
     `uploads/${recordingId}/parts/${String(partNumber).padStart(6, '0')}`,
+  /** Unique staging key for a part still being streamed; promoted to `uploadPart` under lock. */
+  stagedPart: (recordingId: string, token: string) => `uploads/${recordingId}/staging/${token}`,
   original: (workspaceId: string, recordingId: string) =>
     `recordings/${workspaceId}/${recordingId}/original`,
 };

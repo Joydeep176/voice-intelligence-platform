@@ -1,0 +1,107 @@
+== environment
+date_utc: 2026-11-21T08:50:23Z
+docker_desktop: 4.99.0
+docker_engine: client 29.9.3 server 29.9.3 linux/arm64 kernel 7.0.14-linuxkit
+docker_compose: Docker Compose version v5.7.0
+host_os: macOS 26.3.1 (arm64)
+image: pgvector/pgvector:0.8.7-pg18-trixie linux/arm64
+host_lan_ipv4_en0: <host-lan-ipv4>
+
+== preflight
+names and ports free
+
+== create networks
+cmd: docker network create --internal vip-p2b-netv-int
+cmd: docker network create -o com.docker.network.bridge.enable_ip_masquerade=false vip-p2b-netv-nomasq
+
+== start servers (published to 127.0.0.1 only)
+cmd: docker run -d --pull never --name vip-p2b-netv-int-srv --network vip-p2b-netv-int -p 127.0.0.1:18431:5432 -e POSTGRES_PASSWORD=<random> pgvector/pgvector:0.8.7-pg18-trixie -> exit=0
+cmd: docker run -d --pull never --name vip-p2b-netv-nomasq-srv --network vip-p2b-netv-nomasq -p 127.0.0.1:18432:5432 -e POSTGRES_PASSWORD=<random> pgvector/pgvector:0.8.7-pg18-trixie -> exit=0
+cmd: docker run -d --pull never --name vip-p2b-netv-def-srv --network bridge -p 127.0.0.1:18433:5432 -e POSTGRES_PASSWORD=<random> pgvector/pgvector:0.8.7-pg18-trixie -> exit=0
+RESULT | A         | server ready (in container)  | READY        | exit=0   | pg_isready on 127.0.0.1:5432 inside vip-p2b-netv-int-srv
+RESULT | B         | server ready (in container)  | READY        | exit=0   | pg_isready on 127.0.0.1:5432 inside vip-p2b-netv-nomasq-srv
+RESULT | C         | server ready (in container)  | READY        | exit=0   | pg_isready on 127.0.0.1:5432 inside vip-p2b-netv-def-srv
+
+== A: internal network (vip-p2b-netv-int)
+-- egress from vip-p2b-netv-int-srv (A)
+resolv.conf nameserver: 127.0.0.11 
+global ipv6 addresses in container: 0
+RESULT | A         | tcp4 1.1.1.1:443             | FAILED       | exit=1   | TCP handshake only (no TLS client in image)
+RESULT | A         | tcp4 8.8.8.8:53              | FAILED       | exit=1   | TCP handshake
+RESULT | A         | dns resolve example.com      | FAILED       | exit=2   | via container resolver
+RESULT | A         | udp4 dns query 1.1.1.1:53    | NO_REPLY     | exit=3   | direct UDP, bypasses Docker resolver
+RESULT | A         | tcp6 [2606:4700:4700::1111]:443 | FAILED       | exit=1   | IPv6 not enabled on any network (see inspect)
+-- host publishing for vip-p2b-netv-int-srv (A) on 127.0.0.1:18431
+inspect HostConfig.PortBindings: {"5432/tcp":[{"HostIp":"127.0.0.1","HostPort":"18431"}]}
+inspect NetworkSettings.Ports:   {"5432/tcp":[]}
+host listeners on :18431: 
+RESULT | A         | host tcp 127.0.0.1:18431     | FAILED       | exit=1   | nc -z (TCP only; Docker Desktop proxy may accept first)
+RESULT | A         | host pg protocol 127.0.0.1:18431 | NO_PG_REPLY  | exit=4   | SSLRequest answered by postgres
+RESULT | A         | host tcp <host-lan-ipv4>:18431 (LAN) | NOT_EXPOSED  | exit=1   | must be NOT_EXPOSED for loopback-only binding
+-- peer vip-p2b-netv-int-srv-peer on vip-p2b-netv-int (start exit=0)
+RESULT | A         | peer dns vip-p2b-netv-int-srv | RESOLVED     | exit=0   | Docker embedded DNS by container name
+RESULT | A         | peer pg_isready vip-p2b-netv-int-srv:5432 | ACCEPTING    | exit=0   | application-level peer connection
+
+== B: masquerade disabled (vip-p2b-netv-nomasq)
+-- egress from vip-p2b-netv-nomasq-srv (B)
+resolv.conf nameserver: 127.0.0.11 
+global ipv6 addresses in container: 0
+RESULT | B         | tcp4 1.1.1.1:443             | CONNECTED    | exit=0   | TCP handshake only (no TLS client in image)
+RESULT | B         | tcp4 8.8.8.8:53              | CONNECTED    | exit=0   | TCP handshake
+RESULT | B         | dns resolve example.com      | RESOLVED     | exit=0   | via container resolver
+RESULT | B         | udp4 dns query 1.1.1.1:53    | REPLY        | exit=0   | direct UDP, bypasses Docker resolver
+RESULT | B         | tcp6 [2606:4700:4700::1111]:443 | FAILED       | exit=1   | IPv6 not enabled on any network (see inspect)
+-- host publishing for vip-p2b-netv-nomasq-srv (B) on 127.0.0.1:18432
+inspect HostConfig.PortBindings: {"5432/tcp":[{"HostIp":"127.0.0.1","HostPort":"18432"}]}
+inspect NetworkSettings.Ports:   {"5432/tcp":[{"HostIp":"127.0.0.1","HostPort":"18432"}]}
+host listeners on :18432: com.docke 127.0.0.1:18432;
+RESULT | B         | host tcp 127.0.0.1:18432     | CONNECTED    | exit=0   | nc -z (TCP only; Docker Desktop proxy may accept first)
+RESULT | B         | host pg protocol 127.0.0.1:18432 | PG_REPLIED   | exit=0   | SSLRequest answered by postgres
+RESULT | B         | host tcp <host-lan-ipv4>:18432 (LAN) | NOT_EXPOSED  | exit=1   | must be NOT_EXPOSED for loopback-only binding
+-- peer vip-p2b-netv-nomasq-srv-peer on vip-p2b-netv-nomasq (start exit=0)
+RESULT | B         | peer dns vip-p2b-netv-nomasq-srv | RESOLVED     | exit=0   | Docker embedded DNS by container name
+RESULT | B         | peer pg_isready vip-p2b-netv-nomasq-srv:5432 | ACCEPTING    | exit=0   | application-level peer connection
+
+== C: default bridge (positive control)
+-- egress from vip-p2b-netv-def-srv (C)
+resolv.conf nameserver: 192.168.65.7 
+global ipv6 addresses in container: 0
+RESULT | C         | tcp4 1.1.1.1:443             | CONNECTED    | exit=0   | TCP handshake only (no TLS client in image)
+RESULT | C         | tcp4 8.8.8.8:53              | CONNECTED    | exit=0   | TCP handshake
+RESULT | C         | dns resolve example.com      | RESOLVED     | exit=0   | via container resolver
+RESULT | C         | udp4 dns query 1.1.1.1:53    | REPLY        | exit=0   | direct UDP, bypasses Docker resolver
+RESULT | C         | tcp6 [2606:4700:4700::1111]:443 | FAILED       | exit=1   | IPv6 not enabled on any network (see inspect)
+-- host publishing for vip-p2b-netv-def-srv (C) on 127.0.0.1:18433
+inspect HostConfig.PortBindings: {"5432/tcp":[{"HostIp":"127.0.0.1","HostPort":"18433"}]}
+inspect NetworkSettings.Ports:   {"5432/tcp":[{"HostIp":"127.0.0.1","HostPort":"18433"}]}
+host listeners on :18433: com.docke 127.0.0.1:18433;
+RESULT | C         | host tcp 127.0.0.1:18433     | CONNECTED    | exit=0   | nc -z (TCP only; Docker Desktop proxy may accept first)
+RESULT | C         | host pg protocol 127.0.0.1:18433 | PG_REPLIED   | exit=0   | SSLRequest answered by postgres
+RESULT | C         | host tcp <host-lan-ipv4>:18433 (LAN) | NOT_EXPOSED  | exit=1   | must be NOT_EXPOSED for loopback-only binding
+-- peer vip-p2b-netv-def-srv-peer on bridge (start exit=0)
+RESULT | C         | peer dns vip-p2b-netv-def-srv | FAILED       | exit=2   | Docker embedded DNS by container name
+RESULT | C         | peer pg_isready vip-p2b-netv-def-srv:5432 | FAILED       | exit=2   | application-level peer connection
+
+== network inspect (temporary networks)
+vip-p2b-netv-int driver=bridge internal=true ipv6=false subnet=172.19.0.0/16 gw=172.19.0.1 options={"com.docker.network.enable_ipv4":"true","com.docker.network.enable_ipv6":"false"} containers=vip-p2b-netv-int-srv-peer:172.19.0.3/16 vip-p2b-netv-int-srv:172.19.0.2/16 
+vip-p2b-netv-nomasq driver=bridge internal=false ipv6=false subnet=172.20.0.0/16 gw=172.20.0.1 options={"com.docker.network.bridge.enable_ip_masquerade":"false","com.docker.network.enable_ipv4":"true","com.docker.network.enable_ipv6":"false"} containers=vip-p2b-netv-nomasq-srv:172.20.0.2/16 vip-p2b-netv-nomasq-srv-peer:172.20.0.3/16 
+bridge(default) internal=false ipv6=false options={"com.docker.network.bridge.default_bridge":"true","com.docker.network.bridge.enable_icc":"true","com.docker.network.bridge.enable_ip_masquerade":"true","com.docker.network.bridge.host_binding_ipv4":"0.0.0.0","com.docker.network.bridge.name":"docker0","com.docker.network.driver.mtu":"65535"}
+
+== done
+
+== cleanup
+removed container vip-p2b-netv-int-srv
+removed container vip-p2b-netv-nomasq-srv
+removed container vip-p2b-netv-def-srv
+removed container vip-p2b-netv-int-srv-peer
+removed container vip-p2b-netv-nomasq-srv-peer
+removed container vip-p2b-netv-def-srv-peer
+removed container vip-p2b-netv-int-srv
+removed container vip-p2b-netv-int-srv-peer
+removed container vip-p2b-netv-nomasq-srv
+removed container vip-p2b-netv-nomasq-srv-peer
+removed container vip-p2b-netv-def-srv
+removed container vip-p2b-netv-def-srv-peer
+removed network vip-p2b-netv-int
+removed network vip-p2b-netv-nomasq
+CLEANUP_OK: no vip-p2b-netv* containers or networks remain

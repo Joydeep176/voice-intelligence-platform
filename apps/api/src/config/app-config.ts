@@ -14,6 +14,9 @@ const csv = z
   )
   .pipe(z.array(z.url()).min(1));
 
+/** Loopback bind addresses permitted while authentication is disabled (SEC-05). */
+const LOOPBACK_HOSTS = new Set(['127.0.0.1', '::1', 'localhost']);
+
 const EnvSchema = z
   .object({
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
@@ -52,6 +55,10 @@ const EnvSchema = z
     MEDIA_URL_TTL_SECONDS: z.coerce.number().int().min(30).max(3600).default(300),
     QUEUE_FOUNDATION_ATTEMPTS: z.coerce.number().int().min(1).max(10).default(3),
     QUEUE_FOUNDATION_BACKOFF_MS: z.coerce.number().int().min(100).max(60_000).default(1000),
+  })
+  .refine((env) => env.AUTH_MODE !== 'dev' || LOOPBACK_HOSTS.has(env.API_HOST.toLowerCase()), {
+    path: ['API_HOST'],
+    message: 'API_HOST must be a loopback address while authentication is disabled (AUTH_MODE=dev)',
   })
   .refine((env) => !(env.NODE_ENV === 'production' && env.AUTH_MODE === 'dev'), {
     path: ['AUTH_MODE'],

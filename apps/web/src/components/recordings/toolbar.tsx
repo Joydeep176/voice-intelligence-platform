@@ -89,7 +89,7 @@ export function RecordingsToolbar({
                 )}
               >
                 {f.label}
-                <span className={cn('text-xs tabular-nums', active ? 'opacity-80' : 'opacity-70')}>
+                <span className={cn('text-xs tabular-nums', active && 'opacity-80')}>
                   {counts[f.key]}
                 </span>
               </button>

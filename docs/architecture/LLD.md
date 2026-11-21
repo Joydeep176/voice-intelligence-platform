@@ -38,7 +38,9 @@ docs/
 - **Playback** (`playback` module, ADR-0033): HMAC-SHA256 signed, short-lived (`MEDIA_URL_TTL_SECONDS`, default 300) tokens bind recording, workspace and expiry.
   - **Issuance:** under the workspace route, audited, fail closed.
   - **Media route** `/api/v1/media/recordings/{token}`: verifies the token in constant time, re-checks ownership and status, and streams through `StorageService` with HTTP Range. Every failure is a uniform 404.
-  - **Logs:** tokens never appear, because request logs record route patterns only.
+  - **Logs:** tokens never appear, because request logs record route patterns only. A failed stream logs `playback_stream_failed` with the error code and recording id only (client disconnects are not logged).
+- **Dev Host guard** (Phase 2A validation finding SEC-01): while `AUTH_MODE=dev`, `devHostGuard` is registered before every route (health and media included) and answers `403 HOST_NOT_ALLOWED` for any non-loopback `Host` hostname (port ignored). This mitigates DNS rebinding against the unauthenticated development API. Config validation also refuses a non-loopback `API_HOST` while `AUTH_MODE=dev`.
+- **Upload concurrency** (Phase 2A validation finding SEC-04): a part body is first streamed to a unique staging key without any lock; a short transaction then takes the recording row lock (`SELECT ... FOR UPDATE`), re-checks the recording and session, and moves the staged part into place, so a part cannot land during completion or after the recording leaves `uploading`. Completion holds the row lock while it composes the original (local storage I/O; acceptable in development, to be revisited with S3). No second database connection is taken while the lock is held; an expired session is persisted after the transaction. Orphaned staging objects after a crash are not yet swept (see the deferred upload-cleanup finding).
 
 ### 2.2 `apps/orchestrator`
 | Module | Responsibility |
@@ -173,4 +175,6 @@ Validated at startup (NestJS config schema; Python settings). Covers: providers,
 ## 9. Frontend
 
 - Routes: recordings, upload (with consent attestation), run detail (stage progress), transcript (version selector, speaker display names, uncertainty overlay, separate audio-diagnostics track, correction editor), report (HTML, provenance badges per assertion, separate limitation sections), exports.
+  - Implemented in Phase 2A M7 (honest state, no report API yet): `/reports` (index of the workspace's recordings with report availability derived from `GET /recordings` `latestRun`) and `/recordings/{id}/report` (report reader structure; every report field shows "not available" until API §7 exists). See `docs/design/phase2a-m7/README.md`.
+  - Implemented in Phase 2A M8 (honest state, no evidence API yet): `/recordings/{id}/evidence` (planned evidence chain, provenance and source-type explanations, and empty claims, research queries, sources, evidence passages and validation sections until API §6 exists). Linked from the report page and the recording detail Report card. See `docs/design/phase2a-m8/README.md`.
 - The transcript is fetched by time range (no full load for long recordings). Types come from `packages/contracts`.

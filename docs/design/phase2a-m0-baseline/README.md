@@ -1,5 +1,7 @@
 # Phase 2A · M0 baseline (frontend)
 
+Acceptance: **Accepted.** Phase 2A was formally accepted on 2026-11-21 after consolidated validation (`../phase2a-validation/README.md` §7). The status line below is kept as written at the time.
+
 Status: **Baseline captured 2026-11-20.** No application code, configuration or dependency was changed
 in M0. Phase 2A is the frontend transformation track; it does not authorise the AI-agent / LangGraph
 phase.
@@ -121,8 +123,8 @@ after it. It is replaced by three strict JavaScript budgets:
 - **Deferred Motion JS** (≤ 20 KB): Motion's animation features (`src/lib/motion-features.ts`), fetched
   asynchronously after first render (ADR-0026). Not needed for the first render; until it arrives,
   elements render in their final state without animation.
-- **Combined route JS** (≤ 205 KB): render-critical plus deferred for the same route, so the total
-  download is also capped.
+- **Combined route JS** (≤ 205 KB): render-critical plus deferred Motion for the same route, so the
+  total download is also capped. Interaction-only chunks are excluded.
 
 The check also fails if the Motion features stop being a separately loaded deferred chunk.
 
@@ -130,7 +132,8 @@ The check also fails if the Motion features stop being a separately loaded defer
 | -------------------------------------------------------------- | ---------------------------------- | ---------------- |
 | Render-critical JS (entry + shared + route)                    | ≤ 175 KB gzip                      | ~159 KB          |
 | Deferred Motion JS (after first render)                        | ≤ 20 KB gzip                       | 0 (no Motion yet) |
-| Combined route JS (render-critical + deferred)                 | ≤ 205 KB gzip                      | ~159 KB          |
+| Combined route JS (render-critical + deferred Motion)          | ≤ 205 KB gzip                      | ~159 KB          |
+| Interaction-only chunk (each)                                  | ≤ 30 KB gzip                       | n/a              |
 | Any route chunk                                                | ≤ 30 KB gzip                       | ≤ 5.8 KB         |
 | CSS                                                            | ≤ 20 KB gzip                       | 10.7 KB          |
 | Fonts preloaded on first paint                                 | ≤ 2 files, ≤ 80 KB total (WOFF2)   | 0 (system fonts) |
@@ -140,6 +143,15 @@ The check also fails if the Motion features stop being a separately loaded defer
 | CLS                                                            | ≤ 0.05                             | 0                |
 | Total blocking time, 4× CPU                                    | ≤ 100 ms                           | ~26 ms (current build: ~115 ms) |
 | axe: serious or critical violations                            | 0 in every scan                    | 2 rules          |
+
+Amended 2026-11-21 (user decision at M7): chunks are now classified. **Interaction-only chunks** are
+loaded on first user intent, not after first render. Currently these are the theme menu
+(`src/components/shell/theme-menu.tsx`) and the mobile navigation sheet
+(`src/components/shell/mobile-nav-sheet.tsx`). Each is ≤ 30 KB gzip beyond already-loaded code (checked
+individually, not summed), must be reachable only as a dynamic import (in no render-critical closure),
+and is excluded from combined route JS. **Deferred Motion JS** (≤ 20 KB) now covers only the Motion
+features closure. Any other non-page dynamic import of the entry fails the check as an unclassified
+deferred chunk.
 
 Amended 2026-11-20 (user decision at the end of M6): combined 190 → 205 KB and route chunk 25 → 30 KB. Because render-critical (≤ 175 KB) and deferred Motion (≤ 20 KB) are unchanged, combined cannot exceed 195 KB while they pass, so render-critical is now the binding limit. Details: `docs/design/phase2a-m6/README.md` §5.
 

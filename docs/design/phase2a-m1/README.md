@@ -1,5 +1,7 @@
 # Phase 2A · M1: design system and application shell
 
+Acceptance: **Accepted.** Phase 2A was formally accepted on 2026-11-21 after consolidated validation (`../phase2a-validation/README.md` §7). The status line below is kept as written at the time.
+
 Status: **Implemented 2026-11-20; budgets amended after review; awaiting final review.** Scope: tokens, fonts, Motion, the application shell
 and shared components. Page layouts (M2 dashboard, M3 library, M4 upload) are intentionally unchanged.
 

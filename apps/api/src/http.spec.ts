@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Test } from '@nestjs/testing';
 import type { NestExpressApplication } from '@nestjs/platform-express';
-import type { HealthResponse } from '@vip/contracts';
+import { ApiError, type HealthResponse } from '@vip/contracts';
 import request from 'supertest';
 import { WorkspaceAccessGuard } from './auth/workspace-access.guard';
 import { configureApp } from './bootstrap';
@@ -69,6 +69,34 @@ describe('HTTP layer', () => {
     await app.close();
   });
   beforeEach(() => jest.resetAllMocks());
+
+  it('rejects non-loopback Host headers on every route in dev auth mode (SEC-01)', async () => {
+    health.readiness.mockResolvedValue('ok');
+    for (const path of [
+      '/api/v1/health/live',
+      '/api/v1/health/ready',
+      '/api/v1/health',
+      `/api/v1/workspaces/${WS}/recordings`,
+      '/api/v1/media/recordings/some.token',
+      '/api/v1/nope',
+    ]) {
+      const res = await request(app.getHttpServer()).get(path).set('Host', 'evil.example');
+      expect(res.status).toBe(403);
+      expect(res.headers['content-type']).toContain('application/problem+json');
+      expect(res.body).toMatchObject({ status: 403, code: 'HOST_NOT_ALLOWED' });
+      expect(JSON.stringify(res.body)).not.toContain('evil');
+      expect(ApiError.safeParse(res.body).success).toBe(true);
+    }
+    expect(recordings.list).not.toHaveBeenCalled();
+    await request(app.getHttpServer())
+      .get('/api/v1/health/live')
+      .set('Host', 'localhost:5173')
+      .expect(200, { status: 'ok' });
+    await request(app.getHttpServer())
+      .get('/api/v1/health/live')
+      .set('Host', '[::1]:4173')
+      .expect(200);
+  });
 
   it('serves health under /api/v1 with dependency status', async () => {
     health.full.mockResolvedValue(healthy);

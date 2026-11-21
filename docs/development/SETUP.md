@@ -90,7 +90,7 @@ and reports invalid **names** only (never values).
 | `DATABASE_URL` | api, db CLI | Development database |
 | `TEST_DATABASE_URL` | integration tests | Must end in `_test` |
 | `REDIS_PORT`, `REDIS_URL` | Compose, api, orchestrator | BullMQ only |
-| `API_HOST`, `API_PORT` | api | `127.0.0.1`, `3000` |
+| `API_HOST`, `API_PORT` | api | `127.0.0.1`, `3000`. `API_HOST` must be a loopback address (`127.0.0.1`, `::1`, `localhost`) while `AUTH_MODE=dev`, otherwise the API refuses to start. In dev the API also returns `403 HOST_NOT_ALLOWED` for non-loopback `Host` headers, so reach it via `localhost` or `127.0.0.1` |
 | `API_CORS_ORIGINS` | api | Comma-separated origins, default `http://localhost:5173`. `*` is rejected |
 | `AUTH_MODE` | api | Only `dev` exists (development principal). Not allowed with `NODE_ENV=production` |
 | `DEV_WORKSPACE_ID` | api, db seed | The single development workspace |

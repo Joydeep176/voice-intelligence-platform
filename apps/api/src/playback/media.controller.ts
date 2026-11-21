@@ -93,6 +93,15 @@ export class MediaController {
       throw AppException.notFound('Recording');
     }
     res.on('close', () => source.destroy());
-    pipeline(source, res, () => undefined);
+    const recordingId = media.recording.id;
+    pipeline(source, res, (err) => {
+      const code = (err as NodeJS.ErrnoException | null)?.code;
+      // A client disconnect is not a failure. Never log the token, path or content.
+      const disconnect =
+        code === 'ERR_STREAM_PREMATURE_CLOSE' || code === 'ECONNRESET' || code === 'EPIPE';
+      if (err && !disconnect) {
+        this.logger.warn({ msg: 'playback_stream_failed', code: code ?? 'UNKNOWN', recordingId });
+      }
+    });
   }
 }

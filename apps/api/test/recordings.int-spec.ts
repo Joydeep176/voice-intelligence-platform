@@ -106,6 +106,58 @@ describe('recording upload workflow (integration: Postgres + Redis + local stora
     expect(again.latestRun?.id).toBe(run.id);
   });
 
+  it('serialises concurrent completions: one run, one audit event, intact original (SEC-04)', async () => {
+    const created = await create(wav);
+    const id = created.recording.id;
+    await uploadAll(id, wav, 4096);
+    const complete = () => http().post(`${base}/recordings/${id}/upload/complete`);
+    const responses = await Promise.all([complete(), complete(), complete()]);
+    expect(responses.map((r) => r.status)).toEqual([200, 200, 200]);
+    const expectedSha = createHash('sha256').update(wav).digest('hex');
+    for (const r of responses) expect(RecordingMetadata.parse(r.body).sha256).toBe(expectedSha);
+
+    const handle = createDb(process.env.TEST_DATABASE_URL!, { maxConnections: 1 });
+    try {
+      const events = await handle.db
+        .select()
+        .from(auditEvents)
+        .where(eq(auditEvents.resourceId, id));
+      expect(events.filter((e) => e.action === 'recording.upload_completed')).toHaveLength(1);
+      const [row] = await handle.db.select().from(recordings).where(eq(recordings.id, id));
+      expect(row?.sha256).toBe(expectedSha);
+    } finally {
+      await handle.close();
+    }
+    const runIds = new Set(responses.map((r) => RecordingMetadata.parse(r.body).latestRun?.id));
+    expect(runIds.size).toBe(1);
+    const files = listFiles(t.storageRoot).filter((f) => f.includes(id));
+    expect(files).toHaveLength(1);
+    expect(
+      createHash('sha256')
+        .update(await readFile(files[0]!))
+        .digest('hex'),
+    ).toBe(expectedSha);
+  });
+
+  it('refuses a part written after completion (SEC-04)', async () => {
+    const created = await create(wav);
+    const id = created.recording.id;
+    await uploadAll(id, wav, 4096);
+    await http().post(`${base}/recordings/${id}/upload/complete`).expect(200);
+    const late = await putPart(id, 1, wav.subarray(0, 4096)).expect(409);
+    expect(late.body.code).toBe('INVALID_STATE_TRANSITION');
+    const files = listFiles(t.storageRoot).filter((f) => f.includes(id));
+    expect(files).toHaveLength(1);
+    expect(await readFile(files[0]!)).toEqual(wav);
+  });
+
+  it('rejects a non-loopback Host header and accepts a dev-proxy Host (SEC-01)', async () => {
+    const denied = await http().get('/api/v1/health/ready').set('Host', 'evil.example').expect(403);
+    expect(denied.body.code).toBe('HOST_NOT_ALLOWED');
+    await http().get(`${base}/recordings`).set('Host', 'evil.example').expect(403);
+    await http().get(`${base}/recordings`).set('Host', 'localhost:5173').expect(200);
+  });
+
   it('writes content-free audit events for the upload', async () => {
     const created = await create(syntheticWav(50), 'audio/wav', 'private-name.wav');
     await uploadAll(created.recording.id, syntheticWav(50), 4096);

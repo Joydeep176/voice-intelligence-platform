@@ -121,6 +121,17 @@ export class LocalStorageService extends StorageService {
     return handle.createReadStream(range ? { start: range.start, end: range.end } : undefined);
   }
 
+  async moveObject(sourceKey: string, destKey: string): Promise<void> {
+    const source = this.pathFor(sourceKey);
+    const target = this.pathFor(destKey);
+    await mkdir(dirname(target), { recursive: true, mode: 0o700 });
+    try {
+      await rename(source, target);
+    } catch (error) {
+      throw toNotFound(error);
+    }
+  }
+
   async deleteObjects(keys: readonly string[]): Promise<void> {
     await Promise.all(keys.map((k) => rm(this.pathFor(k), { force: true })));
   }

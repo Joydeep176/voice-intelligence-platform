@@ -13,9 +13,10 @@ const BUDGET = {
   // JavaScript, gzip, worst page route. Render-critical = needed for the first render:
   // entry + chunks it statically imports + the route chunk and its static imports.
   renderCriticalJs: 175 * KB,
-  // Deferred = Motion's animation features, fetched asynchronously after first render.
+  // Deferred = Motion's animation features only, fetched asynchronously after first render.
   deferredMotionJs: 20 * KB,
-  combinedJs: 205 * KB, // render-critical + deferred for the same route
+  combinedJs: 205 * KB, // render-critical + deferred Motion for the same route
+  interactionChunk: 30 * KB, // each interaction-only chunk, beyond already-loaded code (gzip)
   routeChunk: 30 * KB, // each lazily loaded route chunk (gzip)
   css: 20 * KB, // all CSS (gzip)
   preloadedFonts: { count: 2, bytes: 80 * KB },
@@ -50,19 +51,32 @@ const check = (name, actual, limit, { expectExactly = false } = {}) =>
     ok: expectExactly ? actual === limit : actual <= limit,
   });
 
-// Page routes are the lazily loaded src/pages/* chunks. Any other chunk the entry imports
-// dynamically is deferred: it is fetched after first render and is not needed to render it.
+// Page routes are the lazily loaded src/pages/* chunks. Every other dynamic import of the entry must be
+// classified: Motion features (fetched after first render) or an interaction-only chunk (fetched on first
+// user intent, never after first render and excluded from initial load and combined route JS).
 const MOTION_FEATURES = 'src/lib/motion-features.ts';
+const INTERACTION_CHUNKS = [
+  'src/components/shell/theme-menu.tsx',
+  'src/components/shell/mobile-nav-sheet.tsx',
+];
 const dynamic = manifest[entryKey].dynamicImports ?? [];
-const deferred = dynamic.filter((k) => !k.startsWith('src/pages/'));
-const deferredKeys = new Set();
-for (const k of deferred) closure(k, deferredKeys);
+const nonPage = dynamic.filter((k) => !k.startsWith('src/pages/'));
+const unclassified = nonPage.filter(
+  (k) => k !== MOTION_FEATURES && !INTERACTION_CHUNKS.includes(k),
+);
+const deferredKeys = closure(MOTION_FEATURES);
 for (const k of base) deferredKeys.delete(k); // already counted as render-critical
 
 check(
   `Motion features load asynchronously (${MOTION_FEATURES} is a deferred chunk)`,
-  deferred.includes(MOTION_FEATURES) && !base.has(MOTION_FEATURES) ? 1 : 0,
+  nonPage.includes(MOTION_FEATURES) && !base.has(MOTION_FEATURES) ? 1 : 0,
   1,
+  { expectExactly: true },
+);
+check(
+  `No unclassified deferred chunks${unclassified.length ? `: ${unclassified.join(', ')}` : ''}`,
+  unclassified.length,
+  0,
   { expectExactly: true },
 );
 
@@ -88,12 +102,12 @@ check(
   BUDGET.renderCriticalJs,
 );
 check(
-  `Deferred JS after first render: Motion features (${deferred.join(', ') || 'none'})`,
+  `Deferred JS after first render: Motion features (${MOTION_FEATURES})`,
   jsBytes(deferredKeys),
   BUDGET.deferredMotionJs,
 );
 check(
-  `Combined route JS: render-critical + deferred (${heaviestCombined.key})`,
+  `Combined route JS: render-critical + deferred Motion (${heaviestCombined.key})`,
   heaviestCombined.combined,
   BUDGET.combinedJs,
 );
@@ -121,6 +135,31 @@ if (heroInManifest) {
   const heroKeys = closure(HERO_SCENE);
   for (const k of base) heroKeys.delete(k); // shared code already loaded
   check('3D hero chunk (lazy)', jsBytes(heroKeys), BUDGET.threeD);
+}
+
+// Interaction-only chunks: dynamic imports, never in a render-critical closure, each within budget.
+for (const key of INTERACTION_CHUNKS) {
+  const inManifest = key in manifest;
+  const dynamicallyImported = Object.values(manifest).some((c) =>
+    (c.dynamicImports ?? []).includes(key),
+  );
+  const inCriticalClosure =
+    base.has(key) ||
+    routes.some((r) => closure(r.key, new Set(base)).has(key)) ||
+    [...base].some((k) => (manifest[k].imports ?? []).includes(key));
+  check(
+    `Interaction chunk (${key}) is reachable only as a dynamic import${
+      inManifest ? '' : ' - MISSING from manifest'
+    }`,
+    inManifest && dynamicallyImported && !inCriticalClosure ? 1 : 0,
+    1,
+    { expectExactly: true },
+  );
+  if (inManifest) {
+    const keys = closure(key);
+    for (const k of base) keys.delete(k); // shared code already loaded
+    check(`Interaction chunk (${key})`, jsBytes(keys), BUDGET.interactionChunk);
+  }
 }
 
 const cssFiles = [...new Set(Object.values(manifest).flatMap((c) => c.css ?? []))];

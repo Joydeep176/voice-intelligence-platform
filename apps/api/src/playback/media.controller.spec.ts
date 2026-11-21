@@ -130,4 +130,49 @@ describe('MediaController', () => {
     expect(text).not.toContain(root);
     expect(text).toContain('/api/v1/media/recordings/:token');
   });
+
+  it('logs mid-stream failures by code and recording ID only', async () => {
+    const failing = new Readable({
+      read() {
+        this.push(DATA.subarray(0, 10));
+        this.destroy(Object.assign(new Error(`boom ${root}`), { code: 'EIO' }));
+      },
+    });
+    jest.spyOn(storage, 'openReadStream').mockResolvedValueOnce(failing);
+    await get()
+      .buffer(true)
+      .then(
+        () => undefined,
+        () => undefined, // truncated response: the client sees an aborted stream
+      );
+    await new Promise((r) => setTimeout(r, 50));
+    expect(logged).toContainEqual({
+      msg: 'playback_stream_failed',
+      code: 'EIO',
+      recordingId: 'rec',
+    });
+    const text = JSON.stringify(logged);
+    expect(text).not.toContain('SECRET-TOKEN');
+    expect(text).not.toContain(root);
+  });
+
+  it.each(['ERR_STREAM_PREMATURE_CLOSE', 'ECONNRESET', 'EPIPE'])(
+    'does not log %s as a stream failure (client disconnect)',
+    async (code) => {
+      const closed = new Readable({
+        read() {
+          this.destroy(Object.assign(new Error('closed'), { code }));
+        },
+      });
+      jest.spyOn(storage, 'openReadStream').mockResolvedValueOnce(closed);
+      await get()
+        .buffer(true)
+        .then(
+          () => undefined,
+          () => undefined,
+        );
+      await new Promise((r) => setTimeout(r, 50));
+      expect(JSON.stringify(logged)).not.toContain('playback_stream_failed');
+    },
+  );
 });

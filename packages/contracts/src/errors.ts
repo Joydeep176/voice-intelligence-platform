@@ -19,6 +19,7 @@ export const ErrorCode = z.enum([
   'CONTRACT_VERSION_MISMATCH',
   'DEPENDENCY_UNAVAILABLE',
   'INTERNAL_ERROR',
+  'HOST_NOT_ALLOWED',
 ]);
 export type ErrorCode = z.infer<typeof ErrorCode>;
 

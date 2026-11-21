@@ -48,7 +48,7 @@ pipeline_runs 1─* reports 1─* report_assertions 1─* assertion_refs ; repor
 
 ### Recording
 - **recordings**: `id`, `workspace_id`, `original_filename`, `storage_uri`, `sha256`, `mime_type`, `size_bytes`, `duration_ms`, `sample_rate`, `channels`, `status` (`uploading|uploaded|validating|valid|invalid|deleting`), `validation_error`.
-- **upload_sessions**: `id`, `recording_id`, `workspace_id`, `strategy` (`s3_multipart|local_chunked`), `part_size`, `parts_received` (jsonb: part number → etag/size), `expires_at`, `status`.
+- **upload_sessions**: `id`, `recording_id`, `workspace_id`, `strategy` (`s3_multipart|local_chunked`), `part_size`, `total_parts` (integer, not null, CHECK > 0), `parts_received` (jsonb: part number → etag/size), `expires_at`, `status`.
 - **consent_attestations**: `id`, `recording_id`, `workspace_id`, `attested_by`, `attested_at`, `statement_version`, `scope` (jsonb).
 
 ### Preprocessing (ADR-0015)

@@ -62,6 +62,28 @@ describe('loadConfig', () => {
     });
   });
 
+  describe('loopback bind while authentication is disabled', () => {
+    it('defaults to 127.0.0.1 and accepts loopback addresses', () => {
+      expect(loadConfig(base).host).toBe('127.0.0.1');
+      for (const host of ['127.0.0.1', '::1', 'localhost']) {
+        expect(loadConfig({ ...base, API_HOST: host }).host).toBe(host);
+      }
+    });
+
+    it('rejects non-loopback hosts, naming API_HOST only', () => {
+      for (const host of ['0.0.0.0', '::', '192.168.1.20', 'api.example.test']) {
+        try {
+          loadConfig({ ...base, API_HOST: host });
+          throw new Error('expected failure');
+        } catch (error) {
+          expect(error).toBeInstanceOf(ConfigError);
+          expect((error as ConfigError).variables).toEqual(['API_HOST']);
+          expect((error as Error).message).not.toContain(host);
+        }
+      }
+    });
+  });
+
   it('parses CORS origins as a list of URLs', () => {
     expect(
       loadConfig({ ...base, API_CORS_ORIGINS: 'http://a.test, http://b.test' }).corsOrigins,

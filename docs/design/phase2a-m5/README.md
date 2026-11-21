@@ -1,5 +1,7 @@
 # Phase 2A · M5: recording detail workspace and signed playback
 
+Acceptance: **Accepted.** Phase 2A was formally accepted on 2026-11-21 after consolidated validation (`../phase2a-validation/README.md` §7). The status line below is kept as written at the time.
+
 Status: **Implemented 2026-11-20; awaiting review.**
 
 - Decision: ADR-0033 "Signed local playback URLs" (Accepted; HLD §10 OD-45).

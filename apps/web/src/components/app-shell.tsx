@@ -1,8 +1,8 @@
 import {
   AudioWaveform,
+  FileText,
   FolderOpen,
   LayoutDashboard,
-  Menu,
   PanelLeftClose,
   PanelLeftOpen,
   ShieldAlert,
@@ -12,20 +12,17 @@ import {
 import { type CSSProperties, type ReactNode, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { WORKSPACE_LABEL } from '@/lib/config';
 import { Link, type Route, useRoute } from '@/lib/router';
 import { cn } from 'cn';
+import { MobileMenuButton } from './shell/mobile-menu-button';
+import { useIntentLoad } from './shell/use-intent-load';
 import { SystemStatus } from './system-status';
 import { ThemeToggle } from './theme-toggle';
+
+// The Radix dialog loads on first intent; the menu button is eager (see shell/).
+const loadMobileNavSheet = () => import('./shell/mobile-nav-sheet').then((m) => m.MobileNavSheet);
 
 const NAV = [
   {
@@ -39,6 +36,12 @@ const NAV = [
     label: 'Recordings',
     icon: FolderOpen,
     match: (r: Route) => r.name === 'recordings' || r.name === 'recording',
+  },
+  {
+    to: '/reports',
+    label: 'Reports',
+    icon: FileText,
+    match: (r: Route) => r.name === 'reports' || r.name === 'report' || r.name === 'evidence',
   },
   {
     to: '/pipeline',
@@ -199,6 +202,8 @@ function WorkspaceContext() {
  */
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [sheetActivated, setSheetActivated] = useState(false);
+  const { Component: SheetComponent, load: loadSheet } = useIntentLoad(loadMobileNavSheet);
   const sheetNav = useRef<HTMLDivElement>(null);
   const [collapsed, setCollapsed] = useState(readCollapsed);
   const toggleCollapsed = () => {
@@ -250,36 +255,21 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <div className="flex min-w-0 flex-col">
         <header className="bg-background/75 sticky top-0 z-30 flex h-14 items-center gap-3 border-b px-4 backdrop-blur-md sm:px-6">
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="lg:hidden"
-                aria-label="Open navigation"
-              >
-                <Menu aria-hidden />
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="left"
-              className="bg-sidebar flex w-72 flex-col gap-6 p-4"
+          {SheetComponent && sheetActivated ? (
+            <SheetComponent
+              open={open}
+              onOpenChange={setOpen}
               onOpenAutoFocus={(event) => {
                 // Focus the current page's link rather than the first control in the sheet.
                 event.preventDefault();
-                sheetNav.current
-                  ?.querySelector<HTMLElement>('a[aria-current="page"], a[href]')
-                  ?.focus();
+                const nav = sheetNav.current;
+                (
+                  nav?.querySelector<HTMLElement>('a[aria-current="page"]') ??
+                  nav?.querySelector<HTMLElement>('a[href]')
+                )?.focus();
               }}
+              brand={<Brand />}
             >
-              <SheetHeader className="p-0">
-                <SheetTitle asChild>
-                  <div>
-                    <Brand />
-                  </div>
-                </SheetTitle>
-                <SheetDescription className="sr-only">Main navigation</SheetDescription>
-              </SheetHeader>
               <div ref={sheetNav} className="grid gap-2">
                 <SectionLabel>Workspace</SectionLabel>
                 <NavLinks onNavigate={() => setOpen(false)} />
@@ -288,8 +278,22 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <SystemStatus />
                 <PhaseNote />
               </div>
-            </SheetContent>
-          </Sheet>
+            </SheetComponent>
+          ) : (
+            <MobileMenuButton
+              aria-haspopup="dialog"
+              aria-expanded={false}
+              data-state="closed"
+              onPointerEnter={loadSheet}
+              onPointerDown={loadSheet}
+              onFocus={loadSheet}
+              onClick={() => {
+                setSheetActivated(true);
+                setOpen(true);
+                loadSheet();
+              }}
+            />
+          )}
           <WorkspaceContext />
           <div className="ml-auto flex items-center gap-1">
             <ThemeToggle />

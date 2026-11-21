@@ -37,10 +37,28 @@ describe('CreateRecordingRequest', () => {
     expect(result.success).toBe(false);
   });
 
-  it.each(['../etc/passwd', 'a/b.wav', 'a\\b.wav', 'bad\u0000.wav'])(
-    'rejects unsafe filename %j',
+  it.each([
+    '../etc/passwd',
+    'a/b.wav',
+    'a\\b.wav',
+    'bad\u0000.wav',
+    'bad\u0085.wav',
+    'bad\u009f.wav',
+    'bad\u061c.wav',
+    'bad\u200e.wav',
+    'bad\u200f.wav',
+    'bad\u202e.wav',
+    'bad\u202a.wav',
+    'bad\u2066.wav',
+    'bad\u2069.wav',
+  ])('rejects unsafe filename %j', (filename) => {
+    expect(CreateRecordingRequest.safeParse({ ...validCreate, filename }).success).toBe(false);
+  });
+
+  it.each(['रिकॉर्डिंग_नमस्ते.wav', '会议录音.wav', 'café.wav'])(
+    'accepts non-Latin filename %j',
     (filename) => {
-      expect(CreateRecordingRequest.safeParse({ ...validCreate, filename }).success).toBe(false);
+      expect(CreateRecordingRequest.safeParse({ ...validCreate, filename }).success).toBe(true);
     },
   );
 
@@ -83,6 +101,17 @@ describe('RecordingMetadata', () => {
 });
 
 describe('ApiError / ProcessingStatus', () => {
+  it('accepts the HOST_NOT_ALLOWED code', () => {
+    expect(
+      ApiError.parse({
+        type: 'urn:vip:problem:host_not_allowed',
+        title: 'Host not allowed',
+        status: 403,
+        code: 'HOST_NOT_ALLOWED',
+      }).code,
+    ).toBe('HOST_NOT_ALLOWED');
+  });
+
   it('parses a problem details body', () => {
     expect(
       ApiError.parse({ type: 'about:blank', title: 'Not found', status: 404, code: 'NOT_FOUND' })

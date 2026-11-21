@@ -1,5 +1,7 @@
 # Phase 2A · M7 handoff: Reports Workspace
 
+> **Historical.** This handoff predates M7. M7 was implemented and accepted on 2026-11-21 (`README.md`), and Phase 2A was formally accepted the same day.
+
 End-of-day checkpoint, 2026-11-20. **M7 has not started.** No M7 planning or implementation was done. Resume tomorrow
 with the M7 Opus planning pass, using this document and the refreshed Graphify output (`graphify-out/`).
 

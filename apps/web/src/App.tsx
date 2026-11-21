@@ -10,6 +10,9 @@ import { ThemeProvider } from '@/lib/theme';
 // Route-level code splitting (performance.md).
 const DashboardPage = lazy(() => import('@/pages/dashboard'));
 const RecordingsPage = lazy(() => import('@/pages/recordings'));
+const ReportsPage = lazy(() => import('@/pages/reports'));
+const ReportPage = lazy(() => import('@/pages/report'));
+const EvidencePage = lazy(() => import('@/pages/evidence'));
 const PipelinePage = lazy(() => import('@/pages/pipeline'));
 const UploadPage = lazy(() => import('@/pages/upload'));
 const RecordingDetailPage = lazy(() => import('@/pages/recording-detail'));
@@ -18,9 +21,12 @@ const NotFoundPage = lazy(() => import('@/pages/not-found'));
 const TITLES = {
   dashboard: 'Overview',
   recordings: 'Recordings',
+  reports: 'Reports',
   pipeline: 'Pipeline',
   upload: 'Upload recording',
   recording: 'Recording',
+  report: 'Report',
+  evidence: 'Evidence',
   'not-found': 'Not found',
 } as const;
 
@@ -35,18 +41,30 @@ function CurrentPage() {
         return <DashboardPage />;
       case 'recordings':
         return <RecordingsPage />;
+      case 'reports':
+        return <ReportsPage />;
       case 'pipeline':
         return <PipelinePage />;
       case 'upload':
         return <UploadPage />;
       case 'recording':
         return <RecordingDetailPage key={route.id} id={route.id} />;
+      case 'report':
+        return <ReportPage key={route.id} id={route.id} />;
+      case 'evidence':
+        return <EvidencePage key={route.id} id={route.id} />;
       default:
         return <NotFoundPage />;
     }
   })();
   return (
-    <PageTransition routeKey={route.name === 'recording' ? `recording:${route.id}` : route.name}>
+    <PageTransition
+      routeKey={
+        route.name === 'recording' || route.name === 'report' || route.name === 'evidence'
+          ? `${route.name}:${route.id}`
+          : route.name
+      }
+    >
       {page}
     </PageTransition>
   );

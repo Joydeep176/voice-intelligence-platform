@@ -33,10 +33,10 @@ Users belong to workspaces. Authentication provider deferred (OD-08b). The works
 
 ### 2.2 Constraints
 - C-1: Technology stack per [HLD §2](architecture/HLD.md#2-approved-technology-baseline).
-- C-2: Anthropic Claude API is the primary LLM.
+- C-2: Anthropic Claude API is the primary LLM. **Conflict flagged (2026-11-21):** ADR-0034 does not allow a paid runtime AI API; production LLM inference is OD-47 (Open).
 - C-3: STT and diarization go through provider adapters. Fake adapters until production providers are selected by benchmark (ADR-0012).
 - C-4: Exactly seven product agents: Audio Quality, Transcription (including language identification and diarization), Context Intelligence, Research, Fact Validation, Reporting, QA (ADR-0001). Ingestion and preprocessing (decoding, normalisation, VAD, segmentation) are deterministic and are not agents (ADR-0019).
-- C-5: Docker Compose locally; AWS ECS, RDS and S3 in production.
+- C-5: Docker Compose locally; AWS ECS, RDS and S3 in production. **Conflict flagged (2026-11-21):** paid cloud infrastructure is not allowed by ADR-0034; the production deployment target is OD-48 (Open).
 - C-6: Development uses only synthetic or explicitly consented audio (ADR-0004).
 
 ### 2.3 Assumptions (not yet confirmed: OD-31)

@@ -11,6 +11,7 @@ Read first: AGENT_ARCHITECTURE §1 (boundaries), §2 (graph), §4 (contracts), �
 - Seven agents only (ADR-0001). Do not change the roster.
 - Respect the boundaries (ADR-0019): preprocessing is a deterministic node, not an agent; diagnostics (Audio Quality) vs transcription, language ID, diarization and uncertainty (Transcription); QA read-only; raw provider output immutable.
 - Vendors, models, thresholds and caps come from config. If a value is an Open OD, ask the user.
+- No paid runtime AI API (ADR-0034). The LLM inference runtime is OD-47 (Open) and conflicts with the Claude assumption in ADR-0013 / SRS C-2: resolve it with the user before building an LLM-backed agent.
 
 ## Steps
 1. Confirm the contract (inputs, artefacts, state delta). If it changes, update the doc first.

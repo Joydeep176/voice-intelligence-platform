@@ -45,11 +45,30 @@ export const ConsentAttestationInput = z.object({
   attested: z.literal(true),
 });
 
-/** Rejects control characters and path separators; the filename is metadata only. */
+/**
+ * C1 controls and bidirectional/formatting controls that can visually spoof a filename
+ * (U+061C, U+200E/F, U+202A-E, U+2066-9). Other scripts (e.g. Devanagari) stay valid.
+ */
+function isSpoofingControl(code: number): boolean {
+  return (
+    (code >= 0x80 && code <= 0x9f) ||
+    code === 0x061c ||
+    code === 0x200e ||
+    code === 0x200f ||
+    (code >= 0x202a && code <= 0x202e) ||
+    (code >= 0x2066 && code <= 0x2069)
+  );
+}
+
+/**
+ * Rejects C0/C1 control characters, bidirectional controls and path separators; the filename
+ * is metadata only.
+ */
 function isSafeFilename(value: string): boolean {
   for (const char of value) {
     const code = char.codePointAt(0) ?? 0;
-    if (code < 0x20 || code === 0x7f || char === '/' || char === '\\') return false;
+    if (code < 0x20 || code === 0x7f || isSpoofingControl(code)) return false;
+    if (char === '/' || char === '\\') return false;
   }
   return true;
 }

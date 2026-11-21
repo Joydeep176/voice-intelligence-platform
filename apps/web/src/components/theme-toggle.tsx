@@ -1,42 +1,33 @@
-import { Laptop, Moon, Sun } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { type ThemePreference, useTheme } from '@/lib/theme';
+import { useState } from 'react';
+import { ThemeButton } from './shell/theme-button';
+import { useIntentLoad } from './shell/use-intent-load';
+
+// The Radix menu loads on first intent; the trigger itself is eager so it never shifts or disappears.
+const loadThemeMenu = () => import('./shell/theme-menu').then((m) => m.ThemeMenu);
 
 export function ThemeToggle() {
-  const { preference, setPreference } = useTheme();
+  const { Component: ThemeMenu, load } = useIntentLoad(loadThemeMenu);
+  const [activated, setActivated] = useState(false);
+  if (activated && ThemeMenu) return <ThemeMenu />;
+  const activate = () => {
+    setActivated(true);
+    load();
+  };
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label="Change theme">
-          <Sun aria-hidden className="dark:hidden" />
-          <Moon aria-hidden className="hidden dark:block" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40">
-        <DropdownMenuLabel>Theme</DropdownMenuLabel>
-        <DropdownMenuRadioGroup
-          value={preference}
-          onValueChange={(v) => setPreference(v as ThemePreference)}
-        >
-          <DropdownMenuRadioItem value="light">
-            <Sun aria-hidden /> Light
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="dark">
-            <Moon aria-hidden /> Dark
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="system">
-            <Laptop aria-hidden /> System
-          </DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <ThemeButton
+      aria-haspopup="menu"
+      aria-expanded={false}
+      data-state="closed"
+      onPointerEnter={load}
+      onPointerDown={load}
+      onFocus={load}
+      onClick={activate}
+      onKeyDown={(event) => {
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          activate();
+        }
+      }}
+    />
   );
 }

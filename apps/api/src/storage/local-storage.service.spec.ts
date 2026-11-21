@@ -108,4 +108,19 @@ describe('LocalStorageService', () => {
       `local://recordings/${id}/${id}/original`,
     );
   });
+
+  it('moves an object atomically, replacing the destination', async () => {
+    await storage.writeObject('a/old', Readable.from([Buffer.from('old')]), { maxBytes: 100 });
+    await storage.writeObject('a/new', Readable.from([Buffer.from('new')]), { maxBytes: 100 });
+    await storage.moveObject('a/new', 'b/final');
+    await storage.moveObject('a/old', 'b/final');
+    expect(await readFile(join(root, 'b', 'final'))).toEqual(Buffer.from('old'));
+    await expect(storage.statObject('a/new')).rejects.toBeInstanceOf(ObjectNotFoundError);
+    await expect(storage.moveObject('a/missing', 'b/x')).rejects.toBeInstanceOf(
+      ObjectNotFoundError,
+    );
+    await expect(storage.moveObject('a/old', '../escape')).rejects.toBeInstanceOf(
+      InvalidStorageKeyError,
+    );
+  });
 });
