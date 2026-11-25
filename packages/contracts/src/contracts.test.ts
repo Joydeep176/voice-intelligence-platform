@@ -1,7 +1,11 @@
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
+  storageUriForKey,
   ApiError,
+  AudioPreprocessConfig,
+  AudioServiceCapabilities,
   AudioServiceError,
   AudioServiceProbe,
   CreateRecordingRequest,
@@ -11,7 +15,17 @@ import {
   PlaybackUrl,
   ProcessingStatus,
   RecordingMetadata,
+  AudioPreprocessJob,
+  AudioProbeJob,
+  JobIds,
+  ProcessingSegmentsQuery,
+  ProcessingSnapshot,
   RunStatus,
+  buildPreprocessConfig,
+  buildProbeConfig,
+  canonicalJson,
+  decideRowAction,
+  toolVersionsFromCapabilities,
 } from './index.js';
 
 const fixture = (name: string): unknown =>
@@ -177,5 +191,127 @@ describe('PlaybackUrl', () => {
     expect(
       PlaybackUrl.safeParse({ url: '/api/v1/media/recordings/a.b', expiresAt: 'soon' }).success,
     ).toBe(false);
+  });
+});
+
+describe('processing config builder (shared by API and orchestrator)', () => {
+  const capabilities = AudioServiceCapabilities.parse(fixture('capabilities.valid.json'));
+  const hash = (config: unknown): string =>
+    createHash('sha256').update(canonicalJson(config)).digest('hex');
+
+  it.each(['default'])('reproduces the shared %s hash vector', () => {
+    const vector = fixture('preprocess-config-hash.default.valid.json') as {
+      config: unknown;
+      expectedHash: string;
+    };
+    const toolVersions = toolVersionsFromCapabilities(capabilities);
+    expect(toolVersions).not.toBeNull();
+    const built = buildPreprocessConfig(toolVersions!);
+    expect(built).toEqual(vector.config);
+    expect(hash(built)).toBe(vector.expectedHash);
+    expect(AudioPreprocessConfig.safeParse(built).success).toBe(true);
+  });
+
+  it('is deterministic and changes with the tool versions', () => {
+    const base = toolVersionsFromCapabilities(capabilities)!;
+    expect(hash(buildPreprocessConfig(base))).toBe(hash(buildPreprocessConfig({ ...base })));
+    expect(hash(buildPreprocessConfig({ ...base, ffmpeg: '7.1.3' }))).not.toBe(
+      hash(buildPreprocessConfig(base)),
+    );
+  });
+
+  it('refuses capabilities that cannot preprocess', () => {
+    expect(toolVersionsFromCapabilities({ ...capabilities, ffmpeg: null })).toBeNull();
+    expect(toolVersionsFromCapabilities({ ...capabilities, taskTypes: ['probe'] })).toBeNull();
+    expect(toolVersionsFromCapabilities({ ...capabilities, python: 'bad version!' })).toBeNull();
+  });
+
+  it('builds the probe limits config', () => {
+    expect(buildProbeConfig()).toEqual({
+      maxDurationMs: 14_400_000,
+      maxChannels: 8,
+      maxSampleRateHz: 192_000,
+    });
+  });
+});
+
+describe('processing DTOs and job payloads', () => {
+  const id = '00000000-0000-4000-8000-000000000001';
+
+  it('job ids avoid ":" (BullMQ rejects it)', () => {
+    expect(JobIds.probe(id)).not.toContain(':');
+    expect(JobIds.preprocess(id)).toBe(id);
+  });
+
+  it('payloads carry IDs only and default the worker-owned fields', () => {
+    expect(AudioProbeJob.parse({ workspaceId: id, recordingId: id })).toEqual({
+      workspaceId: id,
+      recordingId: id,
+      thenPreprocess: false,
+      submissions: 0,
+    });
+    expect(AudioPreprocessJob.safeParse({ workspaceId: id, preprocessingId: 'x' }).success).toBe(
+      false,
+    );
+  });
+
+  it('segment query bounds the limit', () => {
+    expect(ProcessingSegmentsQuery.parse({}).limit).toBe(100);
+    expect(ProcessingSegmentsQuery.safeParse({ limit: '1001' }).success).toBe(false);
+    expect(ProcessingSegmentsQuery.safeParse({ fromMs: '-1' }).success).toBe(false);
+    expect(ProcessingSegmentsQuery.parse({ fromMs: '5', limit: '1000' })).toEqual({
+      fromMs: 5,
+      limit: 1000,
+    });
+  });
+
+  it('snapshot allows an unstarted recording', () => {
+    expect(
+      ProcessingSnapshot.safeParse({
+        state: 'not_started',
+        recording: { status: 'uploaded', validationError: null },
+        probe: null,
+        preprocessing: null,
+      }).success,
+    ).toBe(true);
+  });
+});
+
+describe('decideRowAction (retry rules)', () => {
+  it('returns a succeeded version without running anything', () => {
+    expect(decideRowAction({ status: 'succeeded', attempt: 1 }, 3)).toEqual({ kind: 'return' });
+  });
+
+  it('keeps a live version and lets the queue dedupe the job', () => {
+    expect(decideRowAction({ status: 'queued', attempt: 0 }, 3)).toEqual({ kind: 'enqueue' });
+    expect(decideRowAction({ status: 'running', attempt: 1 }, 3)).toEqual({ kind: 'enqueue' });
+  });
+
+  it.each(['failed', 'cancelled'] as const)(
+    'retries a %s version only while attempts remain',
+    (status) => {
+      expect(decideRowAction({ status, attempt: 2 }, 3)).toEqual({ kind: 'retry' });
+      expect(decideRowAction({ status, attempt: 3 }, 3).kind).toBe('reject');
+      expect(decideRowAction({ status, attempt: 9 }, 3).kind).toBe('reject');
+    },
+  );
+});
+
+describe('storageUriForKey', () => {
+  it('keeps the local scheme without an authority', () => {
+    expect(storageUriForKey('local://recordings/w/r/original', 'derived/x')).toBe(
+      'local://derived/x',
+    );
+  });
+
+  it('keeps the bucket of an object-store URI', () => {
+    expect(storageUriForKey('s3://bucket/recordings/w/r/original', 'derived/x')).toBe(
+      's3://bucket/derived/x',
+    );
+    expect(storageUriForKey('s3://bucket/k', 'derived/x')).toBe('s3://bucket/derived/x');
+  });
+
+  it('rejects a reference without a scheme', () => {
+    expect(() => storageUriForKey('no-scheme', 'k')).toThrow();
   });
 });

@@ -27,9 +27,9 @@ export class ApiRequestError extends Error {
   }
 }
 
-const ws = (path: string) => `/api/v1/workspaces/${WORKSPACE_ID}${path}`;
+export const ws = (path: string) => `/api/v1/workspaces/${WORKSPACE_ID}${path}`;
 
-async function request<T extends z.ZodType>(
+export async function request<T extends z.ZodType>(
   path: string,
   schema: T,
   init?: RequestInit,

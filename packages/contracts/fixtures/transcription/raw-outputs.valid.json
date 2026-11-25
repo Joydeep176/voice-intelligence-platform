@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "id": "33333333-3333-4333-8333-333333333333",
+      "kind": "stt",
+      "provider": "fake",
+      "providerModel": "fake-stt-1",
+      "scope": "window",
+      "windowIndex": 0,
+      "windowStartMs": 0,
+      "windowEndMs": 30000,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "receivedAt": "2026-11-22T10:00:01.000Z",
+      "fake": true
+    }
+  ]
+}

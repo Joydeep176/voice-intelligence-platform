@@ -1,0 +1,140 @@
+{
+ "scenario": "outage",
+ "startedAt": "2026-11-25T17:57:48.617Z",
+ "steps": [
+  {
+   "name": "audio-service-paused",
+   "t_s": 33.3
+  },
+  {
+   "name": "during-outage",
+   "t_s": 93.4,
+   "status": "failed",
+   "error": {
+    "code": "AUDIO_UNAVAILABLE",
+    "node": "transcription"
+   },
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:failed#1!AUDIO_UNAVAILABLE,diarization:pending#0",
+   "uiRefreshNote": null
+  },
+  {
+   "name": "audio-service-unpaused",
+   "t_s": 93.4
+  },
+  {
+   "name": "after-outage",
+   "t_s": 93.4,
+   "status": "failed",
+   "error": {
+    "code": "AUDIO_UNAVAILABLE",
+    "node": "transcription"
+   },
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:failed#1!AUDIO_UNAVAILABLE,diarization:pending#0",
+   "uiDetails": "This run covers transcription and speaker diarization only. Fixed 30 s windows (no preprocessing segments) Transcription failed The audio service could not be reached. Retry once it is available again. Retry is possible. 3 of 3 retries left."
+  },
+  {
+   "name": "after-retry",
+   "t_s": 511.2,
+   "status": "completed",
+   "error": null,
+   "retryCount": 1,
+   "cancelRequested": false,
+   "transcriptAvailable": true,
+   "stages": "transcription:completed#2@100,diarization:completed#2@100",
+   "uiCompleted": true
+  },
+  {
+   "name": "service-tasks-queued",
+   "t_s": 511.5,
+   "probe": 1,
+   "preprocess": 1,
+   "transcribe": 3,
+   "diarize": 1
+  }
+ ],
+ "timeline": [
+  {
+   "t_s": 10.2,
+   "status": "queued",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:pending#0,diarization:pending#0"
+  },
+  {
+   "t_s": 13.2,
+   "status": "running",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:running#1,diarization:pending#0"
+  },
+  {
+   "t_s": 93.4,
+   "status": "failed",
+   "error": {
+    "code": "AUDIO_UNAVAILABLE",
+    "node": "transcription"
+   },
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:failed#1!AUDIO_UNAVAILABLE,diarization:pending#0"
+  },
+  {
+   "t_s": 98.7,
+   "status": "queued",
+   "error": null,
+   "retryCount": 1,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:failed#1!AUDIO_UNAVAILABLE,diarization:pending#0"
+  },
+  {
+   "t_s": 101.7,
+   "status": "running",
+   "error": null,
+   "retryCount": 1,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:running#2,diarization:pending#0"
+  },
+  {
+   "t_s": 463.1,
+   "status": "running",
+   "error": null,
+   "retryCount": 1,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:running#2@50,diarization:pending#0"
+  },
+  {
+   "t_s": 493.2,
+   "status": "running",
+   "error": null,
+   "retryCount": 1,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:completed#2@100,diarization:running#2"
+  },
+  {
+   "t_s": 511.2,
+   "status": "completed",
+   "error": null,
+   "retryCount": 1,
+   "cancelRequested": false,
+   "transcriptAvailable": true,
+   "stages": "transcription:completed#2@100,diarization:completed#2@100"
+  }
+ ],
+ "consoleErrors": [],
+ "total_s": 511.5
+}

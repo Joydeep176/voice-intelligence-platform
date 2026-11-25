@@ -48,8 +48,8 @@ docs/
 | `graph` | LangGraph definition, state, Postgres checkpointer, pause/resume |
 | `graph/nodes/preprocessing` | Deterministic preprocessing node (step 2, ADR-0019). Not an agent; no LLM |
 | `agents/<agent>` | `audio-quality`, `transcription`, `context-intelligence`, `research`, `fact-validation`, `reporting`, `qa`: node, prompts, schemas |
-| `providers/stt` | `SpeechToTextProvider` + `FakeSpeechToTextProvider` (real providers after benchmark) |
-| `providers/diarization` | `DiarizationProvider` + fake, + `AudioServiceDiarizationProvider` if self-hosted |
+| `providers/stt` | `SpeechToTextProvider`: `fake` (development, tests) and `whisper-cpp` (`WhisperCppSttProvider`, ADR-0036: an audio-service `transcribe` task per window) |
+| `providers/diarization` | `DiarizationProvider`: `fake` and `sherpa-onnx` (`SherpaOnnxDiarizationProvider`, ADR-0037: one audio-service `diarize` task per recording) |
 | `providers/research` | `ResearchProvider` (ADR-0017) + fake |
 | `providers/llm` | Claude factory: per-agent model config, retries, budget check, `llm_calls` recording |
 | `audio-client` | Typed client for the audio-service internal API |
@@ -60,31 +60,51 @@ docs/
 ### 2.3 `services/audio` (Python, deterministic service; no DB/Redis access; ADR-0002, ADR-0019)
 | Module | Responsibility |
 |---|---|
-| `api` | Internal HTTP adapter. FastAPI + uvicorn, provisionally (OD-23a, ADR-0023). The contract is defined independently of the framework (§3.1) until the prototype validates the choice |
-| `tasks` | In-process bounded task executor: concurrency limit, per-task timeout, memory budget, cancellation |
-| `probe` | ffprobe deep validation (step 1) |
-| `preprocess` | Step 2: streamed FFmpeg decoding and normalisation, VAD (method OD-29; WebRTC VAD and Silero VAD to be benchmarked), segmentation with overlap. Returns its configuration and tool-version metadata with every result |
-| `measure` | Objective block-wise audio measurements (librosa/NumPy, streamed reads) requested by A1. No classification or judgement |
-| `diarize` | pyannote.audio, only if self-hosted (ADR-0012, ADR-0016); invoked by A2 |
+| `api` | Internal HTTP adapter. FastAPI + uvicorn (OD-23a, ADR-0023, prototype confirmed). The contract is defined independently of the framework (§3.1) |
+| `tasks` | In-process bounded task executor: one running slot and a bounded queue (configurable), idempotency keys, overall task deadline (media: 120 s + 0.5 × duration; inference: 120 s + 4 × audio; OD-10, ADR-0039), cooperative cancellation, progress. Implemented Phase 2B |
+| `probe` | Sandboxed ffprobe deep validation (step 1): magic-byte demuxer selection, allow-lists, limits, bounded trial decode; container tags never returned. Implemented Phase 2B |
+| `preprocess` | Step 2: streamed FFmpeg decoding (native and canonical passes), canonical WAV, timeline mapping, objective measurements (computed here, ADR-0019), VAD-agnostic segmentation (preprocessing VAD stays `none`; Silero VAD is applied inside transcription windows, OD-29 / ADR-0038). Verifies the config hash and tool versions; idempotent reuse of a verified published version. Implemented Phase 2B |
+| `measure` | Objective block-wise measurements (NumPy; librosa deferred) are computed inside `preprocess` and stored once per preprocessing version; there is no separate `measure` task. A1 reads them. No classification or judgement |
+| `transcribe` | Silero VAD speech spans + whisper.cpp (Whisper small q5_1) per span on one canonical-audio window (ADR-0036, ADR-0038). Pinned models from `AUDIO_SERVICE_MODELS_DIR`, verified at startup; offered only when they verify |
+| `diarize` | sherpa-onnx: pyannote segmentation-3.0 + CAM++ (ADR-0037); whole file up to 10 min, else windows with cross-window speaker matching (ADR-0016) |
 
 ## 3. Interfaces
 
-### 3.1 Audio-service internal API (ADR-0002, *Proposed* shape, to be validated by prototype)
+### 3.1 Audio-service internal API (ADR-0002; contract v2 implemented in Phase 2B as the prototype; formal acceptance of the shape is pending the user's Phase 2B review)
 
 | Method | Path | Purpose |
 |---|---|---|
-| POST | `/v1/tasks` | Submit `{ type: probe\|preprocess\|measure\|diarize, idempotencyKey, input: { storageUri, ... }, config }` → `202 { taskId }`. Same `idempotencyKey` → same task |
-| GET | `/v1/tasks/{taskId}` | `{ status: queued\|running\|succeeded\|failed\|cancelled, progress: { fraction, processedMs, stage }, result?, error? }` |
+| GET | `/v1/capabilities` | Measured tool versions (service, Python, FFmpeg, NumPy, VAD `none`), Landlock state (supported, ABI, enforced, scoped), task types |
+| POST | `/v1/tasks` | Submit `{ contractVersion: "2", type: probe\|preprocess, idempotencyKey, workspaceId, recordingId, input: { originalKey, outputPrefix }, config }` → `202 { taskId }`. Same key + same body → same task; different body → `409 IDEMPOTENCY_CONFLICT`; queue full → `503 CAPACITY_EXCEEDED`. `diarize` is a later phase |
+| GET | `/v1/tasks/{taskId}` | `{ status: queued\|running\|succeeded\|failed\|cancelled, progress: { fraction, processedMs, stage }, deadlineAt?, result?, error?: { code, retryable } }`; unknown → `404 TASK_NOT_FOUND` |
 | DELETE | `/v1/tasks/{taskId}` | Cooperative cancellation |
-| GET | `/health/live`, `/health/ready` | Probes |
+| GET | `/health/live`, `/health/ready` | Liveness (unauthenticated); readiness `503` when storage, FFmpeg or required Landlock enforcement (media or inference profile) is missing, or the confined inference child cannot read the models |
 | POST | `/v1/handshake` | **Implemented Phase 1 prototype.** `{ contractVersion, requestId }` → `{ contractVersion, serviceVersion, requestId, accepted }`; unknown version → `422 CONTRACT_VERSION_MISMATCH`. Used by the API health check to verify reachability and contract compatibility |
 
 - Results are JSON metadata plus storage URIs (artefacts written to object storage by the service). Node persists the metadata to Postgres.
 - Task state is in memory. If the service restarts, the task disappears (`404`); Node treats that as retryable and resubmits with the same idempotency key, within retry bounds.
-- Internal only (private network). Service-to-service authentication: OD-23b.
+- Inference tasks (`transcribe`, `diarize`) use an idempotency key derived from the task content (type, recording, input keys, config). A resubmit after a lost response, a queue retry or a second orchestrator therefore joins the task already queued or running instead of queueing a duplicate on the single slot. When the service answers that key with an earlier `failed` / `cancelled` task, the adapter resubmits under a numbered suffix, so a retry runs again and never replays a failure (`providers/audio-task.ts`, 2026-11-25).
+- Networking and authentication (ADR-0035): development publishes the service to `127.0.0.1:8001` only on a normal
+  bridge and requires a bearer token (`AUDIO_SERVICE_TOKEN`) on every route except liveness; container egress is
+  possible in this topology. All-in-Compose: `internal: true` network only, no published port; production
+  authentication mechanism OD-23c (Open). Bearer-token auth is implemented (Phase 2B).
+- Error codes, untrusted-media controls and timeline semantics: `packages/contracts/src/audio-service.ts`,
+  `docs/development/PHASE2B_PLAN_DRAFT.md` §6 and §11, `services/audio/VERIFICATION_*.md`. Python never parses media
+  itself; FFmpeg children run with fd-only input, allow-lists, a clean environment, rlimits and Landlock.
+- **Inference isolation** (ADR-0036 / ADR-0037). The native engines hold the GIL, so `transcribe` and `diarize` run in
+  a child process started by the same `SandboxRunner` (`domain/isolation.py`) with an *inference profile*:
+  - Landlock read/execute beneath the system paths plus the virtual environment and the models directory; no TCP;
+    scoped signals and sockets.
+  - The same rlimits (CPU scaled by threads, `FSIZE=0`, `NOFILE=64`, `CORE=0`).
+  - A fixed environment (thread pins, never the token).
+  - The canonical WAV as an inherited descriptor; the task message as argv; JSON-line output (capped).
+  - Startup self-tests both confinement and that the child can read every pinned model. Landlock rules do not match
+    on Docker Desktop host bind mounts, so Compose serves `/models` from a named volume.
 - **Framework independence** (ADR-0002 constraint): the contract is specified as JSON schemas in `packages/contracts` (zod, with mirrored Python models). Domain modules (`probe`, `preprocess`, `measure`, `diarize`) must not depend on the HTTP framework.
 
 ### 3.2 Provider adapters (illustrative TypeScript)
+
+*Implementation note (Phase 2C).* The interfaces are implemented in `packages/contracts/src/transcription.ts` with these differences from the sketch below: adapters also expose `model` and `mapRaw(payload, req)` (re-derives the neutral shape from a stored raw payload, so a retry never re-requests output already stored); `capabilities()` carries `fake`; the STT request carries the window (`index`, `startMs`, `endMs`), `audioDurationMs` and the `rawKey` the adapter must write the raw payload to atomically before returning (the raw store is write-once: an existing object is never replaced, and an object an earlier attempt stored before its row is adopted instead of re-requested); returned segment times are absolute on the canonical timeline; diarization requests carry an optional `window` (ADR-0016 hook, whole-file only is implemented) and `rawKey`. `confidence` is absent when the provider gives none. Provider output is validated before use (`apps/orchestrator/src/runs/validate.ts`): segment and diarization-turn intervals must be finite, start within `[0, duration)`, end after start and at most 1 s past the end (clamped to it); speaker keys are non-blank and at most 64 characters; confidences lie in [0, 1]. Otherwise the run fails `PROVIDER_OUTPUT_INVALID` on that stage. Only the `fake` adapters exist (`STT_PROVIDER` / `DIARIZATION_PROVIDER`; an unknown key stops the run workers at startup).
 
 ```ts
 interface SpeechToTextProvider {
@@ -135,12 +155,12 @@ If a provider returns only snippets, the adapter fetches and snapshots the page 
 
 1. **Upload**: an upload session with a fixed part size. Cloud uses S3 multipart presigned URLs; local uses chunked PUT. `GET` on the session lists received parts so an interrupted upload can resume.
 2. **Probe** (ingestion → audio service): deep validation. Invalid → recording `invalid` with a reason.
-3. **Preprocess** (preprocessing node → audio service, deterministic): build a canonical record of the full configuration plus tool versions (audio service, Python, FFmpeg, librosa, NumPy, VAD implementation and version), hash it, and store **both the record and the hash** (ADR-0015). Reuse a matching `audio_preprocessings` row, otherwise create one. Streamed FFmpeg decoding and normalisation (*Proposed* canonical: mono, 16 kHz, lossless), VAD (OD-29), segmentation with overlap.
+3. **Preprocess** (preprocessing node → audio service, deterministic): build a canonical record of the full configuration plus tool versions (audio service, Python, FFmpeg, librosa, NumPy, VAD implementation and version), hash it, and store **both the record and the hash** (ADR-0015). Reuse a matching `audio_preprocessings` row, otherwise create one. Streamed FFmpeg decoding and normalisation (canonical: mono, 16 kHz, s16 WAV, implemented in Phase 2B; formal acceptance pending the user's review), VAD (OD-29), segmentation with overlap.
 4. **Measure and diagnose** (A1, in parallel with steps 5–10, ADR-0021): the audio service computes objective block-wise measurements (stored once per preprocessing version). A1 classifies them into run-scoped diagnostics and flags.
 5. **Transcribe** (A2): a BullMQ flow with one child job per segment plus a parent completion job. Per-provider rate limiter, per-run fan-out cap (OPS-5). Each child stores raw output before parsing.
 6. **Stitch** (A2): in overlap regions, keep words from the segment where the overlap is further from that segment's edge. Use word timestamps where available.
 7. **Identify language** (A2): per segment, with code-switch spans. Uncertain cases → `language_uncertain`.
-8. **Diarize** (A2, ADR-0016): memory must stay bounded for recordings of any length. Managed providers receive the storage URI. Self-hosted diarization uses whole-file processing only within the memory budget, otherwise a windowed approach with cross-window speaker matching to give global `speaker_key`s. Thresholds and algorithm are set by benchmark (OD-03b).
+8. **Diarize** (A2, ADR-0016): memory must stay bounded for recordings of any length. Managed providers receive the storage URI. Self-hosted diarization uses whole-file processing only within the memory budget, otherwise a windowed approach with cross-window speaker matching to give global `speaker_key`s. Implemented (ADR-0037): whole file up to 10 min; else 10 min windows with 30 s overlap, one CAM++ embedding per window speaker, greedy one-to-one matching at cosine ≥ 0.5, turns clipped to each window's owned span.
 9. **Align** (A2): assign each word/segment the speaker with the greatest overlap. Overlapping turns → `overlapping_speech` uncertainty.
 10. **Persist** (A2) the machine transcript version v1 (immutable).
 
@@ -149,10 +169,15 @@ If a provider returns only snippets, the adapter fetches and snapshots the page 
 | Queue | Producer → Consumer | Notes |
 |---|---|---|
 | `run` | api → orchestrator | Starts or resumes a graph run (`runId`, `resume?`) |
-| `audio-task` | orchestrator → orchestrator | Submits an audio-service task, then polls it using the *step-job* pattern (re-delays itself; no worker blocked). Relays progress (ADR-0018) |
+| `audio-probe` | api (after upload complete, explicit start) → orchestrator | Phase 2B, implemented. Validation: `{workspaceId, recordingId, thenPreprocess}`, jobId `probe-<recordingId>`. Step job (`moveToDelayed` + `DelayedError`, poll 2 s) |
+| `audio-preprocess` | api / orchestrator → orchestrator | Phase 2B, implemented. `{workspaceId, preprocessingId}`, jobId = preprocessingId. Step job; progress written on stage change, 1 % or 5 s; cancel checked each poll |
+| `audio-sweep` | orchestrator (repeatable, 60 s) | Phase 2B, implemented. Re-enqueues stuck `queued`/`running` rows and `validating` recordings without a live job, else fails the row `TIMEOUT` (retryable) |
+| `audio-task` | orchestrator → orchestrator | Generic step-job design. Phase 2B implements it as the dedicated `audio-probe` / `audio-preprocess` queues above; kept for later audio tasks (e.g. self-hosted diarization) |
+| `run-transcription` | api / orchestrator → orchestrator | Phase 2C, implemented (D-2C-01, interim). `{workspaceId, runId}`, jobId = runId. One job runs the whole stage scope (transcription windows, then diarization, then atomic transcript v1) in one bounded loop, concurrency 1 (`QUEUE_RUN_CONCURRENCY`); cancel (`cancel_requested_at`, status `cancelling`), the deadline (`RUN_DEADLINE_MS`) and the per-call bound (`RUN_PROVIDER_TIMEOUT_MS`) are checked between windows; transient failures use BullMQ attempts and backoff (`QUEUE_RUN_ATTEMPTS`, `QUEUE_RUN_BACKOFF_MS`), then the run fails with a code. Stored raw outputs are reused on retry. Replaced by the LangGraph `run` queue and the per-segment flow below when agents are approved |
+| `run-sweep` | orchestrator (repeatable, `RUN_SWEEP_INTERVAL_MS`) | Phase 2C, implemented. Re-enqueues stuck `queued`/`running` runs without a live job while `retry_count < RUN_MAX_RETRIES` (counted as a retry, audited `run.retried`), else fails them `TIMEOUT`; finishes a `cancelling` run without a job as `cancelled` |
 | `stt-segment` | orchestrator (flow child) | One segment per job. Fake provider in development |
 | `stt-complete` | orchestrator (flow parent) | Runs when all children finish → resume graph |
-| `diarize` | orchestrator | Managed adapter call, or an `audio-task` for self-hosted |
+| `diarize` | orchestrator | Managed adapter call, or an audio-service task for self-hosted (implemented inside the `run-transcription` job, ADR-0037) |
 | `export` | api → orchestrator | PDF/DOCX rendering |
 | `deletion` | api → orchestrator | Recording deletion across all stores |
 

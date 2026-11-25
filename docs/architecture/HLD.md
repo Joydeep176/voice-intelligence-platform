@@ -18,7 +18,7 @@ A general-purpose multilingual AI Voice Intelligence Platform for **English, Hin
 | AI orchestration | LangChain.js + LangGraph.js |
 | Primary LLM | Anthropic Claude API (model per agent configurable, ADR-0013). **Conflict flagged:** a paid runtime API is not allowed by ADR-0034; production LLM inference is OD-47 (Open) |
 | Speech-to-text | Configurable provider adapter (fake adapter first, ADR-0012) |
-| Audio processing | Python + FFmpeg + librosa + NumPy, as a separate deterministic service (ADR-0002, ADR-0019) |
+| Audio processing | Python + FFmpeg + librosa + NumPy, as a separate deterministic service (ADR-0002, ADR-0019). Phase 2B uses FFmpeg + NumPy only; librosa is deferred (not needed for the implemented measurements; deviation from this list pending the user's review) |
 | Speaker diarization | pyannote.audio or managed provider, part of the transcription stage (benchmark before production, ADR-0012) |
 | Database | PostgreSQL + pgvector (embeddings not used for now, ADR-0011) |
 | Background processing | Redis + BullMQ, owned by Node/NestJS (ADR-0002) |
@@ -128,11 +128,12 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | ID | Decision | Resolution / proposal | Status | Record |
 |---|---|---|---|---|
 | OD-01 | Step-to-agent mapping | Seven agents; preprocessing is deterministic in the audio service; diarization in the transcription stage | Accepted | ADR-0001, ADR-0019 |
-| OD-02a | STT for development | Fake adapter | Interim | ADR-0012 |
-| OD-02b | STT production provider | Benchmark before selection | Open | — |
-| OD-03a | Diarization for development | Fake adapter | Interim | ADR-0012 |
-| OD-03b | Diarization production implementation, including the ADR-0016 thresholds and windowing algorithm | Benchmark pyannote.audio vs managed. **Conflict flagged:** a paid managed service is not allowed by ADR-0034 | Open | — |
-| OD-04 | Node ↔ Python integration | Node owns BullMQ/job lifecycle; LangGraph orchestrates; Python service behind an internal API | Accepted provisionally (prototype) | ADR-0002 |
+| OD-02a | STT for development and tests | Fake adapter (`STT_PROVIDER=fake`), kept after the production selection | Accepted | ADR-0012, ADR-0040 |
+| OD-02b | STT production provider | Self-hosted Whisper small (whisper.cpp ggml q5_1, MIT) via pywhispercpp 1.5.1 in the audio service, decoded per Silero speech span with its own en/hi language; free, local, no network at runtime | Accepted (selection delegated by the user, 2026-11-24) | ADR-0036 |
+| OD-03a | Diarization for development and tests | Fake adapter (`DIARIZATION_PROVIDER=fake`), kept after the production selection | Accepted | ADR-0012, ADR-0040 |
+| OD-03b | Diarization production implementation, including the ADR-0016 thresholds and windowing algorithm | Self-hosted sherpa-onnx 2.0.2 with pyannote segmentation-3.0 (ONNX, MIT) + 3D-Speaker CAM++ (Apache-2.0) in the audio service; whole file up to 10 min, else 10 min windows / 30 s overlap with cross-window embedding matching (cosine ≥ 0.5); free, local | Accepted (selection delegated by the user, 2026-11-24) | ADR-0037 |
+| OD-04a | Node ↔ Python integration | Node owns BullMQ/job lifecycle; Python service behind an internal API (confirmed by the Phase 2B prototype, reused for Phase 2C inference) | Accepted | ADR-0002, ADR-0040 |
+| OD-04b | Orchestration | LangGraph orchestrates (not yet exercised; the Phase 2C coordinator stands in until the agent phase) | Accepted provisionally (agent phase) | ADR-0002, ADR-0040 |
 | OD-05 | Research provider | Assistant suggestion: Claude server-side web search/fetch behind the ADR-0017 interface. **Conflict flagged:** this suggestion is a paid API and is not allowed by ADR-0034; the provider must be free and self-hostable | Open | — |
 | OD-06 | Embeddings | Not used until a retrieval use case is demonstrated | Interim | ADR-0011 |
 | OD-07 | Claude model per agent; cost | Configurable per agent; cost tracked per call and per run. **Conflict flagged:** assumes a paid Claude API, which ADR-0034 does not allow at runtime; to be resolved through OD-47 | Accepted | ADR-0013 |
@@ -140,7 +141,7 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-08b | Authentication provider | — | Open | — |
 | OD-09a | Development data | Synthetic or explicitly consented audio only | Interim | ADR-0004 |
 | OD-09b | Production privacy & data-handling policy, including retention and copyright handling of research source snapshots (ADR-0017) | Required before production | Open | — |
-| OD-10 | Limits & targets (formats, size/duration, segment length/overlap, latency) | — | Open | — |
+| OD-10 | Limits & targets (formats, size/duration, segment length/overlap, latency) | 4 h, 2 GiB, ≤ 8 ch, ≤ 192 kHz; audio service 768 MB / 2 CPUs, 2 inference threads (ADR-0041), anonymous-memory gate; windows 30 s / 1 s; media timeouts 120 s + 0.5 × duration, inference 120 s + 4 × audio; run deadline 1 h + 6 × duration; lossy timestamps ±10 ms | Accepted | ADR-0039, ADR-0041 |
 | OD-11 | Tooling, ORM | pnpm, Turborepo, uv, Drizzle; verify pgvector compatibility before implementation | Accepted provisionally (verification) | ADR-0005 |
 | OD-12 | Report formats & language | HTML in-app; PDF/DOCX exports; English default, Hindi option | Accepted | ADR-0006 |
 | OD-13 | Hindi/Hinglish script | Preserve original script and code-switching; transliteration/translation are separate derived representations | Accepted | ADR-0007 |
@@ -148,13 +149,14 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-15 | Observability | Assistant suggestion: content-free structured logs; OpenTelemetry later | Open | — |
 | OD-16 | Progress transport to client | SSE (with polling fallback) | Proposed | — |
 | OD-17 | IaC and CI/CD | — | Open | — |
-| OD-18 | Test audio corpus | — | Open | — |
+| OD-18 | Test audio corpus | Licence-checked list (Common Voice, FLEURS, LibriSpeech, MUCS 2021, MUSAN, DEMAND, consented internal); non-commercial sets excluded; download and real-speech benchmark are follow-up work | Accepted | ADR-0040 |
 | OD-19 | Poor-quality audio | Continue where possible; report limitations | Accepted | ADR-0008 |
 | OD-20 | Research privacy | Research mandatory; query minimisation and privacy controls | Accepted | ADR-0009 |
 | OD-21 | Worker bounds | Required; numeric values set in configuration | Accepted | ADR-0010 |
 | OD-22 | Transcript corrections | Versioned; never overwrite provider output; display names separate from machine IDs | Accepted | ADR-0007 |
-| OD-23a | Python service framework | FastAPI + uvicorn, provisionally; the service contract stays framework-independent (ADR-0002) until the prototype validates the choice | Accepted provisionally (prototype) | ADR-0023 |
-| OD-23b | Service-to-service authentication | — | Open | — |
+| OD-23a | Python service framework | FastAPI + uvicorn, confined to the adapter; the service contract stays framework-independent (prototype confirmed) | Accepted | ADR-0023, ADR-0040 |
+| OD-23b | Service-to-service authentication and networking, current development topology | Audio service on a normal bridge, published to `127.0.0.1:8001` only; bearer token (`AUDIO_SERVICE_TOKEN`) on all routes except liveness; container egress remains possible and is documented as such | Accepted | ADR-0035 |
+| OD-23c | Service-to-service authentication, production / all-in-Compose | Network topology fixed by ADR-0035 (audio service on an `internal: true` network only, no published port); authentication mechanism (bearer token, mTLS or other) not decided; decided with OD-48 | Open | — |
 | OD-24a | Storage of translations/transliterations | Original preserved; translation and transliteration stored separately | Accepted | ADR-0007 |
 | OD-24b | How translations/transliterations are generated and triggered | — | Open | — |
 | OD-25 | PDF/DOCX export library | Deferred to implementation by user decision | Open | — |
@@ -162,7 +164,7 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-26b | Mechanism for corrected-transcript runs | New run with `sourceTranscriptVersionId`, starting at Context Intelligence (ADR-0020 §Proposed) | Proposed | ADR-0020 |
 | OD-27 | Workspace roles, authorisation, database isolation (incl. RLS) | Must be defined before multi-user access is implemented | Open (blocks multi-user) | — |
 | OD-28 | Cost ceiling behaviour | Stop further expensive processing; preserve completed results | Proposed | — |
-| OD-29 | VAD implementation | Benchmarking WebRTC VAD and Silero VAD is approved (benchmark only; no selection, and either would be a new dependency added only when the benchmark is set up) | Open | — |
+| OD-29 | VAD implementation | Silero VAD v6.2.3 (MIT) through sherpa-onnx, splitting transcription windows into speech spans (threshold 0.4, silence 300 ms, speech 250 ms, padding 200 ms); preprocessing VAD stays `none` | Accepted | ADR-0038 |
 | OD-30 | Claim verdict taxonomy | `supported`, `contradicted`, `partially_supported`, `unverifiable`, `not_checkable` | Proposed | — |
 | OD-31 | SRS assumptions A-1 (batch only) and A-2 (three languages only) | As stated in SRS §2.3 | Proposed | — |
 | OD-32 | Run A1 and A2 in parallel after preprocessing | Independent parallel branches; downstream agents wait for their required upstream results. Subject to graph-level validation | Accepted provisionally (graph validation) | ADR-0021 |
@@ -173,14 +175,14 @@ Decisions with mixed scope are split into a/b rows so each row has one status.
 | OD-36 | Charting library | No candidate selected | Open | — |
 | OD-37 | List/transcript virtualisation library | No candidate selected | Open | — |
 | OD-38 | Fonts, including a Devanagari-capable face | IBM Plex Sans, IBM Plex Sans Devanagari and IBM Plex Mono, self-hosted WOFF2 limited to the weights and subsets used; no font service | Accepted | ADR-0028 |
-| OD-39 | Server-side waveform peaks artefact and API endpoint | Precompute waveform peaks per preprocessing version in the audio service and serve them by time range, so the browser never decodes long recordings. For later consideration; not part of the current architecture | Proposed | — |
+| OD-39 | Server-side waveform peaks artefact and API endpoint | Deferred: decided when the waveform UI is built (precompute per preprocessing version, serve by time range); `level-series.json` is never served as peaks | Accepted (deferral) | ADR-0040 |
 | OD-40 | shadcn/ui component base (primitive library) | Radix UI; scaffold with `shadcn init --base radix` because the CLI now defaults to Base UI | Accepted | ADR-0022 |
 | OD-41 | Icon library | `lucide-react` (shadcn default) | Accepted | ADR-0024 |
 | OD-42 | Run record at upload | Completing an upload creates a `pipeline_runs` row with the new status `created` (not yet submitted to the pipeline) | Accepted | ADR-0025 |
 | OD-43 | Automated accessibility testing | `@axe-core/playwright` as an `apps/web` development-only dependency; no serious or critical violations | Accepted | ADR-0029 |
 | OD-44 | Brand accents versus semantic colours | Brand accents and gradients only in app chrome, never in evidence surfaces; provenance, audio diagnostics and transcription uncertainty keep separate token families | Accepted | ADR-0030 |
 | OD-45 | Recording playback access | Short-lived HMAC-signed playback URLs issued per workspace recording (audited); media route streams with HTTP Range; uniform 404; required signing secret. Production auth (OD-08b), authorisation (OD-27), rate limiting and S3 support outstanding | Accepted | ADR-0033 |
-| OD-46 | Spending | Zero additional spending: no paid runtime AI APIs (including the Anthropic API), subscriptions, paid services, commercial or paid-tier dependencies, paid datasets or cloud spend. Claude Code / Pro for development assistance only. Prefer local open-source models, free Hugging Face resources and self-hosted projects, after licence, hardware (Apple M2, 16 GB) and resource checks. Replacement providers are not selected | Accepted | ADR-0034 |
+| OD-46 | Spending | Zero additional spending: no paid runtime AI APIs (including the Anthropic API), subscriptions, paid services, commercial or paid-tier dependencies, paid datasets or cloud spend. Claude Code / Pro for development assistance only. Prefer local open-source models, free Hugging Face resources and self-hosted projects, after licence, hardware (Apple M1, 8 GB unified memory, 512 GB SSD; corrected 2026-11-21 from Apple M2 16 GB, see ADR-0034 Amendment) and resource checks. Replacement providers are not selected | Accepted | ADR-0034 |
 | OD-47 | Production LLM inference runtime (within ADR-0034) | No candidate selected; to be decided before the agent phase | Open | — |
 | OD-48 | Production deployment target (within ADR-0034) | The approved AWS ECS + RDS + S3 target (HLD §2, SRS C-5, DEPLOYMENT_ARCHITECTURE) conflicts with ADR-0034's no-cloud-expenditure rule. Neither is changed; no replacement selected. S3 work under OD-45 depends on this | Open | — |
 
@@ -188,9 +190,11 @@ Frontend dependencies OD-33 (ADR-0026), OD-34a (ADR-0027, amended by ADR-0031/00
 
 **Design ADRs:**
 - ADR-0015 preprocessing versions: Accepted
-- ADR-0016 bounded-memory diarization: Accepted (principle; thresholds/algorithm under OD-03b)
+- ADR-0016 bounded-memory diarization: Accepted (principle; thresholds and algorithm in ADR-0037)
 - ADR-0017 research adapter and evidence: Accepted (snapshot retention under OD-09b)
 - ADR-0018 progress propagation: Accepted provisionally (prototype; transport OD-16)
 - ADR-0021 parallel Audio Quality and Transcription: Accepted provisionally (graph validation)
 - ADR-0025 run record at upload (`created` status): Accepted
 - ADR-0014 run control (safe cancellation, bounded retries, one targeted research retry): Accepted
+- ADR-0041 audio-service compute for inference (2 CPUs, 2 inference threads; memory, model and deadline unchanged): Accepted (user decision 2026-11-25; confirmed 2026-11-26). Known dense-speech limitation temporarily accepted
+- ADR-0042 transcription and diarization accuracy thresholds (SRS NFR-3 / NFR-4): **Proposed** deferral, awaiting the user's decision; synthetic baseline preserved, no threshold set

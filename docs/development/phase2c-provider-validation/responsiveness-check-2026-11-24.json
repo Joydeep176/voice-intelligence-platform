@@ -1,0 +1,91 @@
+{
+ "taskTypes": [
+  "diarize",
+  "preprocess",
+  "probe",
+  "transcribe"
+ ],
+ "landlock": {
+  "supported": true,
+  "abi": 8,
+  "enforced": true,
+  "scoped": true
+ },
+ "tasks": [
+  {
+   "type": "preprocess",
+   "status": "succeeded",
+   "wall_s": 2.02
+  },
+  {
+   "type": "transcribe",
+   "window": {
+    "startMs": 0,
+    "endMs": 30000
+   },
+   "status": "failed",
+   "error": {
+    "code": "TIMEOUT",
+    "retryable": true
+   },
+   "wall_s": 240.73,
+   "rtf": 8.024,
+   "segments": 0,
+   "languages": [],
+   "devanagari_segments": 0
+  },
+  {
+   "type": "transcribe",
+   "window": {
+    "startMs": 30000,
+    "endMs": 60000
+   },
+   "status": "failed",
+   "error": {
+    "code": "TIMEOUT",
+    "retryable": true
+   },
+   "wall_s": 240.21,
+   "rtf": 8.007,
+   "segments": 0,
+   "languages": [],
+   "devanagari_segments": 0
+  },
+  {
+   "type": "transcribe",
+   "window": {
+    "startMs": 60000,
+    "endMs": 90000
+   },
+   "status": "failed",
+   "error": {
+    "code": "TIMEOUT",
+    "retryable": true
+   },
+   "wall_s": 240.71,
+   "rtf": 8.024,
+   "segments": 0,
+   "languages": [],
+   "devanagari_segments": 0
+  },
+  {
+   "type": "diarize",
+   "status": "succeeded",
+   "error": null,
+   "wall_s": 149.06,
+   "rtf": 1.656,
+   "speakers": 5,
+   "turns": 14
+  }
+ ],
+ "live": {
+  "n": 1719,
+  "max_s": 0.5563,
+  "fail": 0,
+  "over_1s": 0,
+  "p50_s": 0.0031,
+  "p99_s": 0.0129
+ },
+ "status_poll_max_s": 0.5695,
+ "durationMs": 90000
+}

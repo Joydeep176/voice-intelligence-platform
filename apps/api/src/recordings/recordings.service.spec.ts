@@ -1,6 +1,7 @@
 import { Readable } from 'node:stream';
 import type { AuditService } from '../audit/audit.service';
 import type { AppConfig } from '../config/app-config';
+import type { AudioQueues } from '../queue/audio-queues.producer';
 import type { StorageService } from '../storage/storage.service';
 import { RecordingsService, expectedPartSize } from './recordings.service';
 import type { RecordingsRepository } from './recordings.repository';
@@ -54,6 +55,7 @@ describe('RecordingsService concurrency (lock ordering)', () => {
   let current: string;
   let repo: Record<string, jest.Mock>;
   let storage: Record<string, jest.Mock>;
+  let queues: { enqueueProbe: jest.Mock };
   let service: RecordingsService;
   const tx = { tx: true };
 
@@ -105,12 +107,29 @@ describe('RecordingsService concurrency (lock ordering)', () => {
       writeObject: jest.fn(track('write', () => ({ sizeBytes: 10, sha256: 'b'.repeat(64) }))),
     };
     const audit = { record: jest.fn(track('audit')) };
+    queues = { enqueueProbe: jest.fn(track('enqueueProbe')) };
     service = new RecordingsService(
       {} as AppConfig,
       repo as unknown as RecordingsRepository,
       storage as unknown as StorageService,
       audit as unknown as AuditService,
+      queues as unknown as AudioQueues,
     );
+  });
+
+  it('queues validation after the commit, once, for a new upload only', async () => {
+    await service.complete(principal, WS, ID);
+    expect(queues.enqueueProbe).toHaveBeenCalledWith(WS, ID, false);
+    expect(calls.indexOf('enqueueProbe')).toBeGreaterThan(calls.indexOf('audit'));
+    await service.complete(principal, WS, ID); // idempotent repeat
+    expect(queues.enqueueProbe).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not fail a committed upload when the queue is down', async () => {
+    queues.enqueueProbe.mockRejectedValueOnce(new Error('redis down'));
+    await expect(service.complete(principal, WS, ID)).resolves.toMatchObject({
+      status: 'uploaded',
+    });
   });
 
   it('takes the recording lock before composing and commits everything under it', async () => {

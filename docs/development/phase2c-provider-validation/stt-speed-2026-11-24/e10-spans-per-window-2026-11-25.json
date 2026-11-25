@@ -1,0 +1,81 @@
+{
+ "per_file": {
+  "dev-2spk-a.wav": {
+   "windows": 5,
+   "max": 6,
+   "mean": 4.2
+  },
+  "dev-3spk-a.wav": {
+   "windows": 5,
+   "max": 5,
+   "mean": 3.8
+  },
+  "dev-4spk-a.wav": {
+   "windows": 5,
+   "max": 6,
+   "mean": 4.2
+  },
+  "long-60min-4spk.wav": {
+   "windows": 125,
+   "max": 6,
+   "mean": 4.18
+  },
+  "test-2spk-a-2min.wav": {
+   "windows": 5,
+   "max": 4,
+   "mean": 3.4
+  },
+  "test-2spk-b-5min.wav": {
+   "windows": 11,
+   "max": 5,
+   "mean": 3.64
+  },
+  "test-2spk-c-10min.wav": {
+   "windows": 22,
+   "max": 7,
+   "mean": 4.23
+  },
+  "test-3spk-a-2min.wav": {
+   "windows": 5,
+   "max": 5,
+   "mean": 3.6
+  },
+  "test-3spk-b-5min.wav": {
+   "windows": 11,
+   "max": 6,
+   "mean": 3.36
+  },
+  "test-3spk-c-10min.wav": {
+   "windows": 21,
+   "max": 6,
+   "mean": 4.24
+  },
+  "test-4spk-a-2min.wav": {
+   "windows": 5,
+   "max": 4,
+   "mean": 3.0
+  },
+  "test-4spk-b-5min.wav": {
+   "windows": 11,
+   "max": 6,
+   "mean": 4.0
+  },
+  "test-4spk-c-10min.wav": {
+   "windows": 21,
+   "max": 6,
+   "mean": 4.29
+  }
+ },
+ "distribution": {
+  "0": 1,
+  "1": 7,
+  "2": 10,
+  "3": 40,
+  "4": 107,
+  "5": 72,
+  "6": 14,
+  "7": 1
+ },
+ "windows": 252,
+ "over_8": 0
+}

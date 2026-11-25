@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "engine": "sherpa-onnx",
+  "audioDurationMs": 3600000,
+  "clusteringThreshold": 0.6,
+  "minDurationOnMs": 300,
+  "minDurationOffMs": 500,
+  "wholeFileMaxMs": 600000,
+  "windowMs": 600000,
+  "overlapMs": 30000,
+  "matchThreshold": 0.5
+}

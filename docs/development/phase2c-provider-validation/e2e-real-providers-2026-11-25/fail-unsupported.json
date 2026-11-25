@@ -1,0 +1,30 @@
+{
+ "scenario": "unsupported",
+ "startedAt": "2026-11-25T17:36:39.698Z",
+ "steps": [
+  {
+   "name": "uploaded",
+   "t_s": 4.1,
+   "recId": true
+  },
+  {
+   "name": "processing-outcome",
+   "t_s": 5.9,
+   "uiShowsFailure": true,
+   "uiCard": "Audio processing Decoding, validation and signal measurements. Measurements are numbers only, with no quality judgement. Failed Audio processing: Failed Recording rejected This recording was rejected during validation. The recording exceeds a processing limit (such as channels or sample rate). It ca",
+   "apiProcessing": 200,
+   "processing": "{\"state\":\"failed\",\"recording\":{\"status\":\"invalid\",\"validationError\":\"RESOURCE_LIMIT_EXCEEDED\"},\"probe\":null,\"preprocessing\":null}",
+   "recordingStatus": "invalid",
+   "transcribeButton": false
+  },
+  {
+   "name": "start-run-on-invalid",
+   "t_s": 5.9,
+   "status": 409,
+   "code": "INVALID_STATE_TRANSITION"
+  }
+ ],
+ "timeline": [],
+ "consoleErrors": [],
+ "total_s": 6
+}

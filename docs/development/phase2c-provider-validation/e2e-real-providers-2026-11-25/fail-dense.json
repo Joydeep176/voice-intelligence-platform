@@ -1,0 +1,60 @@
+{
+ "scenario": "dense",
+ "startedAt": "2026-11-25T18:06:38.751Z",
+ "steps": [
+  {
+   "name": "final",
+   "t_s": 91.6,
+   "status": "completed",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": true,
+   "stages": "transcription:completed#1@100,diarization:completed#1@100",
+   "uiFailure": null,
+   "retryButton": false,
+   "retriesNote": null,
+   "segments": 12
+  }
+ ],
+ "timeline": [
+  {
+   "t_s": 10.2,
+   "status": "queued",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:pending#0,diarization:pending#0"
+  },
+  {
+   "t_s": 13.2,
+   "status": "running",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:running#1,diarization:pending#0"
+  },
+  {
+   "t_s": 73.5,
+   "status": "running",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:completed#1@100,diarization:running#1"
+  },
+  {
+   "t_s": 91.5,
+   "status": "completed",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": true,
+   "stages": "transcription:completed#1@100,diarization:completed#1@100"
+  }
+ ],
+ "consoleErrors": [],
+ "total_s": 91.8
+}

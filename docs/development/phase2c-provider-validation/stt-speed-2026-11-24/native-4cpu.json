@@ -1,0 +1,89 @@
+{
+ "threads": 4,
+ "margin_frames": 64,
+ "windows": [
+  {
+   "window_ms": [
+    0,
+    30000
+   ],
+   "spans_ms": [
+    5414,
+    4582,
+    9158,
+    8410
+   ],
+   "variants": {
+    "V0": {
+     "detect_s": 56.2,
+     "decode_s": 47.9,
+     "total_s": 104.1,
+     "rtf": 3.47,
+     "languages": [
+      "en",
+      "en",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0
+    }
+   }
+  },
+  {
+   "window_ms": [
+    30000,
+    60000
+   ],
+   "spans_ms": [
+    4870,
+    10662,
+    6534,
+    4890
+   ],
+   "variants": {
+    "V0": {
+     "detect_s": 44.9,
+     "decode_s": 47.6,
+     "total_s": 92.5,
+     "rtf": 3.08,
+     "languages": [
+      "en",
+      "en",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0
+    }
+   }
+  },
+  {
+   "window_ms": [
+    60000,
+    90000
+   ],
+   "spans_ms": [
+    4358,
+    7014,
+    7974,
+    4902,
+    698
+   ],
+   "variants": {
+    "V0": {
+     "detect_s": 57.0,
+     "decode_s": 63.0,
+     "total_s": 120.0,
+     "rtf": 4.0,
+     "languages": [
+      "en",
+      "hi",
+      "hi",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 2
+    }
+   }
+  }
+ ]
+}

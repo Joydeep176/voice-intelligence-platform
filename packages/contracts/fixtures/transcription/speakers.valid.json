@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "id": "33333333-3333-4333-8333-333333333333",
+      "speakerKey": "SPEAKER_00",
+      "displayName": null,
+      "totalSpeechMs": 120000
+    },
+    {
+      "id": "44444444-4444-4444-8444-444444444444",
+      "speakerKey": "SPEAKER_01",
+      "displayName": "Interviewer",
+      "totalSpeechMs": 90000
+    }
+  ]
+}

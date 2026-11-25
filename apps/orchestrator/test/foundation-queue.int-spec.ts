@@ -19,7 +19,13 @@ function testRedisUrl(): string {
 }
 
 const redisUrl = testRedisUrl();
-const config = loadConfig({ REDIS_URL: redisUrl, LOG_LEVEL: 'fatal', SHUTDOWN_TIMEOUT_MS: '5000' });
+const config = loadConfig({
+  REDIS_URL: redisUrl,
+  DATABASE_URL: process.env.TEST_DATABASE_URL ?? 'postgres://unused:unused@127.0.0.1:5432/vip_test',
+  AUDIO_SERVICE_URL: 'http://127.0.0.1:8001',
+  LOG_LEVEL: 'fatal',
+  SHUTDOWN_TIMEOUT_MS: '5000',
+});
 const connection = workerConnection(redisUrl);
 
 describe('foundation-check queue (integration)', () => {

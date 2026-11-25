@@ -2,13 +2,13 @@
 
 ## Constraints
 - **Never download or decode a whole long recording in the browser to draw a waveform.** Recordings can exceed two hours.
-- Server-side waveform peaks (a precomputed artefact plus an endpoint) are **OD-39, Proposed and not approved**. Until it is decided, do not assume a peaks API exists. Use the time-ranged APIs that do exist (segments, speakers, diagnostics, uncertainties) and the streamed playback URL.
+- Server-side waveform peaks (a precomputed artefact plus an endpoint) are **OD-39, Accepted as deferred (ADR-0040)**: no peaks API exists. Do not assume one. Use the time-ranged APIs that do exist (segments, speakers, diagnostics, uncertainties) and the streamed playback URL.
 - The rendering library is OD-35 (Open). Do not add one without approval. A plain `<canvas>` renderer needs no dependency.
 
 ## Structure
 Separate, aligned horizontal tracks sharing one time axis:
 1. Playhead and time ruler (tabular mm:ss / h:mm:ss)
-2. Waveform (only when OD-39 or an approved alternative provides data)
+2. Waveform (only when an approved source provides data; OD-39 is deferred, ADR-0040)
 3. Speaker lanes: turns coloured by `speaker_key` and labelled with the display name (the machine ID stays visible on hover or details)
 4. **Audio diagnostics track**: flags from the Audio Quality Agent (noise, clipping, distortion, dropout, silence, low level), labelled "Audio quality"
 5. **Transcription uncertainty track**: low confidence, inaudible, overlapping speech, uncertain language or speaker, labelled "Transcription uncertainty"

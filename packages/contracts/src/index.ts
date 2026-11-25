@@ -5,3 +5,5 @@ export * from './runs.js';
 export * from './recordings.js';
 export * from './jobs.js';
 export * from './audio-service.js';
+export * from './processing.js';
+export * from './transcription.js';

@@ -33,6 +33,47 @@ describe('loadConfig', () => {
     }
   });
 
+  describe('processing bounds', () => {
+    it('has bounded interim defaults', () => {
+      const config = loadConfig(base);
+      expect(config.processing.maxRetries).toBe(3);
+      expect(config.queues.audio).toEqual({ attempts: 5, backoffMs: 5000 });
+    });
+
+    it('rejects out-of-range values by name', () => {
+      expect(() => loadConfig({ ...base, PROCESSING_MAX_RETRIES: '0' })).toThrow(
+        /PROCESSING_MAX_RETRIES/,
+      );
+      expect(() => loadConfig({ ...base, QUEUE_AUDIO_ATTEMPTS: '99' })).toThrow(
+        /QUEUE_AUDIO_ATTEMPTS/,
+      );
+    });
+  });
+
+  describe('audio service token (ADR-0035)', () => {
+    it('is optional: unset and empty both mean "not configured"', () => {
+      expect(loadConfig(base).audioService.token).toBeUndefined();
+      expect(loadConfig({ ...base, AUDIO_SERVICE_TOKEN: '' }).audioService.token).toBeUndefined();
+    });
+
+    it('is accepted when at least 32 characters', () => {
+      const token = 'a'.repeat(32);
+      expect(loadConfig({ ...base, AUDIO_SERVICE_TOKEN: token }).audioService.token).toBe(token);
+    });
+
+    it('rejects a short token and names only the variable', () => {
+      const short = 'short-secret-value';
+      try {
+        loadConfig({ ...base, AUDIO_SERVICE_TOKEN: short });
+        throw new Error('expected failure');
+      } catch (error) {
+        expect(error).toBeInstanceOf(ConfigError);
+        expect((error as Error).message).toContain('AUDIO_SERVICE_TOKEN');
+        expect((error as Error).message).not.toContain(short);
+      }
+    });
+  });
+
   describe('playback signing', () => {
     it('is required, at least 32 characters and not the placeholder', () => {
       const { MEDIA_URL_SIGNING_SECRET: _omit, ...without } = base;

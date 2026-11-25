@@ -1,0 +1,150 @@
+{
+  "_note": "Pinned model sources for the Phase 2C benchmark. upstream_sha256 is the hash the hosting service itself reports (Hugging Face LFS oid or GitHub asset digest) where one exists; the harness compares it with its own hash and with models.lock.json.",
+  "models": {
+    "fw-small": {
+      "dir": "fw-small",
+      "files": [
+        {
+          "name": "model.bin",
+          "url": "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/model.bin",
+          "size": 483546902,
+          "upstream_sha256": "3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671"
+        },
+        {
+          "name": "config.json",
+          "url": "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/config.json",
+          "size": 2370
+        },
+        {
+          "name": "tokenizer.json",
+          "url": "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/tokenizer.json",
+          "size": 2203239
+        },
+        {
+          "name": "vocabulary.txt",
+          "url": "https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/vocabulary.txt",
+          "size": 459861
+        }
+      ]
+    },
+    "fw-medium": {
+      "dir": "fw-medium",
+      "files": [
+        {
+          "name": "model.bin",
+          "url": "https://huggingface.co/Systran/faster-whisper-medium/resolve/08e178d48790749d25932bbc082711ddcfdfbc4f/model.bin",
+          "size": 1527906378,
+          "upstream_sha256": "9b45e1009dcc4ab601eff815b61d80e60ce3fd8c74c1a14f4a282258286b51ae"
+        },
+        {
+          "name": "config.json",
+          "url": "https://huggingface.co/Systran/faster-whisper-medium/resolve/08e178d48790749d25932bbc082711ddcfdfbc4f/config.json",
+          "size": 2257
+        },
+        {
+          "name": "tokenizer.json",
+          "url": "https://huggingface.co/Systran/faster-whisper-medium/resolve/08e178d48790749d25932bbc082711ddcfdfbc4f/tokenizer.json",
+          "size": 2203239
+        },
+        {
+          "name": "vocabulary.txt",
+          "url": "https://huggingface.co/Systran/faster-whisper-medium/resolve/08e178d48790749d25932bbc082711ddcfdfbc4f/vocabulary.txt",
+          "size": 459861
+        }
+      ]
+    },
+    "ggml-small-q5_1": {
+      "dir": "ggml",
+      "files": [
+        {
+          "name": "ggml-small-q5_1.bin",
+          "url": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-small-q5_1.bin",
+          "size": 190085487,
+          "upstream_sha256": "ae85e4a935d7a567bd102fe55afc16bb595bdb618e11b2fc7591bc08120411bb"
+        }
+      ]
+    },
+    "ggml-medium-q5_0": {
+      "dir": "ggml",
+      "files": [
+        {
+          "name": "ggml-medium-q5_0.bin",
+          "url": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-medium-q5_0.bin",
+          "size": 539212467,
+          "upstream_sha256": "19fea4b380c3a618ec4723c3eef2eb785ffba0d0538cf43f8f235e7b3b34220f"
+        }
+      ]
+    },
+    "sherpa-whisper-small": {
+      "dir": "sherpa-whisper-small",
+      "archive": {
+        "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-whisper-small.tar.bz2",
+        "size": 639387718
+      },
+      "extract": [
+        "small-encoder.int8.onnx",
+        "small-decoder.int8.onnx",
+        "small-tokens.txt"
+      ]
+    },
+    "sherpa-whisper-medium": {
+      "dir": "sherpa-whisper-medium",
+      "archive": {
+        "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-whisper-medium.tar.bz2",
+        "size": 1931372882
+      },
+      "extract": [
+        "medium-encoder.int8.onnx",
+        "medium-decoder.int8.onnx",
+        "medium-tokens.txt"
+      ]
+    },
+    "sherpa-omni-300m": {
+      "dir": "sherpa-omni-300m",
+      "archive": {
+        "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-omnilingual-asr-1600-languages-300M-ctc-v2-int8-2026-02-05.tar.bz2",
+        "size": 292313120,
+        "upstream_sha256": "951b32409aade32bd525310bb39e9666773ba3fc611a39e817f620936d76c631"
+      },
+      "extract": [
+        "model.int8.onnx",
+        "tokens.txt"
+      ]
+    },
+    "diar-segmentation": {
+      "dir": "diar-segmentation",
+      "archive": {
+        "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
+        "size": 6958444
+      },
+      "extract": [
+        "model.onnx",
+        "model.int8.onnx",
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    "emb-campplus-en": {
+      "dir": "diar-embedding",
+      "files": [
+        {
+          "name": "3dspeaker_speech_campplus_sv_en_voxceleb_16k.onnx",
+          "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_campplus_sv_en_voxceleb_16k.onnx",
+          "size": 29596979,
+          "upstream_sha256": "98daf9bcf1c8abf3db374fec4c27a5eda7c58705bb3f180d057b085a72a88bb5"
+        }
+      ]
+    },
+    "emb-wespeaker-r34": {
+      "dir": "diar-embedding",
+      "files": [
+        {
+          "name": "wespeaker_en_voxceleb_resnet34_LM.onnx",
+          "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/wespeaker_en_voxceleb_resnet34_LM.onnx",
+          "size": 26530550,
+          "upstream_sha256": "e9848563da86f263117134dfd7ad63c92355b37de492b55e325400c9d9c39012"
+        }
+      ]
+    }
+  }
+}

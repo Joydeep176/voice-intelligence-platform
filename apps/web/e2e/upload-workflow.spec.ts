@@ -48,7 +48,16 @@ test('uploads a synthetic recording and shows it with an honest processing statu
   await expect(page.getByRole('heading', { name })).toBeVisible();
   // The status badge; the "Uploaded" date label (<dt>) on the same page also matches plain text.
   await expect(page.locator('[data-slot="badge"]', { hasText: /^Uploaded$/ })).toBeVisible();
-  await expect(page.getByText('Not started')).toBeVisible();
+  // The run-status badge (ADR-0025 `created` run). Since Phase 2B the audio-processing card also reads
+  // "Not started", so the run badge is located outside that card, and the card is checked separately.
+  await expect(
+    page.locator('[data-slot="badge"]:not([data-testid="processing-card"] [data-slot="badge"])', {
+      hasText: /^Not started$/,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByTestId('processing-card').getByText('Not started', { exact: true }),
+  ).toBeVisible();
   await expect(page.getByText('Not yet determined', { exact: true })).toBeVisible();
   await page.screenshot({
     path: `${SHOTS}/${testInfo.project.name}-04-recording-detail.png`,

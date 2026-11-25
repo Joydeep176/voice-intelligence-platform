@@ -1,0 +1,31 @@
+{
+  "container": "wav",
+  "demuxer": "wav",
+  "codec": "pcm_s16le",
+  "sampleRateHz": 44100,
+  "channels": 2,
+  "channelLayout": null,
+  "sampleFormat": "s16",
+  "bitsPerRawSample": 16,
+  "bitRate": 1411200,
+  "headerDurationMs": 2000,
+  "streamCount": 1,
+  "audioStreamCount": 1,
+  "trialDecode": {
+    "decodable": true,
+    "decodedMs": 2000
+  },
+  "timelineSource": {
+    "timeBase": "1/44100",
+    "startTimeTicks": null,
+    "startTimeMs": null,
+    "editListPresent": false,
+    "encoderDelaySamples": null,
+    "paddingSamples": null,
+    "gaplessInfo": "none"
+  },
+  "warnings": ["stream_start_time_unknown"],
+  "tools": {
+    "ffprobe": "7.1.5-0+deb13u1"
+  }
+}

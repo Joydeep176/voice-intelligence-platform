@@ -1,0 +1,33 @@
+{
+ "threads": 1,
+ "margin_frames": 64,
+ "windows": [
+  {
+   "window_ms": [
+    0,
+    30000
+   ],
+   "spans_ms": [
+    5414,
+    4582,
+    9158,
+    8410
+   ],
+   "variants": {
+    "V2": {
+     "detect_s": 178.5,
+     "decode_s": 178.8,
+     "total_s": 357.3,
+     "rtf": 11.91,
+     "languages": [
+      "en",
+      "en",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0
+    }
+   }
+  }
+ ]
+}

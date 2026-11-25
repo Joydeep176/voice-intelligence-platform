@@ -1,0 +1,14 @@
+{
+  "contractVersion": "2",
+  "serviceVersion": "0.1.0",
+  "python": "3.12.8",
+  "ffmpeg": null,
+  "numpy": "2.5.5",
+  "vad": "none",
+  "landlock": {
+    "supported": true,
+    "abi": "4",
+    "enforced": false
+  },
+  "taskTypes": []
+}

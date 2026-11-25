@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2,
+  "nativeSampleRate": 44100,
+  "decodedSamplesNative": 88200,
+  "canonicalSamples": 32000,
+  "source": {
+    "timeBase": "1/14112000",
+    "startTimeTicks": 353600,
+    "startTimeMs": 25.057,
+    "editListPresent": false,
+    "encoderDelaySamples": 1105,
+    "paddingSamples": 551,
+    "gaplessInfo": "lame",
+    "headerDurationMs": 2038
+  },
+  "sourceOffsetMs": 0,
+  "decodeClass": "full",
+  "decodedUntilMs": 2000,
+  "gaps": [],
+  "overlapsTrimmed": [],
+  "decodeErrors": {
+    "count": 0,
+    "firstAtMs": null
+  },
+  "mappingStatus": "offset_applied",
+  "mappingErrorBoundMs": 2,
+  "reasons": ["gapless_lame"]
+}

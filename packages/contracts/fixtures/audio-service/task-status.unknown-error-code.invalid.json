@@ -1,0 +1,8 @@
+{
+  "taskId": "6f1c1f9e-6a3e-4c55-9a4e-2f1f2d0f7b10",
+  "type": "probe",
+  "status": "failed",
+  "progress": null,
+  "result": null,
+  "error": { "code": "SOMETHING_ELSE", "retryable": false }
+}

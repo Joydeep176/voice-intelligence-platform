@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "engine": "whisper-cpp",
+  "window": {
+    "startMs": 58000,
+    "endMs": 88000
+  },
+  "audioDurationMs": 304238,
+  "languageHints": ["en", "hi"]
+}

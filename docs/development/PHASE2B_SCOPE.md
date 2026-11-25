@@ -1,6 +1,7 @@
 # Phase 2B · audio processing foundation (scope record)
 
-Status: **Approved in scope by the user on 2026-11-21. Not authorised to begin.** No planning, implementation, dependency
+Status: **Approved in scope by the user on 2026-11-21; execution authorised by the user on 2026-11-21** (implementation
+brief). Authoritative outcome: `PHASE2B_COMPLETION.md`; current state: `docs/PROJECT_STATUS.md`; archived working log: `PHASE2B_PROGRESS.md`. Earlier note: no planning, implementation, dependency
 installation or agents until the user's separate instruction. This file records the approved scope; it is not a
 technical plan and resolves no decision.
 
@@ -20,7 +21,7 @@ infrastructure that the later A1 (Audio Quality) and A2 (Transcription) agents w
    quality assessments; no uncalibrated scores presented as calibrated.
 4. **Preprocessing:** channel handling, mono conversion where appropriate, resampling, normalisation, consistent sample
    representation. The original is never modified; outputs are versioned derivatives.
-5. **Voice activity detection:** evaluate free, open-source candidates (licence, maintenance, CPU and memory, Apple M2,
+5. **Voice activity detection:** evaluate free, open-source candidates (licence, maintenance, CPU and memory, Apple M1,
    offline, multilingual speech, noisy audio, long recordings); benchmark before selecting.
 6. **Segmentation:** speech regions with timestamps, configurable minimum and maximum lengths, silence gaps, padding,
    overlap where justified, long recordings, and exact traceability to the original timeline.
@@ -42,7 +43,7 @@ acceptance report. One engineering phase with internal workstreams, not separate
 
 ## Constraints
 
-ADR-0034 (zero additional spending; local and open-source only; Apple M2, 16 GB, 512 GB SSD). Existing ADRs and service
+ADR-0034 (zero additional spending; local and open-source only; Apple M1, 8 GB, 512 GB SSD; corrected 2026-11-21 from Apple M2 16 GB). Existing ADRs and service
 boundaries: Python owns audio processing, NestJS owns APIs, jobs and coordination (ADR-0002, provisional until
 prototyped; ADR-0019 deterministic preprocessing stage, not an agent; ADR-0007 immutable originals; ADR-0010 bounded
 workers; ADR-0015 preprocessing versions; ADR-0018 progress propagation).
@@ -57,3 +58,21 @@ workers; ADR-0015 preprocessing versions; ADR-0018 progress propagation).
   measurements in the audio service without A1. The boundary between deterministic measurements and A1's quality
   assessment needs the user's decision (ADR-0019).
 - Phase 2A open items remain open (validation README §7.3).
+
+## Follow-up on the questions above (added 2026-11-22; the scope text above is unchanged)
+
+| Question | Outcome | Status |
+| --- | --- | --- |
+| Measurement ownership | Already settled by **accepted** ADR-0019 / ADR-0015 (the service computes objective measurements; A1 interprets). DATABASE_DESIGN §2 was corrected to conform; no new decision was taken | Resolved by existing accepted records |
+| OD-23b service-to-service authentication | User decision recorded as ADR-0035 (development topology); production authentication split out as OD-23c | OD-23b Accepted; **OD-23c Open** |
+| OD-29 VAD implementation | Benchmark executed on a synthetic TTS corpus (`phase2b-vad-benchmark/`); no VAD selected or installed | **Open** (user selects) |
+| OD-10 limits and targets | Interim values implemented as labelled, configurable defaults; measured on the M1 (`phase2b-resources/`) | **Open** |
+| OD-16 progress transport | Not needed for Phase 2B (DB snapshot polling); SSE not built | **Proposed** (unchanged) |
+| OD-18 test audio corpus | Synthetic and generated fixtures only; no dataset downloaded | **Open** |
+| OD-39 waveform peaks | Not built | **Proposed** (unchanged) |
+| OD-48 production deployment | Not touched | **Open** |
+| Hardware | Corrected to Apple M1, 8 GB, 512 GB SSD (ADR-0034 amendment, user instruction) | Applied |
+
+Revision-4 D-2B decisions were implemented under the user's execution brief; their formal acceptance is pending the
+user's review (`PHASE2B_COMPLETION.md` §9; current status in `docs/PROJECT_STATUS.md`). The approved scope above is
+unchanged by this follow-up.

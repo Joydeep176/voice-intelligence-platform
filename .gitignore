@@ -62,3 +62,11 @@ graphify-out/
 # Impeccable generated artefacts (keep the project config with telemetry off)
 .impeccable/*
 !.impeccable/config.json
+
+# Local database backups (Phase 2B pre-migration); never committed
+.local-backups/
+# Local benchmark corpora (synthetic TTS audio, generated); never committed
+.local-benchmarks/
+
+# Pinned self-hosted inference models (scripts/fetch_models.py; ADR-0036 / ADR-0037)
+.local-models/

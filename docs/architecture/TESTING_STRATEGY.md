@@ -8,7 +8,7 @@ Status: **Approved tools and allocation. Tooling set up in Phase 1** (Vitest 5, 
 |---|---|
 | **Vitest** | `apps/web` (with Testing Library) and all TypeScript packages under `packages/*` (e.g. `contracts`, `db` helpers) |
 | **Jest** | NestJS apps: `apps/api`, `apps/orchestrator` (unit, integration, e2e via supertest) |
-| **Pytest** | `services/audio` (processing modules and internal API contract) |
+| **Pytest** | `services/audio` (processing modules and internal API contract). FFmpeg, Landlock, `/proc` and hardening tests carry a container marker: they are **skipped on the host** (`pnpm audio:test`, no FFmpeg there) and run in the hardened image with `pnpm audio:test:container`; Compose hardening checks need `AUDIO_SERVICE_TEST_DOCKER=1`. The §6 untrusted-media controls and the malicious-media suite are exercised only by the container run (Phase 2B) |
 | **Playwright** | Browser end-to-end against the Compose stack; automated accessibility checks with `@axe-core/playwright` (dev only, ADR-0029) |
 
 Each package uses exactly one runner. Do not mix runners within a package.
@@ -41,8 +41,8 @@ Each package uses exactly one runner. Do not mix runners within a package.
 
 ## 4. Quality evaluation (separate from pass/fail tests)
 
-- VAD benchmark (OD-29, approved for benchmarking): WebRTC VAD vs Silero VAD on en/hi/Hinglish and degraded audio (speech/non-speech accuracy, effect on segmentation, CPU/memory). It informs a later decision and selects nothing.
-- STT benchmark: WER (en), CER/WER (hi), code-switch-aware evaluation (Hinglish). Diarization benchmark: DER, including > 2 h recordings. Both are needed before selecting production providers (ADR-0012). Corpus: OD-18.
+- VAD benchmark (OD-29): WebRTC VAD vs Silero VAD on en/hi/Hinglish and degraded audio (speech/non-speech accuracy, effect on segmentation, CPU/memory). **Done on the synthetic corpus** (`docs/development/phase2b-vad-benchmark/`); selection recorded in ADR-0038.
+- STT benchmark: WER (en), CER/WER (hi), code-switch-aware evaluation (Hinglish). Diarization benchmark: DER, including > 2 h recordings. **Done on the synthetic corpus** (`docs/development/phase2c-stt-benchmark/`, `docs/development/phase2c-provider-validation/`); selections recorded in ADR-0036 and ADR-0037. The real-speech benchmark with the OD-18 corpus is follow-up work (ADR-0040). Corpus: OD-18.
 - LLM golden sets: claim extraction, verdicts, provenance assignment, QA detection, per prompt version and model.
 - Long-audio soak: synthetic > 2 h audio, forced worker and audio-service restarts, resume.
 
@@ -52,3 +52,31 @@ Each package uses exactly one runner. Do not mix runners within a package.
 - Fixtures are synthetic or consented (ADR-0004). Small fixtures are committed; long ones are generated. No real recordings or private transcripts in the repo.
 - Every bug fix gets a regression test at the lowest layer that reproduces it.
 - Tests must never be skipped, deleted or weakened to get a passing run.
+
+## 6. Phase 2B additions
+
+- Real-stack end-to-end suite: `pnpm test:phase2b:e2e` (`tests/phase2b-e2e/`; API + orchestrator + hardened audio container against the `*_test` database, Redis DB 14 and a throwaway storage root).
+- Resource benchmarks: `pnpm bench:phase2b:resources` (`docs/development/phase2b-resources/`).
+- VAD candidate benchmark (synthetic TTS corpus): `services/audio/benchmarks/vad/` (`docs/development/phase2b-vad-benchmark/`).
+- Timestamp validation: `services/audio/benchmarks/timestamps/` (`docs/development/phase2b-timestamps/`).
+
+## 7. Phase 2C additions (self-hosted providers)
+
+- **Real-provider browser checks** (manual, against the running dev stack with `STT_PROVIDER=whisper-cpp` and
+  `DIARIZATION_PROVIDER=sherpa-onnx`):
+  - happy path: `run-real.mjs`;
+  - failure paths (invalid and unsupported media, duplicate submission, cancel/retry, audio-service outage, dense and
+    fragmented speech): `run-failures.mjs`;
+  - following a run to its end: `watch-run.mjs`.
+  - All three scripts and their numbers-only results are in
+    `docs/development/phase2c-provider-validation/e2e-real-providers-2026-11-25/`.
+  - Synthetic inputs only.
+  - They are not CI tests: they need the real models and take minutes per run.
+- **Real-service checks:** run the audio image in a throwaway container at the production limits, polling liveness
+  during inference:
+  - STT windows (`stt-speed-2026-11-24/real-check-2cpu-2026-11-25.json`);
+  - the 60 min bounded-memory diarization run (`diarize-60min-bounded-memory-2026-11-25/`).
+- **Accuracy gate for STT changes:** a change to the decode path must be re-scored on the C3 test split, per language
+  and SNR, before adoption. Example: E7 rejected a sized `audio_ctx`
+  (`stt-speed-2026-11-24/e7-audio-ctx-accuracy-2026-11-25.log`).
+- **C3 benchmark:** `services/audio/benchmarks/stt/run.py` (`report` regenerates `docs/development/phase2c-stt-benchmark/`).

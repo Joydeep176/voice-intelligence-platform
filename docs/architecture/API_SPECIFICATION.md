@@ -1,6 +1,6 @@
 # API Specification
 
-Status: **Partly implemented.** Every endpoint below carries an implementation status: **Implemented**, **Partially implemented** (with what is missing) or **Not implemented (designed only)**. Implemented: §2 `POST /recordings`, `GET /recordings`, `GET /recordings/{id}`, `GET /recordings/{id}/upload`, `PUT /recordings/{id}/upload/parts/{n}`, `POST /recordings/{id}/upload/complete`, `GET /recordings/{id}/audio`; §2.1 `GET /api/v1/media/recordings/{token}`; §8 health (`/api/v1/health`, `/live`, `/ready`). Partially implemented: §3 `GET /runs/{runId}`. Everything else is designed only. Authentication is a development principal only (OD-08b). Details and limitations: `docs/development/PHASE1_FOUNDATION.md`.
+Status: **Partly implemented.** Every endpoint below carries an implementation status: **Implemented**, **Partially implemented** (with what is missing) or **Not implemented (designed only)**. Implemented: §2 `POST /recordings`, `GET /recordings`, `GET /recordings/{id}`, `GET /recordings/{id}/upload`, `PUT /recordings/{id}/upload/parts/{n}`, `POST /recordings/{id}/upload/complete`, `GET /recordings/{id}/audio`; §2.1 `GET /api/v1/media/recordings/{token}`; §8 health (`/api/v1/health`, `/live`, `/ready`). §3a audio processing (Phase 2B) **Implemented**. Partially implemented (Phase 2C, interim D-2C-01..03; see each section for what is missing): §3 runs (`POST /recordings/{id}/runs`, `GET /runs/{runId}`, cancel, retry) and §5 transcript and speakers. Everything else is designed only. Phase 2B and Phase 2C are not yet accepted by the user. Authentication is a development principal only (OD-08b). Details and limitations: `docs/development/PHASE1_FOUNDATION.md`.
 
 REST/JSON served by `apps/api`. An OpenAPI document will be generated from the controllers once they exist. Route shapes are *Proposed* unless they implement an approved requirement (SRS IDs cited).
 
@@ -40,7 +40,14 @@ Implementation status: **Implemented** (development storage only; see Outstandin
 
 ## 3. Runs
 
-Implementation status: **Partially implemented.** `GET /runs/{runId}` returns a status snapshot only (`id`, `recordingId`, `status`, `currentStage`, `error`, `startedAt`, `completedAt`, timestamps). It has no per-stage status or progress, `hasLimitations` or cost total, and runs are only ever created in status `created` by upload completion. **Not implemented (designed only):** `POST /recordings/{id}/runs`, `GET /runs/{runId}/events`, `POST /runs/{runId}/cancel`, `POST /runs/{runId}/retry`.
+Implementation status: **Partially implemented (Phase 2C, interim D-2C-01..03).** Implemented for transcription runs, workspace scoped like every route (`/workspaces/{workspaceId}/...`; another workspace, an unknown or a malformed ID is `404`):
+
+- `POST /recordings/{id}/runs` → `202` with the run snapshot. Submits the recording's existing `created` run (the one recorded at upload, ADR-0025), else creates one. Preconditions: recording `valid` and a `succeeded` audio preprocessing, else `409 INVALID_STATE_TRANSITION` (nothing is written). The run is linked to the preprocessing version, moves `created → queued`, a `run.requested` audit event is written and the `run-transcription` job is enqueued (queue unreachable: `503 DEPENDENCY_UNAVAILABLE`, the row stays `queued` and the orchestrator's sweeper recovers it). Idempotent: while the recording has a `queued`, `running` or `cancelling` run, that run is returned (`202`) and no second run or job is made; concurrent requests give one run. Body (optional, strict): `{ languageHints?: ("en"|"hi")[] }`; `reportLanguage` and `sourceTranscriptVersionId` are **not implemented** and rejected with `422`.
+- `GET /runs/{runId}` → `RunSnapshot` (a superset of the previous `ProcessingStatus`, so existing consumers are unaffected): `id`, `recordingId`, `status`, `currentStage`, `error {code,node}`, `startedAt`, `completedAt`, `createdAt`, `updatedAt`, plus `preprocessingId`, `scope` (the stages this run executes: `transcription`, `diarization`; `completed` means the scoped stages completed, never the full pipeline), `stages[] { node, status (pending|running|completed|failed|cancelled), attempt, progress { fraction, processedMs, updatedAt } | null, startedAt, finishedAt, error { code } | null }`, `providers { stt, diarization } | null` (each `{ id, model, fake }`; `fake: true` marks deterministic development output that is not a real transcription; the selected self-hosted providers report `whisper-cpp` / `sherpa-onnx` with `fake: false`; null until the run starts), `window { source (vad_segments|fixed_windows), windowMs, overlapMs, count } | null`, `retryCount`, `maxRetries`, `cancelRequested`, `transcriptAvailable`. `Cache-Control: no-store`. **Not implemented:** `hasLimitations`, cost total.
+- `POST /runs/{runId}/cancel` → `202`. `queued` becomes `cancelled` at once (waiting job removed); `running` becomes `cancelling` with `cancel_requested_at` (the orchestrator stops between windows and finishes `cancelled`; completed raw outputs are kept; no transcript is stored); repeating while `cancelling` is accepted. `created` or terminal: `409`. Audited (`run.cancelled` / `run.cancel_requested`).
+- `POST /runs/{runId}/retry` → `202`. Only `failed`/`cancelled` while `retry_count < RUN_MAX_RETRIES` (3, OD-10, ADR-0039), else `409`. Counts the retry, clears the error, re-enqueues; raw outputs stored by earlier attempts are reused, not re-requested. Audited (`run.retried`).
+
+**Not implemented (designed only):** `GET /runs/{runId}/events` (polling the snapshot is the fallback, ADR-0018), `sourceTranscriptVersionId` runs (ADR-0020), cost ceilings. Run, retry and cancel events also come from the orchestrator (`run.completed`, `run.failed`, `run.cancelled`, `run.retried` by the sweeper) with actor `orchestrator`; audit metadata is IDs, counts and codes only.
 
 | Method | Path | Purpose | Req |
 |---|---|---|---|
@@ -52,6 +59,21 @@ Implementation status: **Partially implemented.** `GET /runs/{runId}` returns a 
 
 Research cannot be disabled per run (ADR-0009).
 
+## 3a. Audio processing (Phase 2B; ADR-0014, ADR-0018, ADR-0025)
+
+Implementation status: **Implemented** (backend). Workspace-scoped like every route: a recording in another workspace, a malformed ID or an unknown recording is `404`. These routes never touch `pipeline_runs`. `GET` is a database snapshot (polling fallback, ADR-0018; no SSE); `Cache-Control: no-store`. Limits shown (4 h, 8 channels, 192 kHz, 10 s blocks, retries 3) are the accepted OD-10 limits (ADR-0039).
+
+Validation (probe) starts automatically after `upload/complete` for **new** uploads only (existing recordings are never backfilled): the recording goes `uploaded -> validating -> valid | invalid` (`validationError` holds the code). Preprocessing is started explicitly.
+
+| Method | Path | Purpose |
+|---|---|---|
+| POST | `/recordings/{id}/processing` | Explicit start. `uploaded`: begins validation and then preprocessing (`202`). `validating`: `202`, nothing new. `valid`: builds the config (shared builder + the service's tool versions from `GET /v1/capabilities`), hashes it and upserts one version per (recording, config hash). A succeeded version for that hash is returned with `200` and no job. `failed`/`cancelled` is reset and re-queued while `attempt < PROCESSING_MAX_RETRIES`, else `409 INVALID_STATE_TRANSITION`. `invalid`, `uploading`, `deleting`: `409 INVALID_STATE_TRANSITION`. Audio service not configured, unreachable or unable to preprocess: `503 DEPENDENCY_UNAVAILABLE`, nothing written. Repeated or concurrent calls give one row and one job |
+| POST | `/recordings/{id}/processing/cancel` | `202`. A `queued` version becomes `cancelled` at once (waiting job removed); a `running` one records `cancel_requested_at` and the orchestrator stops the task. Nothing active: `409` |
+| GET | `/recordings/{id}/processing` | Snapshot `{ state, recording: { status, validationError }, probe, preprocessing }`. `state`: `not_started`, `validating`, `queued`, `processing`, `completed`, `failed`, `cancelled`. `probe`: `{ container, codec, sampleRateHz, channels, durationMs }`. `preprocessing`: `{ id, status, progress { stage, fraction, processedMs, updatedAt }, attempt, maxRetries, error { code, retryable }, cancelRequested, startedAt, finishedAt, configHash, canonical { durationMs, sha256 }, timeline { mappingStatus, mappingErrorBoundMs, decodeClass, decodedUntilMs, gapCount }, measurements, vad, segmentCount }`. Unknown values are `null`, never estimated |
+| GET | `/recordings/{id}/processing/segments?fromMs&toMs&limit` | Segments of the latest succeeded version (`limit` 1 to 1000, default 100). Empty: preprocessing VAD stays `none` (ADR-0038; VAD is applied inside transcription windows): `{ preprocessingId, items[] }` |
+
+DTOs: `ProcessingSnapshot`, `ProcessingSegmentList` in `packages/contracts/src/processing.ts`. Job payloads (IDs only): `AudioProbeJob`, `AudioPreprocessJob` in `jobs.ts`.
+
 ## 4. Audio diagnostics (separate from transcription uncertainty)
 
 Implementation status: **Not implemented (designed only).**
@@ -62,7 +84,13 @@ Implementation status: **Not implemented (designed only).**
 
 ## 5. Transcript
 
-Implementation status: **Not implemented (designed only).**
+Implementation status: **Partially implemented (Phase 2C, interim).** Implemented: `GET .../transcript/versions`, `GET .../transcript`, `GET .../transcript/uncertainties`, `GET .../transcript/raw` (metadata only), `GET .../speakers`, `PATCH .../speakers/{speakerId}`. **Not implemented:** `POST .../transcript/versions` (correction versions) and `GET .../transcript/derivations` (no such routes: `404`). All are workspace scoped, `Cache-Control: no-store`, and never return storage URIs.
+
+- `transcript/versions` → `{ items: [{ id, version, kind, baseVersionId, createdBy, note, createdAt, segmentCount }] }`; empty before a transcript exists.
+- `transcript?version=&fromMs=&toMs=&limit=&cursor=` → `{ runId, transcriptId, version, kind, windowSource, providers, items: [{ id, speakerId, startMs, endMs, text, language (en|hi|mixed), codeSwitchSpans, confidence (null when the provider gave none), words }], nextCursor }`. Default version: latest. Segments overlapping `[fromMs, toMs)`, ordered by (`startMs`, `id`), keyset-paged by an opaque cursor; `limit` 1 to 1000 (default 200). No transcript yet or unknown `version`: `404`; invalid cursor or query: `422`.
+- `transcript/uncertainties` takes the same query → `{ version, items: [{ id, segmentId, startMs, endMs, kind, score }], nextCursor }`. Generated kinds: `overlapping_speech` and `speaker_uncertain` (the fake provider reports no confidence, so no `low_confidence`, `inaudible` or `language_uncertain`).
+- `transcript/raw` → `{ items: [{ id, kind (stt|diarization), provider, providerModel, scope, windowIndex, windowStartMs, windowEndMs, sha256, receivedAt, fake }] }`. **Signed URLs are not implemented**: the existing signed-URL pattern is recording playback only (ADR-0033) and does not apply cleanly to raw payloads, so only metadata is returned (the bytes are verifiable against `sha256` in storage). Because only metadata is returned, access is not audited.
+- `speakers` → `{ items: [{ id, speakerKey, displayName, totalSpeechMs }] }`. `PATCH` body `{ displayName }` (1 to 80 characters, trimmed; any other field, including `speakerKey`, is `422`) → the updated speaker. Audited as `speaker.renamed` with IDs only (the name is not logged).
 
 | Method | Path | Purpose | Req |
 |---|---|---|---|

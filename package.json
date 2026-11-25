@@ -25,7 +25,11 @@
     "audio:sync": "uv sync --directory services/audio",
     "audio:dev": "uv run --directory services/audio audio-service",
     "audio:test": "uv run --directory services/audio pytest",
-    "audio:lint": "uv run --directory services/audio ruff check . && uv run --directory services/audio ruff format --check . && uv run --directory services/audio mypy"
+    "audio:test:container": "docker build -f services/audio/Dockerfile --target test -t vip-audio-test services/audio && docker run --rm --init --read-only --cap-drop ALL --security-opt no-new-privileges --pids-limit 64 --memory 512m --cpus 1 --tmpfs /tmp:size=64m,noexec,nosuid,nodev -v \"$PWD/packages/contracts:/contracts:ro\" vip-audio-test pytest -p no:cacheprovider -s -q",
+    "test:phase2b:e2e": "node --env-file-if-exists=.env tests/phase2b-e2e/run.mjs",
+    "bench:phase2b:resources": "node services/audio/benchmarks/resources/run.mjs",
+    "audio:lint": "uv run --directory services/audio ruff check . && uv run --directory services/audio ruff format --check . && uv run --directory services/audio mypy",
+    "audio:models": "uv run --directory services/audio python scripts/fetch_models.py"
   },
   "devDependencies": {
     "prettier": "catalog:",

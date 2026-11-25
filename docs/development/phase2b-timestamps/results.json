@@ -1,0 +1,3783 @@
+{
+  "damaged": {
+    "corrupted": [
+      {
+        "canonicalSamples": 31782,
+        "codec": "mp3",
+        "container": "mp3",
+        "decodeClass": "full",
+        "decodeErrors": 2,
+        "decodedSamplesNative": 86447,
+        "decodedUntilMs": 1986.375,
+        "editListPresent": false,
+        "encoderDelaySamples": 1105,
+        "format": "mp3_cbr_lame",
+        "gaplessInfo": "lame",
+        "gaps": [],
+        "headerDurationMs": 2038,
+        "id": "corrupted-mp3_cbr_lame",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          500.0
+        ],
+        "oracleDecodedMs": 1960.25,
+        "paddingSamples": 0,
+        "reasons": [
+          "decoder_errors"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "canonicalSamples": 216,
+        "codec": "opus",
+        "container": "ogg",
+        "decodeClass": "partial",
+        "decodeErrors": 4,
+        "decodedSamplesNative": 648,
+        "decodedUntilMs": 13.5,
+        "editListPresent": false,
+        "encoderDelaySamples": 312,
+        "format": "ogg_opus",
+        "gaplessInfo": "codec_preskip",
+        "gaps": [],
+        "headerDurationMs": 2006,
+        "id": "corrupted-ogg_opus",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          0.0
+        ],
+        "oracleDecodedMs": 13.5,
+        "paddingSamples": 0,
+        "reasons": [
+          "decoder_errors",
+          "partial_decode"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "canonicalSamples": 32322,
+        "codec": "aac",
+        "container": "mp4",
+        "decodeClass": "full",
+        "decodeErrors": 5,
+        "decodedSamplesNative": 86016,
+        "decodedUntilMs": 2020.125,
+        "editListPresent": true,
+        "encoderDelaySamples": 1024,
+        "format": "m4a_aac",
+        "gaplessInfo": "edit_list",
+        "gaps": [],
+        "headerDurationMs": 2000,
+        "id": "corrupted-m4a_aac",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          500.0
+        ],
+        "oracleDecodedMs": 1950.5,
+        "paddingSamples": 0,
+        "reasons": [
+          "decoder_errors"
+        ],
+        "sourceOffsetMs": 0.0
+      }
+    ],
+    "gaps": [
+      {
+        "canonicalSamples": 80000,
+        "codec": "pcm_s16le",
+        "container": "matroska",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 192000,
+        "decodedUntilMs": 5000.0,
+        "editListPresent": false,
+        "encoderDelaySamples": null,
+        "expectedGapDurationMs": 1000.0,
+        "expectedGapStartMs": 2000.0,
+        "gapDurationErrorMs": 0.0,
+        "gapStartErrorMs": 0.0,
+        "gaplessInfo": "none",
+        "gaps": [
+          [
+            2000.0,
+            1000.0
+          ]
+        ],
+        "headerDurationMs": 5000,
+        "id": "timestamp_gap-pcm_s16le",
+        "kind": "timestamp_gap",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          500.0,
+          4000.0
+        ],
+        "paddingSamples": null,
+        "reasons": [
+          "timestamp_gaps"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "canonicalSamples": 64000,
+        "codec": "pcm_s16le",
+        "container": "matroska",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 191040,
+        "decodedUntilMs": 4000.0,
+        "editListPresent": false,
+        "encoderDelaySamples": null,
+        "expectedGapDurationMs": 20.0,
+        "expectedGapStartMs": 2000.0,
+        "gapDurationErrorMs": 0.0,
+        "gapStartErrorMs": 0.0,
+        "gaplessInfo": "none",
+        "gaps": [
+          [
+            2000.0,
+            20.0
+          ]
+        ],
+        "headerDurationMs": 4000,
+        "id": "dropped_1_packets-pcm_s16le",
+        "kind": "dropped_1_packets",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          500.0,
+          3000.0
+        ],
+        "paddingSamples": null,
+        "reasons": [
+          "timestamp_gaps"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "canonicalSamples": 64000,
+        "codec": "pcm_s16le",
+        "container": "matroska",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 189120,
+        "decodedUntilMs": 4000.0,
+        "editListPresent": false,
+        "encoderDelaySamples": null,
+        "expectedGapDurationMs": 60.0,
+        "expectedGapStartMs": 2000.0,
+        "gapDurationErrorMs": 0.0,
+        "gapStartErrorMs": 0.0,
+        "gaplessInfo": "none",
+        "gaps": [
+          [
+            2000.0,
+            60.0
+          ]
+        ],
+        "headerDurationMs": 4000,
+        "id": "dropped_3_packets-pcm_s16le",
+        "kind": "dropped_3_packets",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          500.0,
+          3000.0
+        ],
+        "paddingSamples": null,
+        "reasons": [
+          "timestamp_gaps"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "canonicalSamples": 64000,
+        "codec": "pcm_s16le",
+        "container": "matroska",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 182400,
+        "decodedUntilMs": 4000.0,
+        "editListPresent": false,
+        "encoderDelaySamples": null,
+        "expectedGapDurationMs": 200.0,
+        "expectedGapStartMs": 2000.0,
+        "gapDurationErrorMs": 0.0,
+        "gapStartErrorMs": 0.0,
+        "gaplessInfo": "none",
+        "gaps": [
+          [
+            2000.0,
+            200.0
+          ]
+        ],
+        "headerDurationMs": 4000,
+        "id": "dropped_10_packets-pcm_s16le",
+        "kind": "dropped_10_packets",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          500.0,
+          3000.0
+        ],
+        "paddingSamples": null,
+        "reasons": [
+          "timestamp_gaps"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "canonicalSamples": 80120,
+        "codec": "libopus",
+        "container": "matroska",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 192000,
+        "decodedUntilMs": 5007.5,
+        "editListPresent": false,
+        "encoderDelaySamples": 0,
+        "expectedGapDurationMs": 1000.0,
+        "expectedGapStartMs": 2000.0,
+        "gapDurationErrorMs": 0.0,
+        "gapStartErrorMs": 21.0,
+        "gaplessInfo": "none",
+        "gaps": [
+          [
+            2021.0,
+            1000.0
+          ]
+        ],
+        "headerDurationMs": 5008,
+        "id": "timestamp_gap-libopus",
+        "kind": "timestamp_gap",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          507.0,
+          4007.5
+        ],
+        "paddingSamples": 648,
+        "reasons": [
+          "timestamp_gaps"
+        ],
+        "sourceOffsetMs": -7.0
+      },
+      {
+        "canonicalSamples": 64120,
+        "codec": "libopus",
+        "container": "matroska",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 191040,
+        "decodedUntilMs": 4007.5,
+        "editListPresent": false,
+        "encoderDelaySamples": 0,
+        "expectedGapDurationMs": 20.0,
+        "expectedGapStartMs": 2000.0,
+        "gapDurationErrorMs": 0.0,
+        "gapStartErrorMs": 1.0,
+        "gaplessInfo": "none",
+        "gaps": [
+          [
+            2001.0,
+            20.0
+          ]
+        ],
+        "headerDurationMs": 4028,
+        "id": "dropped_1_packets-libopus",
+        "kind": "dropped_1_packets",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          507.0,
+          3007.5
+        ],
+        "paddingSamples": 648,
+        "reasons": [
+          "timestamp_gaps"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "canonicalSamples": 64120,
+        "codec": "libopus",
+        "container": "matroska",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 189120,
+        "decodedUntilMs": 4007.5,
+        "editListPresent": false,
+        "encoderDelaySamples": 0,
+        "expectedGapDurationMs": 60.0,
+        "expectedGapStartMs": 2000.0,
+        "gapDurationErrorMs": 0.0,
+        "gapStartErrorMs": 1.0,
+        "gaplessInfo": "none",
+        "gaps": [
+          [
+            2001.0,
+            60.0
+          ]
+        ],
+        "headerDurationMs": 4028,
+        "id": "dropped_3_packets-libopus",
+        "kind": "dropped_3_packets",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          507.0,
+          3007.5
+        ],
+        "paddingSamples": 648,
+        "reasons": [
+          "timestamp_gaps"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "canonicalSamples": 64120,
+        "codec": "libopus",
+        "container": "matroska",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 182400,
+        "decodedUntilMs": 4007.5,
+        "editListPresent": false,
+        "encoderDelaySamples": 0,
+        "expectedGapDurationMs": 200.0,
+        "expectedGapStartMs": 2000.0,
+        "gapDurationErrorMs": 0.0,
+        "gapStartErrorMs": 1.0,
+        "gaplessInfo": "none",
+        "gaps": [
+          [
+            2001.0,
+            200.0
+          ]
+        ],
+        "headerDurationMs": 4028,
+        "id": "dropped_10_packets-libopus",
+        "kind": "dropped_10_packets",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          507.0,
+          3007.5
+        ],
+        "paddingSamples": 648,
+        "reasons": [
+          "timestamp_gaps"
+        ],
+        "sourceOffsetMs": 0.0
+      }
+    ],
+    "truncated": [
+      {
+        "bytesFull": 64078,
+        "bytesKept": 38446,
+        "canonicalSamples": 19184,
+        "codec": "pcm_s16le",
+        "container": "wav",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 19184,
+        "decodedUntilErrorMs": 0.0,
+        "decodedUntilMs": 1199.0,
+        "editListPresent": false,
+        "encoderDelaySamples": null,
+        "format": "wav_pcm_s16",
+        "gaplessInfo": "none",
+        "gaps": [],
+        "headerDurationMs": 1199,
+        "id": "truncated-wav_pcm_s16",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          500.0
+        ],
+        "oracleDecodedMs": 1199.0,
+        "paddingSamples": null,
+        "reasons": [
+          "corrupt_packets"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "bytesFull": 48354,
+        "bytesKept": 29012,
+        "canonicalSamples": 16128,
+        "codec": "flac",
+        "container": "flac",
+        "decodeClass": "partial",
+        "decodeErrors": 3,
+        "decodedSamplesNative": 16128,
+        "decodedUntilErrorMs": 0.0,
+        "decodedUntilMs": 1008.0,
+        "editListPresent": false,
+        "encoderDelaySamples": null,
+        "format": "flac",
+        "gaplessInfo": "none",
+        "gaps": [],
+        "headerDurationMs": 2000,
+        "id": "truncated-flac",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          500.0
+        ],
+        "oracleDecodedMs": 1008.0,
+        "paddingSamples": null,
+        "reasons": [
+          "decoder_errors",
+          "partial_decode"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "bytesFull": 33061,
+        "bytesKept": 19836,
+        "canonicalSamples": 19243,
+        "codec": "mp3",
+        "container": "mp3",
+        "decodeClass": "partial",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 53039,
+        "decodedUntilErrorMs": 0.001,
+        "decodedUntilMs": 1202.688,
+        "editListPresent": false,
+        "encoderDelaySamples": 1105,
+        "format": "mp3_cbr_lame",
+        "gaplessInfo": "lame",
+        "gaps": [],
+        "headerDurationMs": 2038,
+        "id": "truncated-mp3_cbr_lame",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          500.0
+        ],
+        "oracleDecodedMs": 1202.688,
+        "paddingSamples": 0,
+        "reasons": [
+          "partial_decode"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "bytesFull": 32644,
+        "bytesKept": 19586,
+        "canonicalSamples": 19644,
+        "codec": "mp3",
+        "container": "mp3",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 54144,
+        "decodedUntilErrorMs": 0.0,
+        "decodedUntilMs": 1227.75,
+        "editListPresent": false,
+        "encoderDelaySamples": null,
+        "format": "mp3_cbr_no_xing",
+        "gaplessInfo": "none",
+        "gaps": [],
+        "headerDurationMs": 1221,
+        "id": "truncated-mp3_cbr_no_xing",
+        "mappingErrorBoundMs": 26.122,
+        "mappingStatus": "approximate",
+        "onsetsMs": [
+          525.062
+        ],
+        "oracleDecodedMs": 1227.75,
+        "paddingSamples": null,
+        "reasons": [
+          "lossy_no_gapless_info"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "bytesFull": 22563,
+        "bytesKept": 13537,
+        "canonicalSamples": 18825,
+        "codec": "mp3",
+        "container": "mp3",
+        "decodeClass": "partial",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 51887,
+        "decodedUntilErrorMs": -0.001,
+        "decodedUntilMs": 1176.562,
+        "editListPresent": false,
+        "encoderDelaySamples": 1105,
+        "format": "mp3_vbr_xing",
+        "gaplessInfo": "lame",
+        "gaps": [],
+        "headerDurationMs": 2038,
+        "id": "truncated-mp3_vbr_xing",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          500.0
+        ],
+        "oracleDecodedMs": 1176.562,
+        "paddingSamples": 0,
+        "reasons": [
+          "partial_decode"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "bytesFull": 22355,
+        "bytesKept": 13413,
+        "canonicalSamples": 19226,
+        "codec": "mp3",
+        "container": "mp3",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 52992,
+        "decodedUntilErrorMs": 0.0,
+        "decodedUntilMs": 1201.625,
+        "editListPresent": false,
+        "encoderDelaySamples": null,
+        "format": "mp3_vbr_no_xing",
+        "gaplessInfo": "none",
+        "gaps": [],
+        "headerDurationMs": 1196,
+        "id": "truncated-mp3_vbr_no_xing",
+        "mappingErrorBoundMs": 26.122,
+        "mappingStatus": "approximate",
+        "onsetsMs": [
+          525.062
+        ],
+        "oracleDecodedMs": 1201.625,
+        "paddingSamples": null,
+        "reasons": [
+          "lossy_no_gapless_info"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "bytesFull": 33432,
+        "bytesKept": 20059,
+        "canonicalSamples": 18576,
+        "codec": "aac",
+        "container": "mp4",
+        "decodeClass": "partial",
+        "decodeErrors": 3,
+        "decodedSamplesNative": 51200,
+        "decodedUntilErrorMs": 0.0,
+        "decodedUntilMs": 1161.0,
+        "editListPresent": true,
+        "encoderDelaySamples": 1024,
+        "format": "m4a_aac",
+        "gaplessInfo": "edit_list",
+        "gaps": [],
+        "headerDurationMs": 2000,
+        "id": "truncated-m4a_aac",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          500.0
+        ],
+        "oracleDecodedMs": 1161.0,
+        "paddingSamples": 0,
+        "reasons": [
+          "corrupt_packets",
+          "decoder_errors",
+          "partial_decode"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "bytesFull": 25892,
+        "bytesKept": 15535,
+        "canonicalSamples": 16324,
+        "codec": "vorbis",
+        "container": "ogg",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 44992,
+        "decodedUntilErrorMs": 0.0,
+        "decodedUntilMs": 1020.25,
+        "editListPresent": false,
+        "encoderDelaySamples": null,
+        "format": "ogg_vorbis",
+        "gaplessInfo": "none",
+        "gaps": [],
+        "headerDurationMs": 1020,
+        "id": "truncated-ogg_vorbis",
+        "mappingErrorBoundMs": 23.22,
+        "mappingStatus": "approximate",
+        "onsetsMs": [
+          500.0
+        ],
+        "oracleDecodedMs": 1020.25,
+        "paddingSamples": null,
+        "reasons": [
+          "lossy_no_gapless_info"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "bytesFull": 11036,
+        "bytesKept": 6621,
+        "canonicalSamples": 15896,
+        "codec": "opus",
+        "container": "ogg",
+        "decodeClass": "full",
+        "decodeErrors": 0,
+        "decodedSamplesNative": 47688,
+        "decodedUntilErrorMs": 0.0,
+        "decodedUntilMs": 993.5,
+        "editListPresent": false,
+        "encoderDelaySamples": 312,
+        "format": "ogg_opus",
+        "gaplessInfo": "codec_preskip",
+        "gaps": [],
+        "headerDurationMs": 1000,
+        "id": "truncated-ogg_opus",
+        "mappingErrorBoundMs": 2.0,
+        "mappingStatus": "offset_applied",
+        "onsetsMs": [
+          500.0
+        ],
+        "oracleDecodedMs": 993.5,
+        "paddingSamples": 0,
+        "reasons": [
+          "gapless_codec_preskip"
+        ],
+        "sourceOffsetMs": 0.0
+      },
+      {
+        "bytesFull": 11866,
+        "bytesKept": 7119,
+        "canonicalSamples": 18568,
+        "codec": "opus",
+        "container": "matroska",
+        "decodeClass": "partial",
+        "decodeErrors": 1,
+        "decodedSamplesNative": 55368,
+        "decodedUntilErrorMs": 7.0,
+        "decodedUntilMs": 1160.5,
+        "editListPresent": false,
+        "encoderDelaySamples": null,
+        "format": "webm_opus",
+        "gaplessInfo": "none",
+        "gaps": [],
+        "headerDurationMs": 2008,
+        "id": "truncated-webm_opus",
+        "mappingErrorBoundMs": null,
+        "mappingStatus": "uncertain",
+        "onsetsMs": [
+          507.0
+        ],
+        "oracleDecodedMs": 1153.5,
+        "paddingSamples": null,
+        "reasons": [
+          "decoder_errors",
+          "partial_decode"
+        ],
+        "sourceOffsetMs": -7.0
+      }
+    ]
+  },
+  "environment": {
+    "ffmpeg": "7.1.5-0+deb13u1",
+    "kernel": "7.0.14-linuxkit",
+    "landlockAbi": 8,
+    "landlockEnforced": true,
+    "machine": "aarch64",
+    "numpy": "2.5.5",
+    "python": "3.12.16"
+  },
+  "fixtures": {
+    "burstHz": 1000,
+    "burstLengthS": 0.04,
+    "burstStartsS": [
+      0.5,
+      1.25
+    ],
+    "canonicalResolutionMs": 0.0625,
+    "durationS": 2.0,
+    "onsetRule": "first canonical sample above 25 % of the peak amplitude"
+  },
+  "lossless": [
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-8000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-8000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-16000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-16000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-44100-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-44100-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-48000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-48000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-96000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-96000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-192000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s16le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s16-192000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-8000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-8000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-16000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-16000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-44100-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-44100-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-48000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-48000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-96000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-96000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-192000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s24le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s24-192000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-8000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-8000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-16000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-16000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-44100-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-44100-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-48000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-48000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-96000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-96000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-192000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_s32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-s32-192000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-8000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-8000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-16000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-16000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-44100-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-44100-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-48000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-48000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-96000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-96000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-192000-1ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "pcm_f32le",
+      "container": "wav",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "f32",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "wav-f32-192000-2ch",
+      "kind": "wav",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-8000-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-8000-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-16000-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-16000-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-44100-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-44100-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-48000-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-48000-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-96000-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-96000-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-192000-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s16",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s16-192000-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-8000-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 16000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-8000-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0625,
+      "onsetErrorMs": [
+        -0.062,
+        -0.062
+      ],
+      "onsetsMs": [
+        499.938,
+        1249.938
+      ],
+      "paddingSamples": null,
+      "rateHz": 8000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-16000-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 32000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-16000-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 16000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-44100-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-44100-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 44100,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-48000-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-48000-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 48000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-96000-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 192000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-96000-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 96000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 1,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-192000-1ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "channels": 2,
+      "codec": "flac",
+      "container": "flac",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 384000,
+      "decodedUntilMs": 2000.0,
+      "depth": "s24",
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "flac-s24-192000-2ch",
+      "kind": "flac",
+      "mappingErrorBoundMs": 0.062,
+      "mappingStatus": "exact",
+      "maxAbsOnsetErrorMs": 0.0,
+      "onsetErrorMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": null,
+      "rateHz": 192000,
+      "reasons": [
+        "lossless_no_gaps"
+      ],
+      "sourceOffsetMs": 0.0
+    }
+  ],
+  "lossy": [
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "codec": "mp3",
+      "container": "mp3",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "editListPresent": false,
+      "encoderDelaySamples": 1105,
+      "format": "mp3_cbr_lame",
+      "gaplessInfo": "lame",
+      "gaps": [],
+      "headerDurationMs": 2038,
+      "id": "mp3_cbr_lame",
+      "leadingOffsetS": 0.0,
+      "mappingErrorBoundMs": 2.0,
+      "mappingStatus": "offset_applied",
+      "maxAbsErrorOnSourceMs": 0.0,
+      "offsetCarriedByContainerS": 0.0,
+      "onsetErrorOnCanonicalMs": [
+        0.0,
+        0.0
+      ],
+      "onsetErrorOnSourceMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": 551,
+      "reasons": [
+        "gapless_lame"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32601,
+      "codec": "mp3",
+      "container": "mp3",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 89856,
+      "decodedUntilMs": 2037.562,
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "format": "mp3_cbr_no_xing",
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2038,
+      "id": "mp3_cbr_no_xing",
+      "leadingOffsetS": 0.0,
+      "mappingErrorBoundMs": 26.122,
+      "mappingStatus": "approximate",
+      "maxAbsErrorOnSourceMs": 25.0625,
+      "offsetCarriedByContainerS": 0.0,
+      "onsetErrorOnCanonicalMs": [
+        25.062,
+        25.062
+      ],
+      "onsetErrorOnSourceMs": [
+        25.062,
+        25.062
+      ],
+      "onsetsMs": [
+        525.062,
+        1275.062
+      ],
+      "paddingSamples": null,
+      "reasons": [
+        "lossy_no_gapless_info"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "codec": "mp3",
+      "container": "mp3",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "editListPresent": false,
+      "encoderDelaySamples": 1105,
+      "format": "mp3_vbr_xing",
+      "gaplessInfo": "lame",
+      "gaps": [],
+      "headerDurationMs": 2038,
+      "id": "mp3_vbr_xing",
+      "leadingOffsetS": 0.0,
+      "mappingErrorBoundMs": 2.0,
+      "mappingStatus": "offset_applied",
+      "maxAbsErrorOnSourceMs": 0.0,
+      "offsetCarriedByContainerS": 0.0,
+      "onsetErrorOnCanonicalMs": [
+        0.0,
+        0.0
+      ],
+      "onsetErrorOnSourceMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": 551,
+      "reasons": [
+        "gapless_lame"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32601,
+      "codec": "mp3",
+      "container": "mp3",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 89856,
+      "decodedUntilMs": 2037.562,
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "format": "mp3_vbr_no_xing",
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 1839,
+      "id": "mp3_vbr_no_xing",
+      "leadingOffsetS": 0.0,
+      "mappingErrorBoundMs": 26.122,
+      "mappingStatus": "approximate",
+      "maxAbsErrorOnSourceMs": 25.0625,
+      "offsetCarriedByContainerS": 0.0,
+      "onsetErrorOnCanonicalMs": [
+        25.062,
+        25.062
+      ],
+      "onsetErrorOnSourceMs": [
+        25.062,
+        25.062
+      ],
+      "onsetsMs": [
+        525.062,
+        1275.062
+      ],
+      "paddingSamples": null,
+      "reasons": [
+        "lossy_no_gapless_info"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32322,
+      "codec": "aac",
+      "container": "mp4",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 89088,
+      "decodedUntilMs": 2020.125,
+      "editListPresent": true,
+      "encoderDelaySamples": 1024,
+      "format": "m4a_aac",
+      "gaplessInfo": "edit_list",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "m4a_aac",
+      "leadingOffsetS": 0.0,
+      "mappingErrorBoundMs": 2.0,
+      "mappingStatus": "offset_applied",
+      "maxAbsErrorOnSourceMs": 0.0,
+      "offsetCarriedByContainerS": 0.0,
+      "onsetErrorOnCanonicalMs": [
+        0.0,
+        0.0
+      ],
+      "onsetErrorOnSourceMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": 0,
+      "reasons": [
+        "gapless_edit_list"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32694,
+      "codec": "aac",
+      "container": "mp4",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 90112,
+      "decodedUntilMs": 2043.375,
+      "editListPresent": true,
+      "encoderDelaySamples": null,
+      "format": "m4a_aac",
+      "gaplessInfo": "edit_list",
+      "gaps": [],
+      "headerDurationMs": 2023,
+      "id": "m4a_aac+offset",
+      "leadingOffsetS": 0.5,
+      "mappingErrorBoundMs": 2.0,
+      "mappingStatus": "offset_applied",
+      "maxAbsErrorOnSourceMs": 0.8035,
+      "offsetCarriedByContainerS": 0.5,
+      "onsetErrorOnCanonicalMs": [
+        23.188,
+        23.25
+      ],
+      "onsetErrorOnSourceMs": [
+        -0.803,
+        -0.741
+      ],
+      "onsetsMs": [
+        523.188,
+        1273.25
+      ],
+      "paddingSamples": null,
+      "reasons": [
+        "gapless_edit_list"
+      ],
+      "sourceOffsetMs": 476.009
+    },
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "codec": "vorbis",
+      "container": "ogg",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2000.0,
+      "editListPresent": false,
+      "encoderDelaySamples": 0,
+      "format": "ogg_vorbis",
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2000,
+      "id": "ogg_vorbis",
+      "leadingOffsetS": 0.0,
+      "mappingErrorBoundMs": 23.22,
+      "mappingStatus": "approximate",
+      "maxAbsErrorOnSourceMs": 0.0,
+      "offsetCarriedByContainerS": 0.0,
+      "onsetErrorOnCanonicalMs": [
+        0.0,
+        0.0
+      ],
+      "onsetErrorOnSourceMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": 56,
+      "reasons": [
+        "lossy_no_gapless_info"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32047,
+      "codec": "vorbis",
+      "container": "ogg",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 88200,
+      "decodedUntilMs": 2002.938,
+      "editListPresent": false,
+      "encoderDelaySamples": 0,
+      "format": "ogg_vorbis",
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2003,
+      "id": "ogg_vorbis+offset",
+      "leadingOffsetS": 0.5,
+      "mappingErrorBoundMs": 23.22,
+      "mappingStatus": "approximate",
+      "maxAbsErrorOnSourceMs": 0.0355,
+      "offsetCarriedByContainerS": 0.5,
+      "onsetErrorOnCanonicalMs": [
+        2.875,
+        2.938
+      ],
+      "onsetErrorOnSourceMs": [
+        -0.027,
+        0.035
+      ],
+      "onsetsMs": [
+        502.875,
+        1252.938
+      ],
+      "paddingSamples": 56,
+      "reasons": [
+        "lossy_no_gapless_info",
+        "declared_offset"
+      ],
+      "sourceOffsetMs": 497.098
+    },
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "codec": "opus",
+      "container": "ogg",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "editListPresent": false,
+      "encoderDelaySamples": 312,
+      "format": "ogg_opus",
+      "gaplessInfo": "codec_preskip",
+      "gaps": [],
+      "headerDurationMs": 2006,
+      "id": "ogg_opus",
+      "leadingOffsetS": 0.0,
+      "mappingErrorBoundMs": 2.0,
+      "mappingStatus": "offset_applied",
+      "maxAbsErrorOnSourceMs": 0.0,
+      "offsetCarriedByContainerS": 0.0,
+      "onsetErrorOnCanonicalMs": [
+        0.0,
+        0.0
+      ],
+      "onsetErrorOnSourceMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": 648,
+      "reasons": [
+        "gapless_codec_preskip"
+      ],
+      "sourceOffsetMs": 0.0
+    },
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32000,
+      "codec": "opus",
+      "container": "ogg",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2000.0,
+      "editListPresent": false,
+      "encoderDelaySamples": 312,
+      "format": "ogg_opus",
+      "gaplessInfo": "codec_preskip",
+      "gaps": [],
+      "headerDurationMs": 2506,
+      "id": "ogg_opus+offset",
+      "leadingOffsetS": 0.5,
+      "mappingErrorBoundMs": 2.0,
+      "mappingStatus": "offset_applied",
+      "maxAbsErrorOnSourceMs": 0.0,
+      "offsetCarriedByContainerS": 0.5,
+      "onsetErrorOnCanonicalMs": [
+        0.0,
+        0.0
+      ],
+      "onsetErrorOnSourceMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        500.0,
+        1250.0
+      ],
+      "paddingSamples": 648,
+      "reasons": [
+        "gapless_codec_preskip"
+      ],
+      "sourceOffsetMs": 500.0
+    },
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32112,
+      "codec": "opus",
+      "container": "matroska",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2007.0,
+      "editListPresent": false,
+      "encoderDelaySamples": 0,
+      "format": "webm_opus",
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2008,
+      "id": "webm_opus",
+      "leadingOffsetS": 0.0,
+      "mappingErrorBoundMs": 20.0,
+      "mappingStatus": "approximate",
+      "maxAbsErrorOnSourceMs": 0.0,
+      "offsetCarriedByContainerS": 0.0,
+      "onsetErrorOnCanonicalMs": [
+        7.0,
+        7.0
+      ],
+      "onsetErrorOnSourceMs": [
+        0.0,
+        0.0
+      ],
+      "onsetsMs": [
+        507.0,
+        1257.0
+      ],
+      "paddingSamples": 648,
+      "reasons": [
+        "lossy_no_gapless_info",
+        "declared_offset"
+      ],
+      "sourceOffsetMs": -7.0
+    },
+    {
+      "boundContainsError": true,
+      "burstsFound": 2,
+      "canonicalSamples": 32112,
+      "codec": "opus",
+      "container": "matroska",
+      "decodeClass": "full",
+      "decodeErrors": 0,
+      "decodedSamplesNative": 96000,
+      "decodedUntilMs": 2007.0,
+      "editListPresent": false,
+      "encoderDelaySamples": 0,
+      "format": "webm_opus",
+      "gaplessInfo": "none",
+      "gaps": [],
+      "headerDurationMs": 2508,
+      "id": "webm_opus+offset",
+      "leadingOffsetS": 0.5,
+      "mappingErrorBoundMs": 20.0,
+      "mappingStatus": "approximate",
+      "maxAbsErrorOnSourceMs": 1.0,
+      "offsetCarriedByContainerS": 0.5,
+      "onsetErrorOnCanonicalMs": [
+        7.0,
+        7.0
+      ],
+      "onsetErrorOnSourceMs": [
+        1.0,
+        1.0
+      ],
+      "onsetsMs": [
+        507.0,
+        1257.0
+      ],
+      "paddingSamples": 648,
+      "reasons": [
+        "lossy_no_gapless_info",
+        "declared_offset"
+      ],
+      "sourceOffsetMs": 494.0
+    }
+  ]
+}

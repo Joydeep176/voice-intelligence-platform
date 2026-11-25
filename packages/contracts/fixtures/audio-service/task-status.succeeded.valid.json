@@ -1,0 +1,8 @@
+{
+  "taskId": "6f1c1f9e-6a3e-4c55-9a4e-2f1f2d0f7b10",
+  "type": "probe",
+  "status": "succeeded",
+  "progress": null,
+  "result": { "durationMs": 60000 },
+  "error": null
+}

@@ -48,13 +48,13 @@ Users belong to workspaces. Authentication provider deferred (OD-08b). The works
 ### 3.1 Ingestion and validation (Step 1)
 - FR-1.1: Users can upload audio from short voice notes to recordings longer than two hours.
 - FR-1.2: Large uploads are multipart and resumable. A client can query which parts were received and continue an interrupted upload.
-- FR-1.3: Files are validated (container/codec, duration, integrity) before processing and rejected with a clear reason. Limits: TBD (OD-10).
+- FR-1.3: Files are validated (container/codec, duration, integrity) before processing and rejected with a clear reason. Limits (OD-10, ADR-0039): maximum duration 4 h, upload 2 GiB, at most 8 channels, at most 192 kHz.
 - FR-1.4: Original audio is stored unmodified in object storage.
 - FR-1.5: Upload requires a consent attestation (SEC-1).
 
 ### 3.2 Preprocessing and segmentation (Step 2, deterministic audio-processing service)
 - FR-2.1: Audio is decoded and converted to a canonical analysis format without modifying the original.
-- FR-2.2: Voice activity detection (method: OD-29) informs segmentation. Long audio is split into overlapping segments. Length and overlap: TBD (OD-10).
+- FR-2.2: Voice activity detection (OD-29: Silero VAD, ADR-0038) is applied inside the transcription windows to split them into speech spans; preprocessing VAD stays `none`. Long audio is split into overlapping transcription windows of 30 s with 1 s overlap (OD-10, ADR-0039).
 - FR-2.5: Preprocessing is deterministic and makes no quality judgements.
 - FR-2.3: All timestamps map to the original recording, in milliseconds.
 - FR-2.4: Preprocessing outputs are versioned by configuration, so reprocessing never overwrites artefacts used by another run. Every preprocessing hash is stored with the full reproducible configuration and tool-version metadata it was computed from (ADR-0015).
@@ -140,13 +140,13 @@ Users belong to workspaces. Authentication provider deferred (OD-08b). The works
 
 | ID | Requirement | Target |
 |---|---|---|
-| NFR-1 | Recordings > 2 h end-to-end | Required. Maximum duration TBD (OD-10) |
-| NFR-2 | Latency / throughput | TBD (OD-10) |
-| NFR-3 | Transcription accuracy (WER/CER per language) | TBD, from benchmark (ADR-0012) |
-| NFR-4 | Diarization accuracy (DER) | TBD, from benchmark |
+| NFR-1 | Recordings > 2 h end-to-end | Required. Maximum duration 4 h (OD-10, ADR-0039) |
+| NFR-2 | Latency / throughput | No real-time target (OD-10, ADR-0039); local inference on the audio service's 2 CPUs (ADR-0041) runs slower than real time. Bounds: media task 120 s + 0.5 × duration, inference task 120 s + 4 × audio, provider call 120 s + 5 × audio, run deadline 1 h + 6 × duration, 3 retries. Lossy timestamp target ±10 ms |
+| NFR-3 | Transcription accuracy (WER/CER per language) | TBD, from benchmark (ADR-0012). A deferral is **proposed** in ADR-0042, awaiting the user's decision; measured synthetic baseline preserved there |
+| NFR-4 | Diarization accuracy (DER) | TBD, from benchmark. A deferral is **proposed** in ADR-0042, awaiting the user's decision; measured synthetic baseline preserved there |
 | NFR-5 | No completed stage is lost on a worker crash | Required |
 | NFR-6 | Replacing a provider needs no domain-code changes | Required |
-| NFR-7 | Bounded memory in audio processing and diarization for arbitrarily long recordings | Required. Thresholds and algorithm from benchmark (OD-03b) |
+| NFR-7 | Bounded memory in audio processing and diarization for arbitrarily long recordings | Required. Algorithm and threshold (OD-03b, ADR-0037): diarization of the whole file up to 10 min, else 10 min windows with 30 s overlap and cross-window embedding matching (cosine ≥ 0.5). Audio service limited to 768 MB with an anonymous-memory gate (ADR-0039) |
 | NFR-8 | Observability of runs and LLM calls without content leakage | Required. Tooling OD-15 |
 | NFR-9 | Security and privacy | §3.12 |
 

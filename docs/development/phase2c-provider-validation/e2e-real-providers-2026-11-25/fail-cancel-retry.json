@@ -1,0 +1,140 @@
+{
+ "scenario": "cancel-retry",
+ "startedAt": "2026-11-25T17:36:54.583Z",
+ "steps": [
+  {
+   "name": "cancel-clicked",
+   "t_s": 139.5,
+   "uiNote": null
+  },
+  {
+   "name": "after-cancel",
+   "t_s": 266.4,
+   "status": "cancelled",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": true,
+   "transcriptAvailable": false,
+   "stages": "transcription:cancelled#1@50,diarization:pending#0",
+   "uiCancelled": true,
+   "retryButton": true,
+   "rawStatus": 200,
+   "rawWindowsStored": 2,
+   "rawKeys": [
+    "items"
+   ],
+   "transcriptStatus": 404
+  },
+  {
+   "name": "after-retry",
+   "t_s": 534.9,
+   "status": "completed",
+   "error": null,
+   "retryCount": 1,
+   "cancelRequested": false,
+   "transcriptAvailable": true,
+   "stages": "transcription:completed#2@100,diarization:completed#2@100",
+   "retry_wall_s": 268,
+   "uiCompleted": true,
+   "segments": 17,
+   "rawKeys": [
+    "items"
+   ],
+   "raw": "{\"items\":[{\"id\":\"6a69996b-f748-4134-9416-f5dd859c5438\",\"kind\":\"stt\",\"provider\":\"whisper-cpp\",\"providerModel\":\"ggml-small-q5_1\",\"scope\":\"window\",\"windowIndex\":0,\"windowStartMs\":0,\"windowEndMs\":30000,\"sha256\":\"…\",\"receivedAt\":\"2026-11-25T17:39:13.789Z\",\"fake\":false},{\"id\":\"d0394074-ffd7-4437-a288-12b22c3d3145\",\"kind\":\"stt\",\"provider\":\"whisper-cpp\",\"providerModel\":\"ggml-small-q5_1\",\"scope\":\"window\",\"windowIndex\":1,\"windowStartMs\":29000,\"windowEndMs\":59000,\"sha256\":\"…\",\"receivedAt\":\"2026-11-25T17:41:18.990Z\",\"fake\":false},{\"id\":\"aa0e603b-7b34-443e-bda6-a580e5a0e500\",\"kind\":\"stt\",\"provider\":\"whisper-cpp\",\"providerModel\":\"ggml-small-q5_1\",\"scope\":\"window\",\"windowIndex\":2,\"windowStartMs\":58000,\"windowEndMs\":88000,\"sha256\":\"…\",\"receivedAt\":\"2026-11-25T17:43:53.456Z\",\"fake\":false},{\"id\":\"809778eb-9af9-4503-9b5c-1cca46ad2c8f\",\"kind\":\"stt\",\"provider\":\"whisper-cpp\",\"providerModel\":\"ggml-small-q5_1\","
+  }
+ ],
+ "timeline": [
+  {
+   "t_s": 9.6,
+   "status": "queued",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:pending#0,diarization:pending#0"
+  },
+  {
+   "t_s": 12.7,
+   "status": "running",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:running#1,diarization:pending#0"
+  },
+  {
+   "t_s": 139.3,
+   "status": "running",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:running#1@25,diarization:pending#0"
+  },
+  {
+   "t_s": 139.5,
+   "status": "cancelling",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": true,
+   "transcriptAvailable": false,
+   "stages": "transcription:running#1@25,diarization:pending#0"
+  },
+  {
+   "t_s": 266.2,
+   "status": "cancelled",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": true,
+   "transcriptAvailable": false,
+   "stages": "transcription:cancelled#1@50,diarization:pending#0"
+  },
+  {
+   "t_s": 266.7,
+   "status": "cancelled",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": true,
+   "transcriptAvailable": false,
+   "stages": "transcription:cancelled#1@50,diarization:pending#0"
+  },
+  {
+   "t_s": 269.7,
+   "status": "running",
+   "error": null,
+   "retryCount": 1,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:running#2@50,diarization:pending#0"
+  },
+  {
+   "t_s": 420.4,
+   "status": "running",
+   "error": null,
+   "retryCount": 1,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:running#2@75,diarization:pending#0"
+  },
+  {
+   "t_s": 480.6,
+   "status": "running",
+   "error": null,
+   "retryCount": 1,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:completed#2@100,diarization:running#2"
+  },
+  {
+   "t_s": 534.9,
+   "status": "completed",
+   "error": null,
+   "retryCount": 1,
+   "cancelRequested": false,
+   "transcriptAvailable": true,
+   "stages": "transcription:completed#2@100,diarization:completed#2@100"
+  }
+ ],
+ "consoleErrors": [],
+ "total_s": 535.1
+}

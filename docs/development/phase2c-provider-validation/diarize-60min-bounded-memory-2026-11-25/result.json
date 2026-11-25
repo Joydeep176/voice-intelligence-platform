@@ -1,0 +1,40 @@
+{
+ "taskTypes": [
+  "diarize",
+  "preprocess",
+  "probe",
+  "transcribe"
+ ],
+ "landlock": {
+  "supported": true,
+  "abi": 8,
+  "enforced": true,
+  "scoped": true
+ },
+ "tasks": [
+  {
+   "type": "preprocess",
+   "status": "succeeded",
+   "wall_s": 16.12
+  },
+  {
+   "type": "diarize",
+   "status": "succeeded",
+   "error": null,
+   "wall_s": 2639.01,
+   "rtf": 0.732,
+   "speakers": 12,
+   "turns": 532
+  }
+ ],
+ "live": {
+  "n": 5203,
+  "max_s": 0.7442,
+  "fail": 0,
+  "over_1s": 0,
+  "p50_s": 0.0037,
+  "p99_s": 0.0425
+ },
+ "status_poll_max_s": 0.2686,
+ "durationMs": 3606069
+}

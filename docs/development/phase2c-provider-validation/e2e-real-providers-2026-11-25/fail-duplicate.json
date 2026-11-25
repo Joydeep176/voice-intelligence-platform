@@ -1,0 +1,82 @@
+{
+ "scenario": "duplicate",
+ "startedAt": "2026-11-25T17:29:30.860Z",
+ "steps": [
+  {
+   "name": "three-concurrent-posts",
+   "t_s": 9.1,
+   "statuses": [
+    202,
+    202,
+    202
+   ],
+   "runIds": 1
+  },
+  {
+   "name": "post-while-active",
+   "t_s": 9.2,
+   "status": 202,
+   "sameRun": true
+  },
+  {
+   "name": "unknown-field-rejected",
+   "t_s": 9.2,
+   "status": 422
+  },
+  {
+   "name": "final",
+   "t_s": 274.8,
+   "status": "completed",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": true,
+   "stages": "transcription:completed#1@100,diarization:completed#1@100"
+  },
+  {
+   "name": "recording-latestRun",
+   "t_s": 274.8,
+   "same": true
+  }
+ ],
+ "timeline": [
+  {
+   "t_s": 9.2,
+   "status": "running",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:running#1,diarization:pending#0"
+  },
+  {
+   "t_s": 226.5,
+   "status": "running",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:running#1@50,diarization:pending#0"
+  },
+  {
+   "t_s": 259.7,
+   "status": "running",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": false,
+   "stages": "transcription:completed#1@100,diarization:running#1"
+  },
+  {
+   "t_s": 274.8,
+   "status": "completed",
+   "error": null,
+   "retryCount": 0,
+   "cancelRequested": false,
+   "transcriptAvailable": true,
+   "stages": "transcription:completed#1@100,diarization:completed#1@100"
+  }
+ ],
+ "consoleErrors": [],
+ "total_s": 274.8
+}

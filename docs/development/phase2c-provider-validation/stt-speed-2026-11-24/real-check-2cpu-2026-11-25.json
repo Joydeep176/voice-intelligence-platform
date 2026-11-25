@@ -1,0 +1,89 @@
+{
+ "taskTypes": [
+  "diarize",
+  "preprocess",
+  "probe",
+  "transcribe"
+ ],
+ "landlock": {
+  "supported": true,
+  "abi": 8,
+  "enforced": true,
+  "scoped": true
+ },
+ "tasks": [
+  {
+   "type": "preprocess",
+   "status": "succeeded",
+   "wall_s": 2.03
+  },
+  {
+   "type": "transcribe",
+   "window": {
+    "startMs": 0,
+    "endMs": 30000
+   },
+   "status": "succeeded",
+   "error": null,
+   "wall_s": 113.69,
+   "rtf": 3.79,
+   "segments": 6,
+   "languages": [
+    "en"
+   ],
+   "devanagari_segments": 0
+  },
+  {
+   "type": "transcribe",
+   "window": {
+    "startMs": 30000,
+    "endMs": 60000
+   },
+   "status": "succeeded",
+   "error": null,
+   "wall_s": 115.93,
+   "rtf": 3.864,
+   "segments": 6,
+   "languages": [
+    "en"
+   ],
+   "devanagari_segments": 0
+  },
+  {
+   "type": "transcribe",
+   "window": {
+    "startMs": 60000,
+    "endMs": 90000
+   },
+   "status": "succeeded",
+   "error": null,
+   "wall_s": 148.09,
+   "rtf": 4.936,
+   "segments": 6,
+   "languages": [
+    "en",
+    "hi"
+   ],
+   "devanagari_segments": 2
+  },
+  {
+   "type": "diarize",
+   "status": "succeeded",
+   "error": null,
+   "wall_s": 49.33,
+   "rtf": 0.548,
+   "speakers": 5,
+   "turns": 14
+  }
+ ],
+ "live": {
+  "n": 846,
+  "max_s": 0.2364,
+  "fail": 0,
+  "over_1s": 0,
+  "p50_s": 0.0027,
+  "p99_s": 0.0194
+ },
+ "status_poll_max_s": 0.0631,
+ "durationMs": 90000
+}

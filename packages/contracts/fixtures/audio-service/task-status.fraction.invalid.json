@@ -1,0 +1,8 @@
+{
+  "taskId": "6f1c1f9e-6a3e-4c55-9a4e-2f1f2d0f7b10",
+  "type": "probe",
+  "status": "running",
+  "progress": { "stage": "decode", "fraction": 1.5, "processedMs": 0 },
+  "result": null,
+  "error": null
+}

@@ -2,7 +2,7 @@
   "name": "@vip/orchestrator",
   "version": "0.1.0",
   "private": true,
-  "description": "NestJS standalone worker app that owns BullMQ consumers (ADR-0002). Phase 1: foundation check worker only; no agents or LangGraph.",
+  "description": "NestJS standalone worker app that owns BullMQ consumers (ADR-0002). Foundation check worker, the Phase 2B audio processing coordinator and the Phase 2C transcription run coordinator (fake providers); no agents or LangGraph.",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsc -p tsconfig.build.json && (tsc -p tsconfig.build.json --watch --preserveWatchOutput & node --watch --env-file-if-exists=../../.env dist/main.js)",
@@ -16,6 +16,7 @@
     "@nestjs/common": "^12.5.1",
     "@nestjs/core": "^12.5.1",
     "@vip/contracts": "workspace:*",
+    "@vip/db": "workspace:*",
     "bullmq": "~6.7.6",
     "ioredis": "^6.0.0",
     "reflect-metadata": "^0.2.2",

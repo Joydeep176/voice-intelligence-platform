@@ -3,10 +3,12 @@ import { AuditModule } from './audit/audit.module';
 import { APP_CONFIG, type AppConfig } from './config/app-config';
 import { DatabaseModule } from './database/database.module';
 import { HealthModule } from './health/health.module';
+import { ProcessingModule } from './processing/processing.module';
 import { QueueModule } from './queue/queue.module';
 import { RecordingsModule } from './recordings/recordings.module';
 import { RunsModule } from './runs/runs.module';
 import { StorageModule } from './storage/storage.module';
+import { TranscriptsModule } from './transcripts/transcripts.module';
 
 @Global()
 @Module({})
@@ -34,7 +36,9 @@ export class AppModule {
         AuditModule,
         HealthModule,
         RecordingsModule,
+        ProcessingModule,
         RunsModule,
+        TranscriptsModule,
       ],
     };
   }

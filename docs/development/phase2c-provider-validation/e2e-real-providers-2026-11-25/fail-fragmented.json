@@ -1,0 +1,63 @@
+{
+ "runId": "219ef471-9f9d-4cbf-a5c8-f823d629e5da",
+ "final": {
+  "status": "failed",
+  "error": {
+   "code": "AUDIO_TIMEOUT",
+   "node": "transcription"
+  },
+  "retryCount": 0,
+  "stages": [
+   {
+    "node": "transcription",
+    "status": "failed",
+    "attempt": 1,
+    "error": {
+     "code": "AUDIO_TIMEOUT"
+    },
+    "startedAt": "2026-11-25T18:17:46.572Z",
+    "finishedAt": "2026-11-25T18:21:41.915Z"
+   },
+   {
+    "node": "diarization",
+    "status": "pending",
+    "attempt": 0,
+    "error": null,
+    "startedAt": null,
+    "finishedAt": null
+   }
+  ]
+ },
+ "timeline": [
+  {
+   "t_s": 0,
+   "at": "2026-11-25T18:12:08.285Z",
+   "s": "running",
+   "e": null,
+   "rc": 0,
+   "st": [
+    "transcription:running#1",
+    "diarization:pending#0"
+   ]
+  },
+  {
+   "t_s": 577,
+   "at": "2026-11-25T18:21:44.775Z",
+   "s": "failed",
+   "e": {
+    "code": "AUDIO_TIMEOUT",
+    "node": "transcription"
+   },
+   "rc": 0,
+   "st": [
+    "transcription:failed#1!AUDIO_TIMEOUT",
+    "diarization:pending#0"
+   ]
+  }
+ ],
+ "ui": {
+  "failure": "Transcription failed A transcription window took longer than its processing deadline. Retry is possible. 3 of 3 retries left.",
+  "retryButton": true,
+  "processingCardCompleted": true
+ }
+}

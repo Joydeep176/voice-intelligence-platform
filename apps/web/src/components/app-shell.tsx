@@ -165,7 +165,7 @@ function PhaseNote({ hidden }: { hidden?: boolean }) {
   if (hidden) return null;
   return (
     <p className="text-muted-foreground px-3 text-[11px] leading-relaxed">
-      Phase 1 foundation · analysis pipeline not yet available
+      Audio processing and transcription · analysis agents not yet available
     </p>
   );
 }

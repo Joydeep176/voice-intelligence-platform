@@ -1,11 +1,14 @@
 [project]
 name = "vip-audio-service"
 version = "0.1.0"
-description = "Deterministic internal audio service (ADR-0002, ADR-0019). Phase 1: probes and contract handshake only; no audio processing."
+description = "Deterministic internal audio service (ADR-0002, ADR-0019). Phase 2B WS1-WS3: contract v2, task executor, storage, sandbox runner, probe task, streamed decoder and timeline mapping; WS4: deterministic measurements, canonical WAV and the preprocess task."
 requires-python = ">=3.12,<3.14"
 dependencies = [
     "fastapi>=0.165.0",
+    "numpy>=2,<3",
     "pydantic>=2.14.4",
+    "pywhispercpp==1.5.1",
+    "sherpa-onnx==2.0.2",
     "uvicorn>=0.54.0",
 ]
 
@@ -25,7 +28,7 @@ select = ["E", "F", "W", "I", "B", "UP", "S", "T20", "PL"]
 ignore = ["PLR2004"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101", "PLR2004"]
+"tests/**" = ["S101", "PLR2004", "S603", "S607", "S108", "S310", "PLC0415", "PLW1510"]
 
 [tool.mypy]
 strict = true
@@ -36,6 +39,10 @@ mypy_path = "src"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra --strict-markers"
+markers = [
+    "container: needs the audio image (Linux, ffmpeg, hardening flags); skipped on the host",
+    "docker_host: drives Docker from the host (AUDIO_SERVICE_TEST_DOCKER=1); skipped otherwise",
+]
 
 [dependency-groups]
 dev = [
@@ -43,6 +50,18 @@ dev = [
     "mypy>=2.4.1",
     "pytest>=9.2.0",
     "ruff>=0.17.6",
+]
+diarization-benchmark = [
+    "sherpa-onnx==2.0.2",
+]
+stt-benchmark = [
+    "faster-whisper==1.2.1",
+    "pywhispercpp==1.5.1",
+    "sherpa-onnx==2.0.2",
+]
+vad-benchmark = [
+    "onnxruntime>=1.32,<2",
+    "webrtcvad-wheels>=2.0.14,<3",
 ]
 
 [project.scripts]

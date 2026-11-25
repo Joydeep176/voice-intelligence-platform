@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "nativeSampleRate": 44100,
+  "decodedSamplesNative": 88200,
+  "canonicalSamples": 32000,
+  "source": {
+    "timeBase": "1/14112000",
+    "startTimeTicks": 353600,
+    "startTimeMs": 25.057,
+    "editListPresent": false,
+    "encoderDelaySamples": 1105,
+    "paddingSamples": 551,
+    "gaplessInfo": "lame",
+    "headerDurationMs": 2038
+  },
+  "sourceOffsetMs": 0,
+  "decodeClass": "partial",
+  "decodedUntilMs": 1202.688,
+  "gaps": [
+    {
+      "startMs": 2000.0,
+      "durationMs": -1,
+      "kind": "timestamp_gap_filled"
+    }
+  ],
+  "overlapsTrimmed": [
+    {
+      "atMs": 700.5,
+      "durationMs": 30.0
+    }
+  ],
+  "decodeErrors": {
+    "count": 2,
+    "firstAtMs": 862.125
+  },
+  "mappingStatus": "uncertain",
+  "mappingErrorBoundMs": null,
+  "reasons": ["timestamp_gaps", "decoder_errors", "partial_decode"]
+}

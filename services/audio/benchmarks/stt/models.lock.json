@@ -1,0 +1,122 @@
+{
+  "diar-embedding/3dspeaker_speech_campplus_sv_en_voxceleb_16k.onnx": {
+    "sha256": "98daf9bcf1c8abf3db374fec4c27a5eda7c58705bb3f180d057b085a72a88bb5",
+    "size": 29596979,
+    "upstream_verified": true
+  },
+  "diar-embedding/wespeaker_en_voxceleb_resnet34_LM.onnx": {
+    "sha256": "e9848563da86f263117134dfd7ad63c92355b37de492b55e325400c9d9c39012",
+    "size": 26530550,
+    "upstream_verified": true
+  },
+  "diar-segmentation/LICENSE": {
+    "sha256": "14d7016ad68e7394d6e6b78d96cc2ae431c905287b89674cfdf021e79e62b8ba",
+    "size": 1061,
+    "upstream_verified": false
+  },
+  "diar-segmentation/README.md": {
+    "sha256": "0380ed76a50efcc421dc62f251ed06e8349688466beac3177bee6e00dc336bfc",
+    "size": 115,
+    "upstream_verified": false
+  },
+  "diar-segmentation/model.int8.onnx": {
+    "sha256": "d582f4b4c6b48205de7e0643c57df0df5615a3c176189be3fc461e9d18827b5d",
+    "size": 1540506,
+    "upstream_verified": false
+  },
+  "diar-segmentation/model.onnx": {
+    "sha256": "220ad67ca923bef2fa91f2390c786097bf305bceb5e261d4af67b38e938e1079",
+    "size": 5992913,
+    "upstream_verified": false
+  },
+  "fw-medium/config.json": {
+    "sha256": "3622a2ddc41ec0e0fd4e68c13c6830f03b90c38d89aaad184de02c8c642cf807",
+    "size": 2257,
+    "upstream_verified": false
+  },
+  "fw-medium/model.bin": {
+    "sha256": "9b45e1009dcc4ab601eff815b61d80e60ce3fd8c74c1a14f4a282258286b51ae",
+    "size": 1527906378,
+    "upstream_verified": true
+  },
+  "fw-medium/tokenizer.json": {
+    "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab",
+    "size": 2203239,
+    "upstream_verified": false
+  },
+  "fw-medium/vocabulary.txt": {
+    "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913",
+    "size": 459861,
+    "upstream_verified": false
+  },
+  "fw-small/config.json": {
+    "sha256": "b55496ac7940a7ae47d2c01eab40edfd8701feec1229d9cce3b40014383fb828",
+    "size": 2370,
+    "upstream_verified": false
+  },
+  "fw-small/model.bin": {
+    "sha256": "3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671",
+    "size": 483546902,
+    "upstream_verified": true
+  },
+  "fw-small/tokenizer.json": {
+    "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab",
+    "size": 2203239,
+    "upstream_verified": false
+  },
+  "fw-small/vocabulary.txt": {
+    "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913",
+    "size": 459861,
+    "upstream_verified": false
+  },
+  "ggml/ggml-medium-q5_0.bin": {
+    "sha256": "19fea4b380c3a618ec4723c3eef2eb785ffba0d0538cf43f8f235e7b3b34220f",
+    "size": 539212467,
+    "upstream_verified": true
+  },
+  "ggml/ggml-small-q5_1.bin": {
+    "sha256": "ae85e4a935d7a567bd102fe55afc16bb595bdb618e11b2fc7591bc08120411bb",
+    "size": 190085487,
+    "upstream_verified": true
+  },
+  "sherpa-omni-300m/model.int8.onnx": {
+    "sha256": "e3042b2f3b3ef0af2211bf99d2b4bf94a21f5ac0e9898827e7dd6d003a860e91",
+    "size": 365841453,
+    "upstream_verified": false
+  },
+  "sherpa-omni-300m/tokens.txt": {
+    "sha256": "7d99997ef207ff14c2cfe825f2aa037528ea250113cc3c6392bfe49326884ba6",
+    "size": 90630,
+    "upstream_verified": false
+  },
+  "sherpa-whisper-medium/medium-decoder.int8.onnx": {
+    "sha256": "595d00a338a365a7bfa0ca7f296cabc639583bef770ab6130df90f49a6412747",
+    "size": 571059257,
+    "upstream_verified": false
+  },
+  "sherpa-whisper-medium/medium-encoder.int8.onnx": {
+    "sha256": "1c54582b4d829de0089f6cb63bbbdb3bf7555398bacaf855fbecf1a84dfd193e",
+    "size": 374196283,
+    "upstream_verified": false
+  },
+  "sherpa-whisper-medium/medium-tokens.txt": {
+    "sha256": "b34b360dbb493e781e479794586d661700670d65564001f23024971d1f2fa126",
+    "size": 816730,
+    "upstream_verified": false
+  },
+  "sherpa-whisper-small/small-decoder.int8.onnx": {
+    "sha256": "acad50b5c782696e91b55914cc5ab4f756f1532f76e22aa6fc615f39fb69a8ee",
+    "size": 262226114,
+    "upstream_verified": false
+  },
+  "sherpa-whisper-small/small-encoder.int8.onnx": {
+    "sha256": "4cbe7b22fa9026b843b60a68640c747de05bafb1a11b57edc0e66c232d9f33a9",
+    "size": 112442483,
+    "upstream_verified": false
+  },
+  "sherpa-whisper-small/small-tokens.txt": {
+    "sha256": "b34b360dbb493e781e479794586d661700670d65564001f23024971d1f2fa126",
+    "size": 816730,
+    "upstream_verified": false
+  }
+}

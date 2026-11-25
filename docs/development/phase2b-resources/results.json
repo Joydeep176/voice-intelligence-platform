@@ -1,0 +1,942 @@
+{
+  "environment": {
+    "macOS": "26.3.1",
+    "build": "25D2128",
+    "arch": "arm64",
+    "cpu": "Apple M1",
+    "hostMemoryBytes": 8589934592,
+    "docker": {
+      "client": "Docker version 29.9.3, build 5457199",
+      "serverVersion": "29.9.3",
+      "operatingSystem": "Docker Desktop",
+      "vmMemoryBytes": 4106539008,
+      "vmCpus": 8,
+      "cgroupVersion": "2",
+      "cgroupDriver": "cgroupfs"
+    },
+    "desktopVersion": "4.99.0",
+    "image": "vip-p2b-e2e-audio-service",
+    "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe": "ffprobe version 7.1.5-0+deb13u1 Copyright (c) 2007-2026 the FFmpeg developers",
+    "python": "Python 3.12.16",
+    "container": {
+      "memory": "512m",
+      "cpus": "1.0",
+      "pidsLimit": 64,
+      "readOnly": true,
+      "capDropAll": true,
+      "noNewPrivileges": true,
+      "tmpfs": "/tmp:16m noexec,nosuid,nodev",
+      "source": "infra/docker/compose.yaml (unchanged)"
+    },
+    "sampler": "sidecar container, --pid container:<audio>, --cgroupns host, /sys/fs/cgroup read-only, 10 Hz"
+  },
+  "cases": {
+    "mono16k-10s": {
+      "label": "10 s mono 16 kHz WAV",
+      "originalBytes": 320078,
+      "audioS": 10,
+      "runs": [
+        {
+          "job": 1,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 1.03,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 320044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 1378
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 357
+            },
+            {
+              "name": "result.json",
+              "bytes": 5456
+            }
+          ],
+          "outputBytes": 327235,
+          "leftoverTmp": 0,
+          "rtf": 0.1028,
+          "audioS": 10,
+          "samples": 19,
+          "sampleHz": 10.34,
+          "maxGapS": 0.11,
+          "cpuSeconds": 0.51,
+          "throttledSeconds": 0,
+          "memoryPeakCgroupMb": 59.3,
+          "memoryCurrentMaxMb": 59.3,
+          "anonPeakMb": 54,
+          "anonAtStartMb": 39.9,
+          "filePeakMb": 0.6,
+          "pidsMax": 18,
+          "ffmpegRssSumPeakMb": 51.1,
+          "ffmpegHwmPeakMb": 51.1,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 0.3,
+          "idleAnonAfterMb": 41.6,
+          "idleCurrentAfterMb": 45.7
+        }
+      ],
+      "containerStillRunning": true,
+      "machineBefore": {
+        "at": "2026-11-21T15:42:23.064Z",
+        "swapUsage": "total = 5120.00M  used = 3795.50M  free = 1324.50M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 53%",
+        "dockerVmRssBytes": 1381859328,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                3800.\nPages active:                            128395.\nPages inactive:                          123600.\nPages speculative:                         4034.\nPages throttled:                              0.\nPages wired down:                         82071.\nPages purgeable:                           1103."
+      },
+      "machineAfter": {
+        "at": "2026-11-21T15:42:29.565Z",
+        "swapUsage": "total = 5120.00M  used = 3779.50M  free = 1340.50M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 52%",
+        "dockerVmRssBytes": 1472839680,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                4153.\nPages active:                            126771.\nPages inactive:                          123773.\nPages speculative:                         2472.\nPages throttled:                              0.\nPages wired down:                         87147.\nPages purgeable:                            376."
+      },
+      "tokenInContainerLogs": false
+    },
+    "stereo44k-5min-mp3": {
+      "label": "5 min stereo 44.1 kHz MP3",
+      "originalBytes": 4801140,
+      "audioS": 300,
+      "runs": [
+        {
+          "job": 1,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 6.6,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 9600044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 38674
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 359
+            },
+            {
+              "name": "result.json",
+              "bytes": 6660
+            }
+          ],
+          "outputBytes": 9645737,
+          "leftoverTmp": 0,
+          "rtf": 0.022,
+          "audioS": 300,
+          "samples": 74,
+          "sampleHz": 10.03,
+          "maxGapS": 0.11,
+          "cpuSeconds": 6.28,
+          "throttledSeconds": 2.82,
+          "memoryPeakCgroupMb": 89.8,
+          "memoryCurrentMaxMb": 89.8,
+          "anonPeakMb": 80.4,
+          "anonAtStartMb": 39.9,
+          "filePeakMb": 13.7,
+          "pidsMax": 19,
+          "ffmpegRssSumPeakMb": 55.5,
+          "ffmpegHwmPeakMb": 55.5,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 9.2,
+          "idleAnonAfterMb": 48.7,
+          "idleCurrentAfterMb": 56.9
+        }
+      ],
+      "containerStillRunning": true,
+      "machineBefore": {
+        "at": "2026-11-21T15:42:32.134Z",
+        "swapUsage": "total = 5120.00M  used = 3779.50M  free = 1340.50M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 52%",
+        "dockerVmRssBytes": 1512980480,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                4310.\nPages active:                            126933.\nPages inactive:                          125107.\nPages speculative:                         1059.\nPages throttled:                              0.\nPages wired down:                         87024.\nPages purgeable:                            394."
+      },
+      "machineAfter": {
+        "at": "2026-11-21T15:42:44.166Z",
+        "swapUsage": "total = 5120.00M  used = 3779.50M  free = 1340.50M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 53%",
+        "dockerVmRssBytes": 1544437760,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                4184.\nPages active:                            128864.\nPages inactive:                          128280.\nPages speculative:                          365.\nPages throttled:                              0.\nPages wired down:                         85930.\nPages purgeable:                           4707."
+      },
+      "tokenInContainerLogs": false
+    },
+    "stereo48k-30min-wav": {
+      "label": "30 min stereo 48 kHz WAV",
+      "originalBytes": 345600078,
+      "audioS": 1800,
+      "runs": [
+        {
+          "job": 1,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 29.33,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 57600044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 231396
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 361
+            },
+            {
+              "name": "result.json",
+              "bytes": 6725
+            }
+          ],
+          "outputBytes": 57838526,
+          "leftoverTmp": 0,
+          "rtf": 0.0163,
+          "audioS": 1800,
+          "samples": 297,
+          "sampleHz": 9.88,
+          "maxGapS": 0.11,
+          "cpuSeconds": 28.1,
+          "throttledSeconds": 10.58,
+          "memoryPeakCgroupMb": 512,
+          "memoryCurrentMaxMb": 512,
+          "anonPeakMb": 88.1,
+          "anonAtStartMb": 39.9,
+          "filePeakMb": 448.6,
+          "pidsMax": 22,
+          "ffmpegRssSumPeakMb": 55.8,
+          "ffmpegHwmPeakMb": 55.8,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 55.2,
+          "idleAnonAfterMb": 49,
+          "idleCurrentAfterMb": 456.8
+        }
+      ],
+      "containerStillRunning": true,
+      "machineBefore": {
+        "at": "2026-11-21T15:42:46.736Z",
+        "swapUsage": "total = 5120.00M  used = 3675.50M  free = 1444.50M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 53%",
+        "dockerVmRssBytes": 1956397056,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                4130.\nPages active:                            128164.\nPages inactive:                          115943.\nPages speculative:                        11654.\nPages throttled:                              0.\nPages wired down:                         82858.\nPages purgeable:                              8."
+      },
+      "machineAfter": {
+        "at": "2026-11-21T15:43:21.738Z",
+        "swapUsage": "total = 4096.00M  used = 2661.19M  free = 1434.81M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 42%",
+        "dockerVmRssBytes": 1400078336,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                4491.\nPages active:                            103409.\nPages inactive:                          102397.\nPages speculative:                          257.\nPages throttled:                              0.\nPages wired down:                         89620.\nPages purgeable:                           1058."
+      },
+      "tokenInContainerLogs": false
+    },
+    "stereo44k-60min-m4a": {
+      "label": "60 min stereo 44.1 kHz M4A (AAC)",
+      "originalBytes": 31558680,
+      "audioS": 3600,
+      "runs": [
+        {
+          "job": 1,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 74.25,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 115200740
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 462660
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 362
+            },
+            {
+              "name": "result.json",
+              "bytes": 6685
+            }
+          ],
+          "outputBytes": 115670447,
+          "leftoverTmp": 0,
+          "rtf": 0.0206,
+          "audioS": 3600,
+          "samples": 744,
+          "sampleHz": 9.91,
+          "maxGapS": 0.12,
+          "cpuSeconds": 73.8,
+          "throttledSeconds": 48.48,
+          "memoryPeakCgroupMb": 239.4,
+          "memoryCurrentMaxMb": 238.5,
+          "anonPeakMb": 99,
+          "anonAtStartMb": 39.9,
+          "filePeakMb": 143,
+          "pidsMax": 22,
+          "ffmpegRssSumPeakMb": 65.6,
+          "ffmpegHwmPeakMb": 65.6,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 110.3,
+          "idleAnonAfterMb": 50.1,
+          "idleCurrentAfterMb": 86.8
+        }
+      ],
+      "containerStillRunning": true,
+      "machineBefore": {
+        "at": "2026-11-21T15:43:59.960Z",
+        "swapUsage": "total = 4096.00M  used = 2629.19M  free = 1466.81M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 44%",
+        "dockerVmRssBytes": 1203798016,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                3969.\nPages active:                            108041.\nPages inactive:                          107007.\nPages speculative:                          670.\nPages throttled:                              0.\nPages wired down:                         79127.\nPages purgeable:                           1206."
+      },
+      "machineAfter": {
+        "at": "2026-11-21T15:45:19.855Z",
+        "swapUsage": "total = 4096.00M  used = 2621.19M  free = 1474.81M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 41%",
+        "dockerVmRssBytes": 1005928448,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                3971.\nPages active:                            100095.\nPages inactive:                           92906.\nPages speculative:                         6648.\nPages throttled:                              0.\nPages wired down:                         76710.\nPages purgeable:                             22."
+      },
+      "tokenInContainerLogs": false
+    },
+    "stereo48k-4h-flac": {
+      "label": "4 h stereo 48 kHz FLAC (speech-like + silences + clipped sections)",
+      "originalBytes": 1221871381,
+      "audioS": 14400,
+      "runs": [
+        {
+          "job": 1,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 287.99,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 460800044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 1814048
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 363
+            },
+            {
+              "name": "result.json",
+              "bytes": 6738
+            }
+          ],
+          "outputBytes": 462621193,
+          "leftoverTmp": 0,
+          "rtf": 0.02,
+          "audioS": 14400,
+          "samples": 2856,
+          "sampleHz": 9.89,
+          "maxGapS": 0.17,
+          "cpuSeconds": 287.12,
+          "throttledSeconds": 190.55,
+          "memoryPeakCgroupMb": 512,
+          "memoryCurrentMaxMb": 512,
+          "anonPeakMb": 100.3,
+          "anonAtStartMb": 39.9,
+          "filePeakMb": 454.2,
+          "pidsMax": 35,
+          "ffmpegRssSumPeakMb": 57.3,
+          "ffmpegHwmPeakMb": 57.3,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 441.2,
+          "idleAnonAfterMb": 56,
+          "idleCurrentAfterMb": 416.3
+        }
+      ],
+      "containerStillRunning": true,
+      "machineBefore": {
+        "at": "2026-11-21T15:45:42.307Z",
+        "swapUsage": "total = 4096.00M  used = 2469.19M  free = 1626.81M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 43%",
+        "dockerVmRssBytes": 2205696000,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                3796.\nPages active:                            104545.\nPages inactive:                           94760.\nPages speculative:                         9367.\nPages throttled:                              0.\nPages wired down:                         76854.\nPages purgeable:                              4."
+      },
+      "machineAfter": {
+        "at": "2026-11-21T15:50:36.086Z",
+        "swapUsage": "total = 4096.00M  used = 3070.44M  free = 1025.56M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 35%",
+        "dockerVmRssBytes": 924139520,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                4129.\nPages active:                             86046.\nPages inactive:                           84644.\nPages speculative:                          992.\nPages throttled:                              0.\nPages wired down:                         78461.\nPages purgeable:                              6."
+      },
+      "tokenInContainerLogs": false
+    },
+    "silence-10min": {
+      "label": "10 min silence only (stereo 48 kHz)",
+      "originalBytes": 115200078,
+      "audioS": 600,
+      "runs": [
+        {
+          "job": 1,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 9.6,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 19200044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 60097
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 360
+            },
+            {
+              "name": "result.json",
+              "bytes": 5566
+            }
+          ],
+          "outputBytes": 19266067,
+          "leftoverTmp": 0,
+          "rtf": 0.016,
+          "audioS": 600,
+          "samples": 103,
+          "sampleHz": 9.95,
+          "maxGapS": 0.11,
+          "cpuSeconds": 9.35,
+          "throttledSeconds": 2.9,
+          "memoryPeakCgroupMb": 214.5,
+          "memoryCurrentMaxMb": 212.5,
+          "anonPeakMb": 83.4,
+          "anonAtStartMb": 39.9,
+          "filePeakMb": 130.7,
+          "pidsMax": 19,
+          "ffmpegRssSumPeakMb": 55.7,
+          "ffmpegHwmPeakMb": 55.7,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 18.3,
+          "idleAnonAfterMb": 48,
+          "idleCurrentAfterMb": 164.8
+        }
+      ],
+      "containerStillRunning": true,
+      "machineBefore": {
+        "at": "2026-11-21T15:50:37.646Z",
+        "swapUsage": "total = 4096.00M  used = 3054.44M  free = 1041.56M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 35%",
+        "dockerVmRssBytes": 1388691456,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                3749.\nPages active:                             86641.\nPages inactive:                           77598.\nPages speculative:                         7994.\nPages throttled:                              0.\nPages wired down:                         90416.\nPages purgeable:                              2."
+      },
+      "machineAfter": {
+        "at": "2026-11-21T15:50:52.952Z",
+        "swapUsage": "total = 4096.00M  used = 3046.44M  free = 1049.56M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 37%",
+        "dockerVmRssBytes": 1486897152,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                4608.\nPages active:                             89775.\nPages inactive:                           88540.\nPages speculative:                          684.\nPages throttled:                              0.\nPages wired down:                         86763.\nPages purgeable:                              4."
+      },
+      "tokenInContainerLogs": false
+    },
+    "whitenoise-10min": {
+      "label": "10 min white noise (stereo 48 kHz)",
+      "originalBytes": 115200078,
+      "audioS": 600,
+      "runs": [
+        {
+          "job": 1,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 10.62,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 19200044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 78192
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 360
+            },
+            {
+              "name": "result.json",
+              "bytes": 6800
+            }
+          ],
+          "outputBytes": 19285396,
+          "leftoverTmp": 0,
+          "rtf": 0.0177,
+          "audioS": 600,
+          "samples": 113,
+          "sampleHz": 9.93,
+          "maxGapS": 0.11,
+          "cpuSeconds": 10.3,
+          "throttledSeconds": 3.91,
+          "memoryPeakCgroupMb": 211.9,
+          "memoryCurrentMaxMb": 210.6,
+          "anonPeakMb": 81.4,
+          "anonAtStartMb": 39.9,
+          "filePeakMb": 128.2,
+          "pidsMax": 19,
+          "ffmpegRssSumPeakMb": 58,
+          "ffmpegHwmPeakMb": 58,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 18.4,
+          "idleAnonAfterMb": 46.8,
+          "idleCurrentAfterMb": 160.5
+        }
+      ],
+      "containerStillRunning": true,
+      "machineBefore": {
+        "at": "2026-11-21T15:50:54.497Z",
+        "swapUsage": "total = 4096.00M  used = 3030.44M  free = 1065.56M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 38%",
+        "dockerVmRssBytes": 1544126464,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                4805.\nPages active:                             92154.\nPages inactive:                           83438.\nPages speculative:                         8026.\nPages throttled:                              0.\nPages wired down:                         84643.\nPages purgeable:                              4."
+      },
+      "machineAfter": {
+        "at": "2026-11-21T15:51:10.822Z",
+        "swapUsage": "total = 4096.00M  used = 3260.81M  free = 835.19M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 33%",
+        "dockerVmRssBytes": 598917120,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                               11533.\nPages active:                             77618.\nPages inactive:                           73672.\nPages speculative:                         3171.\nPages throttled:                              0.\nPages wired down:                         86072.\nPages purgeable:                            324."
+      },
+      "tokenInContainerLogs": false
+    },
+    "clipped-10min": {
+      "label": "10 min heavily clipped (stereo 48 kHz)",
+      "originalBytes": 115200078,
+      "audioS": 600,
+      "runs": [
+        {
+          "job": 1,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 15.74,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 19200044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 66097
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 360
+            },
+            {
+              "name": "result.json",
+              "bytes": 6818
+            }
+          ],
+          "outputBytes": 19273319,
+          "leftoverTmp": 0,
+          "rtf": 0.0262,
+          "audioS": 600,
+          "samples": 162,
+          "sampleHz": 9.81,
+          "maxGapS": 0.14,
+          "cpuSeconds": 15.24,
+          "throttledSeconds": 4.89,
+          "memoryPeakCgroupMb": 214.7,
+          "memoryCurrentMaxMb": 212.9,
+          "anonPeakMb": 94,
+          "anonAtStartMb": 39.9,
+          "filePeakMb": 128.2,
+          "pidsMax": 20,
+          "ffmpegRssSumPeakMb": 55.8,
+          "ffmpegHwmPeakMb": 55.8,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 18.4,
+          "idleAnonAfterMb": 47.1,
+          "idleCurrentAfterMb": 160.5
+        }
+      ],
+      "containerStillRunning": true,
+      "machineBefore": {
+        "at": "2026-11-21T15:51:12.300Z",
+        "swapUsage": "total = 4096.00M  used = 3252.81M  free = 843.19M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 34%",
+        "dockerVmRssBytes": 1361821696,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                4290.\nPages active:                             83166.\nPages inactive:                           74341.\nPages speculative:                         7687.\nPages throttled:                              0.\nPages wired down:                         92059.\nPages purgeable:                              2."
+      },
+      "machineAfter": {
+        "at": "2026-11-21T15:51:33.754Z",
+        "swapUsage": "total = 4096.00M  used = 3709.12M  free = 386.88M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 33%",
+        "dockerVmRssBytes": 765607936,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                4139.\nPages active:                             80085.\nPages inactive:                           72252.\nPages speculative:                         6957.\nPages throttled:                              0.\nPages wired down:                        102709.\nPages purgeable:                              0."
+      },
+      "tokenInContainerLogs": false
+    },
+    "8ch-192k-30s": {
+      "label": "30 s 8-channel 192 kHz WAV",
+      "originalBytes": 92160102,
+      "audioS": 30,
+      "runs": [
+        {
+          "job": 1,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 7.17,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 960044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 4296
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 358
+            },
+            {
+              "name": "result.json",
+              "bytes": 17341
+            }
+          ],
+          "outputBytes": 982039,
+          "leftoverTmp": 0,
+          "rtf": 0.239,
+          "audioS": 30,
+          "samples": 79,
+          "sampleHz": 9.92,
+          "maxGapS": 0.15,
+          "cpuSeconds": 7.1,
+          "throttledSeconds": 1.67,
+          "memoryPeakCgroupMb": 262.5,
+          "memoryCurrentMaxMb": 262.3,
+          "anonPeakMb": 169.7,
+          "anonAtStartMb": 39.9,
+          "filePeakMb": 88.8,
+          "pidsMax": 19,
+          "ffmpegRssSumPeakMb": 99.8,
+          "ffmpegHwmPeakMb": 99.8,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 0.9,
+          "idleAnonAfterMb": 96,
+          "idleCurrentAfterMb": 187.3
+        }
+      ],
+      "containerStillRunning": true,
+      "machineBefore": {
+        "at": "2026-11-21T15:51:34.579Z",
+        "swapUsage": "total = 4096.00M  used = 3709.12M  free = 386.88M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 32%",
+        "dockerVmRssBytes": 892796928,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                3723.\nPages active:                             79243.\nPages inactive:                           70793.\nPages speculative:                         7470.\nPages throttled:                              0.\nPages wired down:                        101386.\nPages purgeable:                              2."
+      },
+      "machineAfter": {
+        "at": "2026-11-21T15:51:47.431Z",
+        "swapUsage": "total = 4096.00M  used = 3686.56M  free = 409.44M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 31%",
+        "dockerVmRssBytes": 646905856,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                3752.\nPages active:                             76128.\nPages inactive:                           68416.\nPages speculative:                         6908.\nPages throttled:                              0.\nPages wired down:                        103783.\nPages purgeable:                              0."
+      },
+      "tokenInContainerLogs": false
+    },
+    "series-5x30min": {
+      "label": "Five consecutive 30 min stereo 48 kHz WAV jobs (one container)",
+      "originalBytes": 345600078,
+      "audioS": 1800,
+      "runs": [
+        {
+          "job": 1,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 29.85,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 57600044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 231396
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 361
+            },
+            {
+              "name": "result.json",
+              "bytes": 6725
+            }
+          ],
+          "outputBytes": 57838526,
+          "leftoverTmp": 0,
+          "rtf": 0.0166,
+          "audioS": 1800,
+          "samples": 303,
+          "sampleHz": 9.91,
+          "maxGapS": 0.11,
+          "cpuSeconds": 29.21,
+          "throttledSeconds": 11.5,
+          "memoryPeakCgroupMb": 473.4,
+          "memoryCurrentMaxMb": 471.5,
+          "anonPeakMb": 94.3,
+          "anonAtStartMb": 39.9,
+          "filePeakMb": 384.5,
+          "pidsMax": 25,
+          "ffmpegRssSumPeakMb": 55.8,
+          "ffmpegHwmPeakMb": 55.8,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 55.2,
+          "idleAnonAfterMb": 51.7,
+          "idleCurrentAfterMb": 387.6
+        },
+        {
+          "job": 2,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 28.29,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 57600044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 231396
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 361
+            },
+            {
+              "name": "result.json",
+              "bytes": 6725
+            }
+          ],
+          "outputBytes": 57838526,
+          "leftoverTmp": 0,
+          "rtf": 0.0157,
+          "audioS": 1800,
+          "samples": 288,
+          "sampleHz": 9.91,
+          "maxGapS": 0.11,
+          "cpuSeconds": 27.86,
+          "throttledSeconds": 9.99,
+          "memoryPeakCgroupMb": 473.4,
+          "memoryCurrentMaxMb": 470.4,
+          "anonPeakMb": 96.2,
+          "anonAtStartMb": 51.7,
+          "filePeakMb": 384.5,
+          "pidsMax": 20,
+          "ffmpegRssSumPeakMb": 55.9,
+          "ffmpegHwmPeakMb": 55.9,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 55.2,
+          "idleAnonAfterMb": 49.7,
+          "idleCurrentAfterMb": 383.3
+        },
+        {
+          "job": 3,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 27.74,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 57600044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 231396
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 361
+            },
+            {
+              "name": "result.json",
+              "bytes": 6725
+            }
+          ],
+          "outputBytes": 57838526,
+          "leftoverTmp": 0,
+          "rtf": 0.0154,
+          "audioS": 1800,
+          "samples": 282,
+          "sampleHz": 9.91,
+          "maxGapS": 0.11,
+          "cpuSeconds": 27.33,
+          "throttledSeconds": 8.96,
+          "memoryPeakCgroupMb": 477.7,
+          "memoryCurrentMaxMb": 476.4,
+          "anonPeakMb": 96.3,
+          "anonAtStartMb": 49.7,
+          "filePeakMb": 384.5,
+          "pidsMax": 24,
+          "ffmpegRssSumPeakMb": 55.9,
+          "ffmpegHwmPeakMb": 55.9,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 55.2,
+          "idleAnonAfterMb": 51.9,
+          "idleCurrentAfterMb": 389
+        },
+        {
+          "job": 4,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 27.21,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 57600044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 231396
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 361
+            },
+            {
+              "name": "result.json",
+              "bytes": 6725
+            }
+          ],
+          "outputBytes": 57838526,
+          "leftoverTmp": 0,
+          "rtf": 0.0151,
+          "audioS": 1800,
+          "samples": 277,
+          "sampleHz": 9.89,
+          "maxGapS": 0.11,
+          "cpuSeconds": 26.73,
+          "throttledSeconds": 8.77,
+          "memoryPeakCgroupMb": 477.7,
+          "memoryCurrentMaxMb": 472.7,
+          "anonPeakMb": 95.8,
+          "anonAtStartMb": 51.9,
+          "filePeakMb": 384.5,
+          "pidsMax": 24,
+          "ffmpegRssSumPeakMb": 55.8,
+          "ffmpegHwmPeakMb": 55.8,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 55.2,
+          "idleAnonAfterMb": 50.8,
+          "idleCurrentAfterMb": 386.3
+        },
+        {
+          "job": 5,
+          "ok": true,
+          "status": "succeeded",
+          "error": null,
+          "wallS": 28.24,
+          "outputFiles": [
+            {
+              "name": "canonical.wav",
+              "bytes": 57600044
+            },
+            {
+              "name": "level-series.json",
+              "bytes": 231396
+            },
+            {
+              "name": "manifest.json",
+              "bytes": 361
+            },
+            {
+              "name": "result.json",
+              "bytes": 6725
+            }
+          ],
+          "outputBytes": 57838526,
+          "leftoverTmp": 0,
+          "rtf": 0.0157,
+          "audioS": 1800,
+          "samples": 287,
+          "sampleHz": 9.88,
+          "maxGapS": 0.11,
+          "cpuSeconds": 27.7,
+          "throttledSeconds": 9.8,
+          "memoryPeakCgroupMb": 477.7,
+          "memoryCurrentMaxMb": 469.9,
+          "anonPeakMb": 93.3,
+          "anonAtStartMb": 50.8,
+          "filePeakMb": 384.5,
+          "pidsMax": 24,
+          "ffmpegRssSumPeakMb": 55.8,
+          "ffmpegHwmPeakMb": 55.8,
+          "ffmpegMaxConcurrent": 1,
+          "tempPeakMb": 55.2,
+          "idleAnonAfterMb": 49,
+          "idleCurrentAfterMb": 384.3
+        }
+      ],
+      "containerStillRunning": true,
+      "machineBefore": {
+        "at": "2026-11-21T15:51:48.356Z",
+        "swapUsage": "total = 4096.00M  used = 3718.38M  free = 377.62M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 31%",
+        "dockerVmRssBytes": 682901504,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                3901.\nPages active:                             75093.\nPages inactive:                           67789.\nPages speculative:                         6536.\nPages throttled:                              0.\nPages wired down:                        106390.\nPages purgeable:                              8."
+      },
+      "machineAfter": {
+        "at": "2026-11-21T15:54:25.051Z",
+        "swapUsage": "total = 4096.00M  used = 3421.12M  free = 674.88M  (encrypted)",
+        "memoryPressure": "System-wide memory free percentage: 38%",
+        "dockerVmRssBytes": 956694528,
+        "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                3465.\nPages active:                             92843.\nPages inactive:                           90757.\nPages speculative:                          973.\nPages throttled:                              0.\nPages wired down:                         87346.\nPages purgeable:                              0."
+      },
+      "anonGrowth": {
+        "jobAnonPeaksMb": [
+          94.3,
+          96.2,
+          96.3,
+          95.8,
+          93.3
+        ],
+        "idleAnonAfterEachJobMb": [
+          51.7,
+          49.7,
+          51.9,
+          50.8,
+          49
+        ],
+        "peakGrowthPctFirstToLast": -1.1,
+        "idleGrowthPctFirstToLast": -5.2
+      },
+      "tokenInContainerLogs": false
+    }
+  },
+  "machineStateAtStart": {
+    "at": "2026-11-21T15:42:23.016Z",
+    "swapUsage": "total = 5120.00M  used = 3795.50M  free = 1324.50M  (encrypted)",
+    "memoryPressure": "System-wide memory free percentage: 52%",
+    "dockerVmRssBytes": 1381220352,
+    "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                4352.\nPages active:                            128180.\nPages inactive:                          123155.\nPages speculative:                         4024.\nPages throttled:                              0.\nPages wired down:                         82060.\nPages purgeable:                           1147."
+  },
+  "machineStateAtEnd": {
+    "at": "2026-11-21T15:54:25.823Z",
+    "swapUsage": "total = 4096.00M  used = 3413.12M  free = 682.88M  (encrypted)",
+    "memoryPressure": "System-wide memory free percentage: 38%",
+    "dockerVmRssBytes": 1132544000,
+    "vmStat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                5301.\nPages active:                             92552.\nPages inactive:                           88485.\nPages speculative:                         3501.\nPages throttled:                              0.\nPages wired down:                         85903.\nPages purgeable:                              4."
+  }
+}

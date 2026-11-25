@@ -1,0 +1,31 @@
+{
+  "container": "mp3",
+  "demuxer": "mp3",
+  "codec": "mp3",
+  "sampleRateHz": 44100,
+  "channels": 2,
+  "channelLayout": "stereo",
+  "sampleFormat": "fltp",
+  "bitsPerRawSample": null,
+  "bitRate": 128000,
+  "headerDurationMs": 2038,
+  "streamCount": 1,
+  "audioStreamCount": 1,
+  "trialDecode": {
+    "decodable": true,
+    "decodedMs": 2000
+  },
+  "timelineSource": {
+    "timeBase": "1/14112000",
+    "startTimeTicks": 353600,
+    "startTimeMs": 25.057,
+    "editListPresent": false,
+    "encoderDelaySamples": 1105,
+    "paddingSamples": 551,
+    "gaplessInfo": "lame-ish"
+  },
+  "warnings": [],
+  "tools": {
+    "ffprobe": "7.1.5-0+deb13u1"
+  }
+}

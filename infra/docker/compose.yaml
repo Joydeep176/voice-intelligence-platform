@@ -55,19 +55,88 @@ services:
     restart: unless-stopped
 
   # Optional: run the audio service in a container instead of `uv run` on the host.
-  # Enabled with `--profile audio`. No public ingress in production (internal network only).
+  # Enabled with `--profile audio`.
+  #
+  # Networking (ADR-0035, development topology): a normal user-defined bridge, port published on
+  # loopback only. The API and orchestrator run on the host and reach it at 127.0.0.1:8001.
+  # CONTAINER EGRESS IS POSSIBLE in this topology (measured: docs/development/phase2b-network-verification).
+  # It is limited by application controls only (no network protocols for FFmpeg, no network code,
+  # Landlock TCP denial for children where the kernel supports it), not by the network.
+  # The all-in-Compose topology (internal network, no published port) is not built yet.
+  #
+  # AUDIO_SERVICE_TOKEN is required by the service itself (>= 32 characters, no default). It is
+  # deliberately not `:?` here: that would also break `pnpm infra:up` for postgres and redis.
+  # Storage: only `recordings` (read-only) and `derived` (read-write) of the shared storage root
+  # are mounted; nothing else of the host (no repository, no .env).
+  # Models (ADR-0036 / ADR-0037) are served from the named volume `audio-models`, not a host bind
+  # mount. Landlock path rules do not match on Docker Desktop host bind mounts (`fakeowner`,
+  # unstable inodes; measured 2026-11-24): the sandboxed inference child could not read the models
+  # and every inference task failed. This one-shot job copies the pinned files from
+  # AUDIO_MODELS_HOST_ROOT (filled by `pnpm audio:models`) into the volume on every `up`. The service
+  # mounts it read-only and still verifies each file's size and SHA-256 at startup.
+  audio-models-init:
+    profiles: ['audio']
+    build:
+      context: ../../services/audio
+      target: runtime
+    user: '0:0' # owner of the fresh volume; no capabilities (no chown, no DAC override)
+    entrypoint:
+      [
+        'sh',
+        '-c',
+        'find /models -mindepth 1 -delete && cp -R /src/. /models/ && chmod -R a+rX,go-w /models',
+      ]
+    volumes:
+      - ${AUDIO_MODELS_HOST_ROOT:-../../.local-models}:/src:ro
+      - audio-models:/models
+    network_mode: none
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    restart: 'no'
+
   audio-service:
     profiles: ['audio']
     build:
       context: ../../services/audio
+      target: runtime
+    init: true # reaps orphaned FFmpeg grandchildren; zombies would count against pids_limit
+    depends_on:
+      audio-models-init:
+        condition: service_completed_successfully
     environment:
       AUDIO_SERVICE_ENV: development
       AUDIO_SERVICE_LOG_LEVEL: ${LOG_LEVEL:-info}
+      AUDIO_SERVICE_TOKEN: ${AUDIO_SERVICE_TOKEN:-}
+      AUDIO_SERVICE_STORAGE_ROOT: /storage
+      # `required` means ENFORCED: no media child (ffprobe/ffmpeg) is started unless the startup
+      # self-test observed Landlock confining it. On a kernel without Landlock (or where seccomp
+      # hides it) the service stays alive but refuses media tasks and reports not-ready on
+      # /health/ready, rather than run FFmpeg unconfined. Set `auto` only on a development host
+      # that cannot provide it, accepting that children then run without Landlock.
+      AUDIO_SERVICE_LANDLOCK: required
+      # Self-hosted inference (ADR-0036 / ADR-0037): pinned models, read-only. Without the mount the
+      # service starts normally and simply does not offer the `transcribe` / `diarize` tasks.
+      AUDIO_SERVICE_MODELS_DIR: /models
+      # 2 threads on 2 CPUs (ADR-0041, B-1): at 1 CPU a 5-span transcribe window exceeded the 240 s deadline.
+      AUDIO_SERVICE_INFERENCE_THREADS: '2'
+      # whisper.cpp uses OpenMP: without this its pool is sized to the host's cores, not the CPU limit.
+      OMP_NUM_THREADS: '2'
+    networks:
+      - vip-audio-dev
     ports:
       - '127.0.0.1:${AUDIO_SERVICE_PORT:-8001}:8001'
+    volumes:
+      - ${AUDIO_STORAGE_HOST_ROOT:-../../.local-storage}/recordings:/storage/recordings:ro
+      - ${AUDIO_STORAGE_HOST_ROOT:-../../.local-storage}/derived:/storage/derived
+      - audio-models:/models:ro # see audio-models-init
     read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
     tmpfs:
-      - /tmp
+      - /tmp:size=16m,noexec,nosuid,nodev
     healthcheck:
       test:
         [
@@ -82,10 +151,20 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 512m
+          cpus: '2.0' # ADR-0041 (was 1.0, ADR-0039)
+          # 768m (D-2B-20 / ADR-0039): transcription measured 489 MiB anonymous memory in the task plus
+          # ~45 MiB service baseline, above the earlier 512m; the media tasks fit far below it.
+          memory: 768m
+          pids: 64 # same as `pids_limit`; Compose rejects both keys together
     restart: unless-stopped
+
+networks:
+  # Normal bridge: NOT internal (a loopback port cannot be published from an internal network) and
+  # NO masquerade options (disabling masquerading did not block egress on Docker Desktop).
+  vip-audio-dev:
+    driver: bridge
 
 volumes:
   postgres-data:
   redis-data:
+  audio-models:

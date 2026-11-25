@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "33333333-3333-4333-8333-333333333333",
+      "segmentId": "44444444-4444-4444-8444-444444444444",
+      "startMs": 20000,
+      "endMs": 20500,
+      "kind": "overlapping_speech",
+      "score": null
+    },
+    {
+      "id": "44444444-4444-4444-8444-444444444444",
+      "segmentId": null,
+      "startMs": 40000,
+      "endMs": 41000,
+      "kind": "speaker_uncertain",
+      "score": null
+    }
+  ],
+  "nextCursor": null
+}

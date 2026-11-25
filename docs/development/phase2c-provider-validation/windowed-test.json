@@ -1,0 +1,69 @@
+{
+  "stage": "test",
+  "engine": {
+    "id": "sherpa-onnx",
+    "runtime": "sherpa-onnx 2.0.2",
+    "threads": 1,
+    "segmentation": {
+      "model": "pyannote-segmentation-3.0",
+      "sha256": "220ad67ca923bef2fa91f2390c786097bf305bceb5e261d4af67b38e938e1079"
+    },
+    "embedding": {
+      "model": "3dspeaker-campplus-en-voxceleb-16k",
+      "sha256": "98daf9bcf1c8abf3db374fec4c27a5eda7c58705bb3f180d057b085a72a88bb5"
+    }
+  },
+  "collar_s": 0.25,
+  "rows": [
+    {
+      "id": "test-2spk-c-10min",
+      "windows": 6,
+      "windowed": {
+        "der": 0.1744,
+        "confusion": 0.1725,
+        "hyp_speakers": 5,
+        "ref_speakers": 2
+      },
+      "whole": {
+        "der": 0.2248,
+        "confusion": 0.2205,
+        "hyp_speakers": 6,
+        "ref_speakers": 2
+      }
+    },
+    {
+      "id": "test-3spk-c-10min",
+      "windows": 6,
+      "windowed": {
+        "der": 0.1041,
+        "confusion": 0.0983,
+        "hyp_speakers": 7,
+        "ref_speakers": 3
+      },
+      "whole": {
+        "der": 0.2639,
+        "confusion": 0.2587,
+        "hyp_speakers": 9,
+        "ref_speakers": 3
+      }
+    },
+    {
+      "id": "test-4spk-c-10min",
+      "windows": 6,
+      "windowed": {
+        "der": 0.0704,
+        "confusion": 0.064,
+        "hyp_speakers": 6,
+        "ref_speakers": 4
+      },
+      "whole": {
+        "der": 0.0593,
+        "confusion": 0.0525,
+        "hyp_speakers": 9,
+        "ref_speakers": 4
+      }
+    }
+  ],
+  "threshold": 0.5,
+  "wall_s": 1652.2
+}

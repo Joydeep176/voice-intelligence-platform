@@ -14,6 +14,7 @@ import { AuditService } from '../audit/audit.service';
 import type { Principal } from '../auth/principal';
 import { AppException } from '../common/app-exception';
 import { APP_CONFIG, type AppConfig } from '../config/app-config';
+import { AudioQueues } from '../queue/audio-queues.producer';
 import { ObjectTooLargeError, StorageKeys, StorageService } from '../storage/storage.service';
 import { SIGNATURE_BYTES, signatureMatches } from './media-signature';
 import { toRecordingMetadata, toUploadSession } from './recording.mapper';
@@ -33,6 +34,7 @@ export class RecordingsService {
     @Inject(RecordingsRepository) private readonly repo: RecordingsRepository,
     @Inject(StorageService) private readonly storage: StorageService,
     @Inject(AuditService) private readonly audit: AuditService,
+    @Inject(AudioQueues) private readonly queues: AudioQueues,
   ) {}
 
   async create(
@@ -311,8 +313,29 @@ export class RecordingsService {
         'The file content does not match the declared audio format.',
       );
     }
-    if (outcome.kind === 'uploaded') await this.cleanup(outcome.keys);
+    if (outcome.kind === 'uploaded') {
+      await this.cleanup(outcome.keys);
+      await this.enqueueValidation(workspaceId, id);
+    }
     return this.get(workspaceId, id);
+  }
+
+  /**
+   * Validation (probe) runs automatically for NEW uploads only (LLD §4). It is queued after the
+   * completion committed; a queue outage must not fail an upload that already succeeded, so it is
+   * logged and the recording stays `uploaded` until processing is requested explicitly.
+   */
+  private async enqueueValidation(workspaceId: string, recordingId: string): Promise<void> {
+    try {
+      await this.queues.enqueueProbe(workspaceId, recordingId, false);
+    } catch (error) {
+      this.logger.warn({
+        msg: 'validation_enqueue_failed',
+        workspaceId,
+        recordingId,
+        errorName: (error as Error).name,
+      });
+    }
   }
 
   /**

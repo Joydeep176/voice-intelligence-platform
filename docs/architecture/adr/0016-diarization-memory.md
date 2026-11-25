@@ -1,6 +1,6 @@
 # ADR-0016: Diarization within bounded memory
 
-- Status: Accepted (principle). Thresholds and algorithms are left to benchmarking (OD-03b).
+- Status: Accepted (principle). Thresholds and algorithm: ADR-0037 (whole file up to 10 min; else 10 min windows, 30 s overlap, cross-window embedding matching).
 - Date: 2026-11-19
 - Addresses: review finding I-07, correction E6
 - Affects: LLD §4 step 8 (transcription stage), `.claude/rules/python-audio.md`, NFR-7

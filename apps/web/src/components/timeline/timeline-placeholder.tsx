@@ -22,7 +22,7 @@ const TRACKS: Track[] = [
     id: 'speakers',
     label: 'Speakers',
     swatch: 'bg-speaker-1',
-    empty: 'Produced by transcription and diarization (later phase).',
+    empty: 'Speakers are listed in the Transcript section. The timeline track is not drawn yet.',
   },
   {
     id: 'diagnostics',
@@ -34,7 +34,8 @@ const TRACKS: Track[] = [
     id: 'uncertainty',
     label: 'Transcription uncertainty',
     swatch: 'bg-uncert-medium',
-    empty: 'Produced by the Transcription Agent (later phase).',
+    empty:
+      'Uncertainty markers appear on the Transcript segments. The timeline track is not drawn yet.',
   },
 ];
 
@@ -60,8 +61,7 @@ export function TimelinePlaceholder({
       <CardHeader>
         <CardTitle>Timeline</CardTitle>
         <CardDescription>
-          Speakers, audio quality and transcription uncertainty appear here once analysis is
-          available.
+          Aligned tracks are not drawn yet. Audio quality arrives in a later phase.
         </CardDescription>
       </CardHeader>
       <CardContent>

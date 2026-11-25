@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "engine": "whisper-cpp",
+  "window": {
+    "startMs": 58000,
+    "endMs": 88000
+  },
+  "audioDurationMs": 304238,
+  "vad": {
+    "threshold": 0.4,
+    "minSilenceMs": 300,
+    "minSpeechMs": 250,
+    "paddingMs": 200
+  }
+}

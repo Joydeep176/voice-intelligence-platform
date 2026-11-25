@@ -1,0 +1,181 @@
+{
+ "threads": 1,
+ "margin_frames": 64,
+ "windows": [
+  {
+   "window_ms": [
+    0,
+    30000
+   ],
+   "spans_ms": [
+    5414,
+    4582,
+    9158,
+    8410
+   ],
+   "variants": {
+    "V0": {
+     "detect_s": 166.3,
+     "decode_s": 172.6,
+     "total_s": 338.9,
+     "rtf": 11.3,
+     "languages": [
+      "en",
+      "en",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0
+    },
+    "V1": {
+     "detect_s": 62.1,
+     "decode_s": 43.3,
+     "total_s": 105.5,
+     "rtf": 3.52,
+     "languages": [
+      "en",
+      "en",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0,
+     "lang_agree_with_V0": 4,
+     "word_disagreement_vs_V0": 0.088
+    },
+    "V2": {
+     "detect_s": 32.4,
+     "decode_s": 32.3,
+     "total_s": 64.7,
+     "rtf": 2.16,
+     "languages": [
+      "en",
+      "en",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0,
+     "lang_agree_with_V0": 4,
+     "word_disagreement_vs_V0": 1.0
+    }
+   }
+  },
+  {
+   "window_ms": [
+    30000,
+    60000
+   ],
+   "spans_ms": [
+    4870,
+    10662,
+    6534,
+    4890
+   ],
+   "variants": {
+    "V0": {
+     "detect_s": 32.3,
+     "decode_s": 32.3,
+     "total_s": 64.5,
+     "rtf": 2.15,
+     "languages": [
+      "en",
+      "en",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0
+    },
+    "V1": {
+     "detect_s": 36.0,
+     "decode_s": 36.8,
+     "total_s": 72.8,
+     "rtf": 2.43,
+     "languages": [
+      "en",
+      "en",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0,
+     "lang_agree_with_V0": 4,
+     "word_disagreement_vs_V0": 0.0
+    },
+    "V2": {
+     "detect_s": 32.6,
+     "decode_s": 32.4,
+     "total_s": 65.0,
+     "rtf": 2.17,
+     "languages": [
+      "en",
+      "en",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0,
+     "lang_agree_with_V0": 4,
+     "word_disagreement_vs_V0": 0.0
+    }
+   }
+  },
+  {
+   "window_ms": [
+    60000,
+    90000
+   ],
+   "spans_ms": [
+    4358,
+    7014,
+    7974,
+    4902,
+    698
+   ],
+   "variants": {
+    "V0": {
+     "detect_s": 40.5,
+     "decode_s": 40.4,
+     "total_s": 80.9,
+     "rtf": 2.7,
+     "languages": [
+      "en",
+      "hi",
+      "hi",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0
+    },
+    "V1": {
+     "detect_s": 40.7,
+     "decode_s": 40.5,
+     "total_s": 81.2,
+     "rtf": 2.71,
+     "languages": [
+      "en",
+      "hi",
+      "hi",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0,
+     "lang_agree_with_V0": 5,
+     "word_disagreement_vs_V0": 0.0
+    },
+    "V2": {
+     "detect_s": 49.2,
+     "decode_s": 53.2,
+     "total_s": 102.5,
+     "rtf": 3.42,
+     "languages": [
+      "en",
+      "hi",
+      "hi",
+      "en",
+      "en"
+     ],
+     "devanagari_spans": 0,
+     "lang_agree_with_V0": 5,
+     "word_disagreement_vs_V0": 0.0
+    }
+   }
+  }
+ ]
+}

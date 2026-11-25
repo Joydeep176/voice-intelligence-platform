@@ -1,6 +1,6 @@
 # ADR-0002: Node/NestJS owns jobs; Python audio service behind an internal API
 
-- Status: Accepted provisionally (pending prototype validation)
+- Status: Accepted for the Node ↔ Python integration (OD-04a, prototype confirmed in Phase 2B, ADR-0040); "LangGraph orchestrates" remains Accepted provisionally until the agent phase (OD-04b)
 - Date: 2026-11-19
 - Resolves: OD-04
 - Affects: HLD §4–5, LLD §2.3, §3.1, §5, DEPLOYMENT
@@ -18,7 +18,7 @@ Audio processing is in Python. Orchestration and queues are in Node. Runs over t
 Async task submission with idempotency keys; step-job polling without blocked workers; progress relay; cancellation; behaviour when the service restarts (lost tasks); memory/time limits on > 2 h audio; throughput.
 
 ## Accepted constraint (2026-11-19, from OD-23a)
-The audio-service contract (task API, payloads, results) is framework-independent, defined as schemas in `packages/contracts` with mirrored Python models. Domain modules must not depend on the HTTP framework. FastAPI is the *Proposed* framework (OD-23a) until the prototype validates it.
+The audio-service contract (task API, payloads, results) is framework-independent, defined as schemas in `packages/contracts` with mirrored Python models. Domain modules must not depend on the HTTP framework. FastAPI is the framework accepted provisionally (OD-23a, ADR-0023) until the prototype validates it.
 
 ## Consequences
-Service-to-service authentication remains Open (OD-23b). If the prototype fails, this ADR is revisited.
+Service-to-service authentication remains Open (OD-23b; update 2026-11-21: resolved for development by ADR-0035, production OD-23c Open). If the prototype fails, this ADR is revisited.

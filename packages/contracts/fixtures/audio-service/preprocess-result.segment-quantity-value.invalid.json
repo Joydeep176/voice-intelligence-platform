@@ -1,0 +1,479 @@
+{
+  "canonical": {
+    "key": "derived/11111111-1111-4111-8111-111111111111/22222222-2222-4222-8222-222222222222/68aba914992a945d8c7adf4707ca3d731d6112f79c98b693519d648a9f94fed1/canonical.wav",
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "samples": 32000,
+    "durationMs": 2000.0,
+    "sampleRateHz": 16000,
+    "channels": 1,
+    "sampleFormat": "s16",
+    "bytes": 64044
+  },
+  "timeline": {
+    "schemaVersion": 1,
+    "nativeSampleRate": 44100,
+    "decodedSamplesNative": 88200,
+    "canonicalSamples": 32000,
+    "source": {
+      "timeBase": "1/44100",
+      "startTimeTicks": null,
+      "startTimeMs": null,
+      "editListPresent": false,
+      "encoderDelaySamples": null,
+      "paddingSamples": null,
+      "gaplessInfo": "none",
+      "headerDurationMs": 2000
+    },
+    "sourceOffsetMs": 0.0,
+    "decodeClass": "full",
+    "decodedUntilMs": 2000.0,
+    "gaps": [],
+    "overlapsTrimmed": [],
+    "decodeErrors": {
+      "count": 0,
+      "firstAtMs": null
+    },
+    "mappingStatus": "exact",
+    "mappingErrorBoundMs": 0.0625,
+    "reasons": ["lossless_no_gaps"]
+  },
+  "measurements": [
+    {
+      "measurementsSchemaVersion": 1,
+      "source": "original_decoded",
+      "sampleRateHz": 44100,
+      "channels": 2,
+      "frames": 88200,
+      "quantities": {
+        "peakLinear": {
+          "value": 1.0,
+          "unit": "fullscale",
+          "kind": "measured",
+          "method": "max |x| over decoded samples"
+        },
+        "peakDbfs": {
+          "value": 0.0,
+          "unit": "dBFS",
+          "kind": "measured",
+          "method": "20 log10(max |x|), 0 dBFS = full scale"
+        },
+        "rmsLinear": {
+          "value": 0.257809485,
+          "unit": "fullscale",
+          "kind": "measured",
+          "method": "sqrt(mean(x^2)), float64 sums"
+        },
+        "rmsDbfs": {
+          "value": -11.774,
+          "unit": "dBFS",
+          "kind": "measured",
+          "method": "20 log10(RMS), 0 dBFS = full scale"
+        },
+        "crestFactorDb": {
+          "value": 11.774,
+          "unit": "dB",
+          "kind": "derived",
+          "method": "peak dBFS minus RMS dBFS"
+        },
+        "clippedSamples": {
+          "value": 10,
+          "unit": "samples",
+          "kind": "measured",
+          "method": "16-bit integer source: samples at the extreme codes"
+        },
+        "clippedRatio": {
+          "value": 5.6689e-5,
+          "unit": "ratio",
+          "kind": "derived",
+          "method": "clipped samples / samples"
+        },
+        "clippedRuns": {
+          "value": 1,
+          "unit": "count",
+          "kind": "measured",
+          "method": "runs of consecutive clipped samples (minimum length from config)"
+        },
+        "longestClippedRunSamples": {
+          "value": 10,
+          "unit": "samples",
+          "kind": "measured",
+          "method": "longest run of consecutive clipped samples"
+        },
+        "correlationCh0Ch1": {
+          "value": 1.0,
+          "unit": "ratio",
+          "kind": "measured",
+          "method": "Pearson correlation of the two channels"
+        },
+        "integratedLoudnessLufs": {
+          "value": -18.2,
+          "unit": "LUFS",
+          "kind": "measured",
+          "method": "EBU R128 (ITU-R BS.1770) via FFmpeg ebur128, true peak enabled"
+        },
+        "loudnessRangeLu": {
+          "value": 0.3,
+          "unit": "LU",
+          "kind": "measured",
+          "method": "EBU R128 (ITU-R BS.1770) via FFmpeg ebur128, true peak enabled"
+        },
+        "truePeakDbtp": {
+          "value": -5.9,
+          "unit": "dBTP",
+          "kind": "measured",
+          "method": "EBU R128 (ITU-R BS.1770) via FFmpeg ebur128, true peak enabled"
+        }
+      },
+      "perChannel": [
+        {
+          "channel": 0,
+          "quantities": {
+            "peakLinear": {
+              "value": 1.0,
+              "unit": "fullscale",
+              "kind": "measured",
+              "method": "max |x| over decoded samples"
+            },
+            "peakDbfs": {
+              "value": 0.0,
+              "unit": "dBFS",
+              "kind": "measured",
+              "method": "20 log10(max |x|), 0 dBFS = full scale"
+            },
+            "rmsLinear": {
+              "value": 0.353711695,
+              "unit": "fullscale",
+              "kind": "measured",
+              "method": "sqrt(mean(x^2)), float64 sums"
+            },
+            "rmsDbfs": {
+              "value": -9.027,
+              "unit": "dBFS",
+              "kind": "measured",
+              "method": "20 log10(RMS), 0 dBFS = full scale"
+            },
+            "crestFactorDb": {
+              "value": 9.027,
+              "unit": "dB",
+              "kind": "derived",
+              "method": "peak dBFS minus RMS dBFS"
+            },
+            "clippedSamples": {
+              "value": 10,
+              "unit": "samples",
+              "kind": "measured",
+              "method": "16-bit integer source: samples at the extreme codes"
+            },
+            "clippedRatio": {
+              "value": 0.000113379,
+              "unit": "ratio",
+              "kind": "derived",
+              "method": "clipped samples / samples"
+            },
+            "clippedRuns": {
+              "value": 1,
+              "unit": "count",
+              "kind": "measured",
+              "method": "runs of consecutive clipped samples (minimum length from config)"
+            },
+            "longestClippedRunSamples": {
+              "value": 10,
+              "unit": "samples",
+              "kind": "measured",
+              "method": "longest run of consecutive clipped samples"
+            },
+            "dcOffset": {
+              "value": 0.000105616,
+              "unit": "fullscale",
+              "kind": "measured",
+              "method": "mean(x), signed, relative to full scale"
+            }
+          }
+        },
+        {
+          "channel": 1,
+          "quantities": {
+            "peakLinear": {
+              "value": 0.25,
+              "unit": "fullscale",
+              "kind": "measured",
+              "method": "max |x| over decoded samples"
+            },
+            "peakDbfs": {
+              "value": -12.041,
+              "unit": "dBFS",
+              "kind": "measured",
+              "method": "20 log10(max |x|), 0 dBFS = full scale"
+            },
+            "rmsLinear": {
+              "value": 0.088427924,
+              "unit": "fullscale",
+              "kind": "measured",
+              "method": "sqrt(mean(x^2)), float64 sums"
+            },
+            "rmsDbfs": {
+              "value": -21.068,
+              "unit": "dBFS",
+              "kind": "measured",
+              "method": "20 log10(RMS), 0 dBFS = full scale"
+            },
+            "crestFactorDb": {
+              "value": 9.027,
+              "unit": "dB",
+              "kind": "derived",
+              "method": "peak dBFS minus RMS dBFS"
+            },
+            "clippedSamples": {
+              "value": 0,
+              "unit": "samples",
+              "kind": "measured",
+              "method": "16-bit integer source: samples at the extreme codes"
+            },
+            "clippedRatio": {
+              "value": 0.0,
+              "unit": "ratio",
+              "kind": "derived",
+              "method": "clipped samples / samples"
+            },
+            "clippedRuns": {
+              "value": 0,
+              "unit": "count",
+              "kind": "measured",
+              "method": "runs of consecutive clipped samples (minimum length from config)"
+            },
+            "longestClippedRunSamples": {
+              "value": 0,
+              "unit": "samples",
+              "kind": "measured",
+              "method": "longest run of consecutive clipped samples"
+            },
+            "dcOffset": {
+              "value": 2.6404e-5,
+              "unit": "fullscale",
+              "kind": "measured",
+              "method": "mean(x), signed, relative to full scale"
+            }
+          }
+        }
+      ],
+      "unavailable": []
+    },
+    {
+      "measurementsSchemaVersion": 1,
+      "source": "canonical",
+      "sampleRateHz": 16000,
+      "channels": 1,
+      "frames": 32000,
+      "quantities": {
+        "sampleCount": {
+          "value": 32000,
+          "unit": "samples",
+          "kind": "measured",
+          "method": "decoded canonical samples"
+        },
+        "durationMs": {
+          "value": 2000.0,
+          "unit": "ms",
+          "kind": "derived",
+          "method": "samples / 16 at 16 kHz"
+        },
+        "peakLinear": {
+          "value": 0.48828125,
+          "unit": "fullscale",
+          "kind": "measured",
+          "method": "max |x| over canonical samples"
+        },
+        "peakDbfs": {
+          "value": -6.227,
+          "unit": "dBFS",
+          "kind": "measured",
+          "method": "20 log10(max |x|), 0 dBFS = full scale"
+        },
+        "rmsLinear": {
+          "value": 0.298998505,
+          "unit": "fullscale",
+          "kind": "measured",
+          "method": "sqrt(mean(x^2)), exact integer sums"
+        },
+        "rmsDbfs": {
+          "value": -10.487,
+          "unit": "dBFS",
+          "kind": "measured",
+          "method": "20 log10(RMS), 0 dBFS = full scale"
+        },
+        "silenceRatio": {
+          "value": 0.25,
+          "unit": "ratio",
+          "kind": "derived",
+          "method": "share of 100 ms windows with RMS below -50.00 dBFS"
+        }
+      },
+      "perChannel": [],
+      "unavailable": [
+        {
+          "name": "noiseFloorDbfs",
+          "reason": "digital_silence"
+        },
+        {
+          "name": "snr",
+          "reason": "no_speech_split"
+        },
+        {
+          "name": "harmonicDistortion",
+          "reason": "no_reference"
+        }
+      ]
+    }
+  ],
+  "artifacts": {
+    "levelSeriesKey": "derived/11111111-1111-4111-8111-111111111111/22222222-2222-4222-8222-222222222222/68aba914992a945d8c7adf4707ca3d731d6112f79c98b693519d648a9f94fed1/level-series.json",
+    "manifestKey": "derived/11111111-1111-4111-8111-111111111111/22222222-2222-4222-8222-222222222222/68aba914992a945d8c7adf4707ca3d731d6112f79c98b693519d648a9f94fed1/manifest.json"
+  },
+  "vad": {
+    "method": "example-vad",
+    "version": "1",
+    "status": "applied"
+  },
+  "segments": [
+    {
+      "index": 0,
+      "startMs": 0,
+      "endMs": 1200,
+      "overlapStartMs": 0,
+      "overlapEndMs": 200,
+      "speechMs": 1000,
+      "containsSyntheticGap": false
+    },
+    {
+      "index": 1,
+      "startMs": 1000,
+      "endMs": 2000,
+      "overlapStartMs": 200,
+      "overlapEndMs": 0,
+      "speechMs": 900,
+      "containsSyntheticGap": false
+    }
+  ],
+  "toolVersions": {
+    "service": "0.1.0",
+    "python": "3.12.8",
+    "ffmpeg": "7.1.2",
+    "numpy": "2.5.5",
+    "vad": "example-vad:1"
+  },
+  "warnings": [],
+  "segmentMeasurements": [
+    {
+      "segmentIndex": 0,
+      "record": {
+        "measurementsSchemaVersion": 1,
+        "source": "canonical",
+        "sampleRateHz": 16000,
+        "channels": 1,
+        "frames": 19200,
+        "quantities": {
+          "sampleCount": {
+            "value": 19200,
+            "unit": "samples",
+            "kind": "measured",
+            "method": "canonical samples in the segment"
+          },
+          "durationMs": {
+            "value": 1200.0,
+            "unit": "ms",
+            "kind": "derived",
+            "method": "samples / 16 at 16 kHz"
+          },
+          "peakLinear": {
+            "value": 0.610351562,
+            "unit": "fullscale",
+            "kind": "measured",
+            "method": "max |x| over the segment samples"
+          },
+          "peakDbfs": {
+            "value": -4.288,
+            "unit": "dBFS",
+            "kind": "measured",
+            "method": "20 log10(max |x|), 0 dBFS = full scale"
+          },
+          "rmsLinear": {
+            "value": 0.030517578,
+            "unit": "fullscale",
+            "kind": "measured",
+            "method": "sqrt(mean(x^2)), exact integer sums"
+          },
+          "rmsDbfs": {
+            "value": "loud",
+            "unit": "dBFS",
+            "kind": "measured",
+            "method": "20 log10(RMS), 0 dBFS = full scale"
+          },
+          "speechMs": {
+            "value": 1000.0,
+            "unit": "ms",
+            "kind": "estimate",
+            "method": "10 ms frames flagged as speech by the 'example-vad' VAD"
+          }
+        },
+        "perChannel": [],
+        "unavailable": []
+      }
+    },
+    {
+      "segmentIndex": 1,
+      "record": {
+        "measurementsSchemaVersion": 1,
+        "source": "canonical",
+        "sampleRateHz": 16000,
+        "channels": 1,
+        "frames": 16000,
+        "quantities": {
+          "sampleCount": {
+            "value": 16000,
+            "unit": "samples",
+            "kind": "measured",
+            "method": "canonical samples in the segment"
+          },
+          "durationMs": {
+            "value": 1000.0,
+            "unit": "ms",
+            "kind": "derived",
+            "method": "samples / 16 at 16 kHz"
+          },
+          "peakLinear": {
+            "value": 0.610351562,
+            "unit": "fullscale",
+            "kind": "measured",
+            "method": "max |x| over the segment samples"
+          },
+          "peakDbfs": {
+            "value": -4.288,
+            "unit": "dBFS",
+            "kind": "measured",
+            "method": "20 log10(max |x|), 0 dBFS = full scale"
+          },
+          "rmsLinear": {
+            "value": 0.030517578,
+            "unit": "fullscale",
+            "kind": "measured",
+            "method": "sqrt(mean(x^2)), exact integer sums"
+          },
+          "rmsDbfs": {
+            "value": -30.309,
+            "unit": "dBFS",
+            "kind": "measured",
+            "method": "20 log10(RMS), 0 dBFS = full scale"
+          },
+          "speechMs": {
+            "value": 900.0,
+            "unit": "ms",
+            "kind": "estimate",
+            "method": "10 ms frames flagged as speech by the 'example-vad' VAD"
+          }
+        },
+        "perChannel": [],
+        "unavailable": []
+      }
+    }
+  ]
+}

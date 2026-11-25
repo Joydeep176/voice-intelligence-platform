@@ -1,0 +1,154 @@
+{
+  "stage": "tune",
+  "engine": {
+    "id": "sherpa-onnx",
+    "runtime": "sherpa-onnx 2.0.2",
+    "threads": 1,
+    "segmentation": {
+      "model": "pyannote-segmentation-3.0",
+      "sha256": "220ad67ca923bef2fa91f2390c786097bf305bceb5e261d4af67b38e938e1079"
+    },
+    "embedding": {
+      "model": "3dspeaker-campplus-en-voxceleb-16k",
+      "sha256": "98daf9bcf1c8abf3db374fec4c27a5eda7c58705bb3f180d057b085a72a88bb5"
+    }
+  },
+  "collar_s": 0.25,
+  "rows": [
+    {
+      "id": "dev-2spk-a",
+      "windows": 3,
+      "by_threshold": {
+        "0.3": {
+          "der": 0.104,
+          "confusion": 0.0987,
+          "hyp_speakers": 3,
+          "ref_speakers": 2
+        },
+        "0.4": {
+          "der": 0.104,
+          "confusion": 0.0987,
+          "hyp_speakers": 3,
+          "ref_speakers": 2
+        },
+        "0.5": {
+          "der": 0.104,
+          "confusion": 0.0987,
+          "hyp_speakers": 3,
+          "ref_speakers": 2
+        },
+        "0.6": {
+          "der": 0.104,
+          "confusion": 0.0987,
+          "hyp_speakers": 3,
+          "ref_speakers": 2
+        },
+        "0.7": {
+          "der": 0.104,
+          "confusion": 0.0987,
+          "hyp_speakers": 3,
+          "ref_speakers": 2
+        }
+      },
+      "whole": {
+        "der": 0.1328,
+        "confusion": 0.127,
+        "hyp_speakers": 3,
+        "ref_speakers": 2
+      }
+    },
+    {
+      "id": "dev-3spk-a",
+      "windows": 3,
+      "by_threshold": {
+        "0.3": {
+          "der": 0.1049,
+          "confusion": 0.1041,
+          "hyp_speakers": 4,
+          "ref_speakers": 3
+        },
+        "0.4": {
+          "der": 0.1049,
+          "confusion": 0.1041,
+          "hyp_speakers": 4,
+          "ref_speakers": 3
+        },
+        "0.5": {
+          "der": 0.1049,
+          "confusion": 0.1041,
+          "hyp_speakers": 4,
+          "ref_speakers": 3
+        },
+        "0.6": {
+          "der": 0.1049,
+          "confusion": 0.1041,
+          "hyp_speakers": 4,
+          "ref_speakers": 3
+        },
+        "0.7": {
+          "der": 0.1049,
+          "confusion": 0.1041,
+          "hyp_speakers": 4,
+          "ref_speakers": 3
+        }
+      },
+      "whole": {
+        "der": 0.0437,
+        "confusion": 0.0429,
+        "hyp_speakers": 4,
+        "ref_speakers": 3
+      }
+    },
+    {
+      "id": "dev-4spk-a",
+      "windows": 3,
+      "by_threshold": {
+        "0.3": {
+          "der": 0.0446,
+          "confusion": 0.0388,
+          "hyp_speakers": 4,
+          "ref_speakers": 4
+        },
+        "0.4": {
+          "der": 0.0446,
+          "confusion": 0.0388,
+          "hyp_speakers": 4,
+          "ref_speakers": 4
+        },
+        "0.5": {
+          "der": 0.0446,
+          "confusion": 0.0388,
+          "hyp_speakers": 4,
+          "ref_speakers": 4
+        },
+        "0.6": {
+          "der": 0.0446,
+          "confusion": 0.0388,
+          "hyp_speakers": 4,
+          "ref_speakers": 4
+        },
+        "0.7": {
+          "der": 0.0446,
+          "confusion": 0.0388,
+          "hyp_speakers": 4,
+          "ref_speakers": 4
+        }
+      },
+      "whole": {
+        "der": 0.0151,
+        "confusion": 0.0093,
+        "hyp_speakers": 4,
+        "ref_speakers": 4
+      }
+    }
+  ],
+  "mean_der_by_threshold": {
+    "0.3": 0.0845,
+    "0.4": 0.0845,
+    "0.5": 0.0845,
+    "0.6": 0.0845,
+    "0.7": 0.0845
+  },
+  "selected": 0.3,
+  "wall_s": 172.8
+}

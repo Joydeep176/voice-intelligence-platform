@@ -45,6 +45,16 @@ The web dev server proxies `/api` to the API, so the browser stays same-origin.
 `pnpm dev` runs every JS app through Turborepo at once; the audio service runs separately.
 Optionally run the audio service in Docker instead: `docker compose -f infra/docker/compose.yaml --env-file .env --profile audio up -d --build audio-service`.
 
+**Audio service token (ADR-0035).** The audio service requires `AUDIO_SERVICE_TOKEN` (at least 32
+characters, no default) and refuses to start without it, naming only the variable. Generate your own
+(`openssl rand -base64 48`), put it in `.env`, and export it for the host process
+(`set -a; . ./.env; set +a; pnpm audio:dev`; `uv run` does not read `.env` by itself). Compose passes it
+through from `.env`. The API starts without a token but reports the audio service as `NOT_CONFIGURED`.
+Every route except `/health/live` needs `Authorization: Bearer <token>`. In Compose the container sits
+on the `vip-audio-dev` bridge, its port is published on `127.0.0.1` only, and only
+`<AUDIO_STORAGE_HOST_ROOT>/recordings` (read-only) and `/derived` are mounted (default `.local-storage`).
+**Container egress is possible in this topology** (ADR-0035); do not rely on the network for isolation.
+
 **Queue check (foundation test, no audio processing):** with Redis and the orchestrator running,
 `pnpm --filter @vip/api run foundation-check` enqueues one job and prints the worker's result.
 
@@ -62,7 +72,9 @@ Optionally run the audio service in Docker instead: `docker compose -f infra/doc
 | All unit tests (JS) | `pnpm test` | Vitest (web, packages), Jest (api, orchestrator) |
 | Integration (Postgres, Redis, audio service) | `pnpm test:integration` | needs `pnpm infra:up`, migrated test DB is reset automatically, and `pnpm audio:dev` for the audio-client test |
 | End-to-end | `pnpm test:e2e` | Playwright, including the axe accessibility suite (`e2e/accessibility.spec.ts`, no serious/critical violations); needs infra up, migrated and seeded DB (starts API and web itself) |
-| Python | `pnpm audio:test` | Pytest |
+| Python | `pnpm audio:test` | Pytest on the host: FFmpeg, Landlock and `/proc` tests are skipped with a reason |
+| Python in the audio image | `pnpm audio:test:container` | Builds the Dockerfile `test` stage and runs the full suite under the Compose hardening flags (read-only, no capabilities, 64 pids, 512 MB, tmpfs `/tmp`). The test tmpfs is 64 MB, not the service's 16 MB, because pytest keeps every test's `tmp_path` until the session ends (about 20 MB with the Phase 2C inference tests); needs Docker |
+| Compose hardening | `AUDIO_SERVICE_TEST_DOCKER=1 uv run --directory services/audio pytest tests/test_compose_hardening.py` | Starts the audio service with a throwaway token and checks `docker inspect` (CapDrop, no-new-privileges, pids, loopback-only port, mounts) |
 | Lint + types (JS) | `pnpm lint` · `pnpm typecheck` | ESLint 10, TypeScript 6.0 |
 | Lint + types (Python) | `pnpm audio:lint` | ruff, mypy (strict) |
 | Formatting | `pnpm format:check` / `pnpm format` | Prettier |
@@ -76,6 +88,13 @@ Single test examples:
 
 Integration tests refuse to reset any database whose name does not end in `_test`, and use Redis
 logical DB 15, so development data is never touched.
+
+Real inference providers: `pnpm audio:models` installs the pinned models into `.local-models`. On every
+`--profile audio up`, the one-shot `audio-models-init` job copies them into the `audio-models` volume, which is
+mounted read-only at `/models`. A host bind mount is not used: Landlock cannot confine the inference child to it on
+Docker Desktop, and the service would report `inference_models_unreadable`. After changing `.local-models`, re-run
+`up`. To use the real providers, set `STT_PROVIDER=whisper-cpp` and
+`DIARIZATION_PROVIDER=sherpa-onnx` for the orchestrator (needs `AUDIO_SERVICE_TOKEN`). The fakes stay the default.
 
 ## 6. Environment variables
 
@@ -96,13 +115,19 @@ and reports invalid **names** only (never values).
 | `DEV_WORKSPACE_ID` | api, db seed | The single development workspace |
 | `STORAGE_DRIVER` | api | Only `local` is implemented |
 | `STORAGE_LOCAL_ROOT` | api | `.local-storage` (repo-root relative, git-ignored, unreadable to Claude Code by settings) |
-| `UPLOAD_MAX_BYTES` | api | 2 GiB: interim development default (OD-10 Open) |
+| `UPLOAD_MAX_BYTES` | api | 2 GiB: interim development default (OD-10, ADR-0039) |
 | `UPLOAD_PART_SIZE_BYTES` | api | 8 MiB (min 1 KiB, max 64 MiB) |
 | `UPLOAD_SESSION_TTL_MINUTES` | api | 1440 |
 | `MEDIA_URL_SIGNING_SECRET` | api | **Required**, ≥ 32 characters, no default (ADR-0033). Generate your own with `openssl rand -base64 48`; never commit it. The API refuses to start without it. Tests use a separate test-only value |
 | `MEDIA_URL_TTL_SECONDS` | api | 300 (30–3600): lifetime of signed playback URLs |
 | `AUDIO_SERVICE_URL`, `AUDIO_SERVICE_TIMEOUT_MS` | api | `http://127.0.0.1:8001`, 3000 ms |
+| `AUDIO_SERVICE_TOKEN` | api, audio service, Compose | Bearer token (ADR-0035), at least 32 characters, never logged. **Required by the audio service** (no default); optional for the API (empty or unset: audio client reports `NOT_CONFIGURED`) |
 | `AUDIO_SERVICE_PORT` | Compose | 8001 |
+| `AUDIO_STORAGE_HOST_ROOT` | Compose | Host directory whose `recordings/` and `derived/` are mounted into the audio container; default `.local-storage` (same as `STORAGE_LOCAL_ROOT`) |
+| `AUDIO_SERVICE_STORAGE_ROOT` | audio service | Shared storage root (`/storage` in the container). Unset: no task can touch storage |
+| `AUDIO_SERVICE_MAX_CONCURRENT_TASKS`, `AUDIO_SERVICE_MAX_QUEUED_TASKS` | audio service | 1, 4 (queue full: `503 CAPACITY_EXCEEDED`) |
+| `AUDIO_SERVICE_TASK_RETENTION_MAX`, `AUDIO_SERVICE_TASK_RETENTION_TTL_SECONDS` | audio service | Finished tasks kept in memory: 256, 3600 s |
+| `AUDIO_SERVICE_LANDLOCK` | audio service | `auto` (default), `required` (children refuse to start if unsupported), `off` |
 | `AUDIO_SERVICE_ENV`, `AUDIO_SERVICE_LOG_LEVEL`, `AUDIO_SERVICE_HOST`, `AUDIO_SERVICE_MAX_REQUEST_BYTES` | audio service | Optional; defaults in `services/audio/src/audio_service/config.py` |
 | `QUEUE_FOUNDATION_ATTEMPTS`, `QUEUE_FOUNDATION_BACKOFF_MS` | api (producer) | 3 attempts, exponential backoff from 1000 ms |
 | `QUEUE_FOUNDATION_CONCURRENCY` | orchestrator | 2 |

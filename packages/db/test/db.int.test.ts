@@ -48,7 +48,7 @@ describe('database foundation (integration)', () => {
     const applied = await handle.db.execute(
       sql`SELECT count(*)::int AS n FROM drizzle.__drizzle_migrations`,
     );
-    expect(applied.rows[0]).toEqual({ n: 2 });
+    expect(applied.rows[0]).toEqual({ n: 5 });
   });
 
   it('seeds the development workspace idempotently', async () => {

@@ -305,6 +305,9 @@ importers:
       '@vip/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
+      '@vip/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       bullmq:
         specifier: ~6.7.6
         version: 6.7.7(ioredis@6.0.0(supports-color@8.1.1))(pg@8.23.1)

@@ -19,7 +19,7 @@ def run() -> None:
         raise SystemExit(1) from None
     configure_logging(settings.log_level)
     uvicorn.run(
-        create_app(settings),
+        create_app(settings, media_handlers=True),
         host=settings.host,
         port=settings.port,
         log_config=None,

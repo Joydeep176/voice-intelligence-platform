@@ -5,11 +5,11 @@ description: Procedure for adding a provider implementation behind the speech-to
 
 # Adding a provider adapter
 
-Read first: LLD §3.2 (interfaces), §8 (config); ADR-0012 (fakes first, benchmark before production); ADR-0017 (research); ADR-0009 (research privacy); OD-02b/03b/05 status in HLD §10.
+Read first: LLD §3.2 (interfaces), §8 (config); ADR-0012 (fakes first, benchmark before production); ADR-0017 (research); ADR-0009 (research privacy); OD-02b/03b/05 status in HLD §10 (OD-02b: ADR-0036 and OD-03b: ADR-0037 are Accepted; `apps/orchestrator/src/providers/{stt/whisper-cpp,diarization/sherpa-onnx,audio-task}.ts` are the reference self-hosted adapters).
 
 ## Guardrails
 - Fake adapters are allowed. A real vendor needs user approval and an ADR. Never install SDKs speculatively.
-- Zero additional spending (ADR-0034): no paid APIs, SaaS, subscriptions or paid-tier/commercial dependencies at runtime. Candidates must be free, open-source or self-hosted, with licence, maintenance and Apple M2 16 GB resource checks recorded before approval.
+- Zero additional spending (ADR-0034): no paid APIs, SaaS, subscriptions or paid-tier/commercial dependencies at runtime. Candidates must be free, open-source or self-hosted, with licence, maintenance and Apple M1 8 GB resource checks recorded before approval.
 - Never describe a provider as working until its contract tests pass. Production use needs benchmark results.
 - Send vendors the minimum data. Document the data flow (SRS SEC-7).
 

@@ -21,10 +21,15 @@ describe('processFoundationCheck', () => {
   });
 });
 
+const required = {
+  DATABASE_URL: 'postgres://u:p@127.0.0.1:5432/db',
+  AUDIO_SERVICE_URL: 'http://127.0.0.1:8001',
+};
+
 describe('orchestrator config', () => {
   it('requires REDIS_URL and applies bounded defaults', () => {
     expect(() => loadConfig({})).toThrow('REDIS_URL');
-    const config = loadConfig({ REDIS_URL: 'redis://:pw@127.0.0.1:6380/2' });
+    const config = loadConfig({ ...required, REDIS_URL: 'redis://:pw@127.0.0.1:6380/2' });
     expect(config.foundation.concurrency).toBe(2);
     expect(workerConnection(config.redisUrl)).toMatchObject({
       port: 6380,

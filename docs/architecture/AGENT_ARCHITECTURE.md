@@ -104,7 +104,7 @@ interface PipelineState {
 
 ### Preprocessing node (deterministic)
 - In: recording. Out: preprocessing version (reused when `config_hash` matches, ADR-0015), stored with its reproducible configuration and tool-version metadata; segments.
-- Calls audio-service `probe` and `preprocess` tasks. VAD method: OD-29.
+- Calls audio-service `probe` and `preprocess` tasks. Preprocessing VAD stays `none`; Silero VAD is applied inside transcription windows (ADR-0038).
 
 ### A1 Audio Quality
 - In: preprocessing version. Requests the audio-service `measure` task (objective, block-wise measurements, stored per preprocessing version) and then classifies them.

@@ -49,11 +49,21 @@ describe('App', () => {
     render(<App />);
     expect(await screen.findByRole('heading', { name: 'synthetic-tone.wav' })).toBeInTheDocument();
     expect(screen.getByText('Not started')).toBeInTheDocument();
-    expect(screen.getByText(/not available in this build/i)).toBeInTheDocument();
+    expect(screen.getByText(/transcription has not been started/i)).toBeInTheDocument();
     expect(screen.getByText('Not yet determined')).toBeInTheDocument();
     // Audio quality and transcription uncertainty are separate sections (FR-9.3).
     expect(screen.getAllByText('Audio quality').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Transcription uncertainty').length).toBeGreaterThan(0);
+    // Regression (Phase 2C audit §11.1): the section points at the inline segment markers and no
+    // longer claims transcription uncertainty is unavailable or comes from an agent.
+    expect(
+      screen.getByText(/markers from the transcription run appear on the transcript segments/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        'Model-level uncertainty from the Transcription Agent. Not available yet.',
+      ),
+    ).not.toBeInTheDocument();
   });
 
   it('shows a not-found page for unknown routes', async () => {

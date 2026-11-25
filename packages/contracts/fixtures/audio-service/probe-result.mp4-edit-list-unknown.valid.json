@@ -1,0 +1,31 @@
+{
+  "container": "mp4",
+  "demuxer": "mov",
+  "codec": "aac",
+  "sampleRateHz": 44100,
+  "channels": 2,
+  "channelLayout": "stereo",
+  "sampleFormat": "fltp",
+  "bitsPerRawSample": null,
+  "bitRate": 128000,
+  "headerDurationMs": 2038,
+  "streamCount": 1,
+  "audioStreamCount": 1,
+  "trialDecode": {
+    "decodable": true,
+    "decodedMs": 2000
+  },
+  "timelineSource": {
+    "timeBase": "1/44100",
+    "startTimeTicks": 0,
+    "startTimeMs": 0,
+    "editListPresent": "unknown",
+    "encoderDelaySamples": null,
+    "paddingSamples": null,
+    "gaplessInfo": "unknown"
+  },
+  "warnings": [],
+  "tools": {
+    "ffprobe": "7.1.5-0+deb13u1"
+  }
+}

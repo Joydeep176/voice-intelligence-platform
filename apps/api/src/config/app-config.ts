@@ -47,6 +47,15 @@ const EnvSchema = z
     UPLOAD_SESSION_TTL_MINUTES: z.coerce.number().int().positive().default(1440),
     AUDIO_SERVICE_URL: z.url(),
     AUDIO_SERVICE_TIMEOUT_MS: z.coerce.number().int().min(100).max(60_000).default(3000),
+    /**
+     * Bearer token for the audio service (ADR-0035). Optional here so existing development `.env`
+     * files keep working: without it the audio client reports "not configured". Empty means unset.
+     * Never logged.
+     */
+    AUDIO_SERVICE_TOKEN: z.preprocess(
+      (v) => (v === '' ? undefined : v),
+      z.string().min(32).optional(),
+    ),
     /** HMAC key for playback URLs (ADR-0033). Required, no default; never logged. */
     MEDIA_URL_SIGNING_SECRET: z
       .string()
@@ -55,6 +64,10 @@ const EnvSchema = z
     MEDIA_URL_TTL_SECONDS: z.coerce.number().int().min(30).max(3600).default(300),
     QUEUE_FOUNDATION_ATTEMPTS: z.coerce.number().int().min(1).max(10).default(3),
     QUEUE_FOUNDATION_BACKOFF_MS: z.coerce.number().int().min(100).max(60_000).default(1000),
+    /** Interim development default (OD-10 Open): explicit retries of a failed preprocessing. */
+    PROCESSING_MAX_RETRIES: z.coerce.number().int().min(1).max(10).default(3),
+    QUEUE_AUDIO_ATTEMPTS: z.coerce.number().int().min(1).max(10).default(5),
+    QUEUE_AUDIO_BACKOFF_MS: z.coerce.number().int().min(100).max(600_000).default(5000),
   })
   .refine((env) => env.AUTH_MODE !== 'dev' || LOOPBACK_HOSTS.has(env.API_HOST.toLowerCase()), {
     path: ['API_HOST'],
@@ -76,9 +89,13 @@ export interface AppConfig {
   redis: { url: string };
   storage: { driver: 'local'; localRoot: string };
   upload: { maxBytes: number; partSizeBytes: number; sessionTtlMinutes: number };
-  audioService: { url: string; timeoutMs: number };
+  audioService: { url: string; timeoutMs: number; token: string | undefined };
   playback: { signingSecret: string; urlTtlSeconds: number };
-  queues: { foundation: { attempts: number; backoffMs: number } };
+  queues: {
+    foundation: { attempts: number; backoffMs: number };
+    audio: { attempts: number; backoffMs: number };
+  };
+  processing: { maxRetries: number };
 }
 
 export class ConfigError extends Error {
@@ -127,6 +144,7 @@ export function loadConfig(env: NodeJS.ProcessEnv): AppConfig {
     audioService: {
       url: e.AUDIO_SERVICE_URL.replace(/\/$/, ''),
       timeoutMs: e.AUDIO_SERVICE_TIMEOUT_MS,
+      token: e.AUDIO_SERVICE_TOKEN,
     },
     playback: { signingSecret: e.MEDIA_URL_SIGNING_SECRET, urlTtlSeconds: e.MEDIA_URL_TTL_SECONDS },
     queues: {
@@ -134,6 +152,8 @@ export function loadConfig(env: NodeJS.ProcessEnv): AppConfig {
         attempts: e.QUEUE_FOUNDATION_ATTEMPTS,
         backoffMs: e.QUEUE_FOUNDATION_BACKOFF_MS,
       },
+      audio: { attempts: e.QUEUE_AUDIO_ATTEMPTS, backoffMs: e.QUEUE_AUDIO_BACKOFF_MS },
     },
+    processing: { maxRetries: e.PROCESSING_MAX_RETRIES },
   };
 }

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "engine": {
+    "id": "whisper-cpp",
+    "model": "ggml-small-q5_1",
+    "modelSha256": "ae85e4a935d7a567bd102fe55afc16bb595bdb618e11b2fc7591bc08120411bb",
+    "runtime": "pywhispercpp 1.5.1",
+    "threads": 1
+  },
+  "vad": {
+    "model": "silero-vad-v6.2.3",
+    "sha256": "1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3",
+    "settings": {
+      "threshold": 0.4,
+      "minSilenceMs": 300,
+      "minSpeechMs": 250,
+      "paddingMs": 200
+    }
+  },
+  "window": {
+    "startMs": 58000,
+    "endMs": 88000
+  },
+  "spans": [
+    {
+      "startMs": 58000,
+      "endMs": 64900,
+      "detected": "en",
+      "probability": 0.97,
+      "decodedAs": "en"
+    },
+    {
+      "startMs": 65900,
+      "endMs": 81300,
+      "detected": "ur",
+      "probability": 0.6,
+      "decodedAs": "hi"
+    }
+  ],
+  "segments": [
+    {
+      "startMs": 58000,
+      "endMs": 59000,
+      "text": "x",
+      "language": "en",
+      "tokenProbability": 1.2
+    }
+  ],
+  "warnings": []
+}

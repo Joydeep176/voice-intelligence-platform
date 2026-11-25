@@ -18,6 +18,7 @@
       "Read(./**/secrets/**)",
       "Read(./**/credentials*.json)",
       "Read(/storage/**)",
+      "Read(./storage/**)",
       "Read(./.local-storage/**)",
       "Read(/data/**)",
       "Read(~/.aws/**)",

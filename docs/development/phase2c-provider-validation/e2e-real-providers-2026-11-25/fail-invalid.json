@@ -1,0 +1,30 @@
+{
+ "scenario": "invalid",
+ "startedAt": "2026-11-25T17:36:33.386Z",
+ "steps": [
+  {
+   "name": "uploaded",
+   "t_s": 4.1,
+   "recId": true
+  },
+  {
+   "name": "processing-outcome",
+   "t_s": 6,
+   "uiShowsFailure": true,
+   "uiCard": "Audio processing Decoding, validation and signal measurements. Measurements are numbers only, with no quality judgement. Failed Audio processing: Failed Recording rejected This recording was rejected during validation. The file appears to be damaged and could not be read. It cannot be processed. Upl",
+   "apiProcessing": 200,
+   "processing": "{\"state\":\"failed\",\"recording\":{\"status\":\"invalid\",\"validationError\":\"CORRUPT_MEDIA\"},\"probe\":null,\"preprocessing\":null}",
+   "recordingStatus": "invalid",
+   "transcribeButton": false
+  },
+  {
+   "name": "start-run-on-invalid",
+   "t_s": 6,
+   "status": 409,
+   "code": "INVALID_STATE_TRANSITION"
+  }
+ ],
+ "timeline": [],
+ "consoleErrors": [],
+ "total_s": 6.1
+}

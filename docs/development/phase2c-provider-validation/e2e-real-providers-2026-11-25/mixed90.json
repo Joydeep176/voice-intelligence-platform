@@ -1,0 +1,191 @@
+{
+ "label": "mixed90",
+ "file": "e2e-mixed-en-hi-90s.wav",
+ "startedAt": "2026-11-25T17:13:04.348Z",
+ "steps": [
+  {
+   "name": "upload-complete",
+   "t_s": 2.7
+  },
+  {
+   "name": "recording-page",
+   "t_s": 3.5,
+   "workspaceFromRequests": true
+  },
+  {
+   "name": "preprocessing-completed",
+   "t_s": 9.7,
+   "apiStatus": 200,
+   "processingStatus": null
+  },
+  {
+   "name": "recording-after-processing",
+   "t_s": 9.7,
+   "status": "valid",
+   "durationMs": 90000
+  },
+  {
+   "name": "transcription-started",
+   "t_s": 9.9
+  },
+  {
+   "name": "run-terminal",
+   "t_s": 529.2,
+   "status": "completed",
+   "uiMatchedWithoutReload": true
+  },
+  {
+   "name": "ui-transcript",
+   "t_s": 529.5,
+   "segments": 17,
+   "fakeBanner": false,
+   "languageBadges": {
+    "Language:\nEnglish": 15,
+    "Uncertainty:\nOverlapping speech": 2,
+    "Language:\nHindi": 2,
+    "Uncertainty:\nSpeaker uncertain": 1
+   },
+   "devanagariSegments": 2,
+   "latinSegments": 15,
+   "emptySegments": 0,
+   "speakerRows": 4
+  },
+  {
+   "name": "api-transcript",
+   "t_s": 529.5,
+   "transcriptStatus": 200,
+   "version": 1,
+   "segments": 17,
+   "languages": {
+    "en": 15,
+    "hi": 2
+   },
+   "devanagariSegments": 2,
+   "withSpeaker": 16,
+   "monotonic": true,
+   "maxEndMs": 89794,
+   "speakers": 4,
+   "uncertainties": 3,
+   "uncertaintyKinds": {
+    "overlapping_speech": 2,
+    "speaker_uncertain": 1
+   },
+   "nextCursor": null
+  },
+  {
+   "name": "after-reload",
+   "t_s": 530.6,
+   "segments": 17,
+   "completedBadge": true
+  },
+  {
+   "name": "workspace-isolation",
+   "t_s": 530.8,
+   "otherWorkspaceRun": 404,
+   "otherWorkspaceRecording": 404
+  }
+ ],
+ "uiTimeline": [],
+ "apiTimeline": [
+  {
+   "t_s": 12.2,
+   "api": "created",
+   "stages": "transcription:pending,diarization:pending",
+   "ui": null,
+   "progressbar": null
+  },
+  {
+   "t_s": 17.2,
+   "api": "running",
+   "stages": "transcription:running,diarization:pending",
+   "ui": "Running",
+   "progressbar": null
+  },
+  {
+   "t_s": 132.7,
+   "api": "running",
+   "stages": "transcription:running@25,diarization:pending",
+   "ui": "Running",
+   "progressbar": "25"
+  },
+  {
+   "t_s": 248.1,
+   "api": "running",
+   "stages": "transcription:running@50,diarization:pending",
+   "ui": "Running",
+   "progressbar": "50"
+  },
+  {
+   "t_s": 393.7,
+   "api": "running",
+   "stages": "transcription:running@75,diarization:pending",
+   "ui": "Running",
+   "progressbar": "75"
+  },
+  {
+   "t_s": 448.9,
+   "api": "running",
+   "stages": "transcription:completed@100,diarization:running",
+   "ui": "Running",
+   "progressbar": null
+  },
+  {
+   "t_s": 529.2,
+   "api": "completed",
+   "stages": "transcription:completed@100,diarization:completed@100",
+   "ui": "Completed",
+   "progressbar": null
+  }
+ ],
+ "recordingId": "7126ea13-a9ec-425a-a46b-b6d49d91b5ef",
+ "run": {
+  "id": "f8d08080-3d77-4e66-ad56-9d89f3bc8375",
+  "status": "completed",
+  "retryCount": 0,
+  "providers": {
+   "stt": {
+    "id": "whisper-cpp",
+    "model": "ggml-small-q5_1",
+    "fake": false
+   },
+   "diarization": {
+    "id": "sherpa-onnx",
+    "model": "pyannote-segmentation-3.0+3dspeaker-campplus-en-voxceleb-16k",
+    "fake": false
+   }
+  },
+  "window": {
+   "source": "fixed_windows",
+   "windowMs": 30000,
+   "overlapMs": 1000,
+   "count": 4
+  },
+  "error": null,
+  "stages": [
+   {
+    "node": "transcription",
+    "status": "completed",
+    "attempt": 1,
+    "error": null,
+    "startedAt": "2026-11-25T17:13:14.278Z",
+    "finishedAt": "2026-11-25T17:20:31.074Z"
+   },
+   {
+    "node": "diarization",
+    "status": "completed",
+    "attempt": 1,
+    "error": null,
+    "startedAt": "2026-11-25T17:20:31.076Z",
+    "finishedAt": "2026-11-25T17:21:21.437Z"
+   }
+  ]
+ },
+ "uiMatchesApi": {
+  "segments": true,
+  "devanagari": true,
+  "speakers": true
+ },
+ "consoleErrors": [],
+ "finishedAt": "2026-11-25T17:21:55.121Z",
+ "total_s": 530.8
+}

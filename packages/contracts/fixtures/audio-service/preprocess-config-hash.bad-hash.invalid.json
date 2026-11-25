@@ -1,0 +1,36 @@
+{
+  "config": {
+    "schemaVersion": 1,
+    "canonical": {
+      "sampleRateHz": 16000,
+      "channels": 1,
+      "sampleFormat": "s16",
+      "container": "wav"
+    },
+    "blockSeconds": 10,
+    "measurement": {
+      "clipping": {
+        "minRunSamples": 2
+      },
+      "silenceThresholdCentiDbfs": -5000,
+      "levelSeriesIntervalMs": 100
+    },
+    "limits": {
+      "maxDurationMs": 14400000,
+      "maxChannels": 8,
+      "maxSampleRateHz": 192000
+    },
+    "vad": {
+      "method": "none"
+    },
+    "toolVersions": {
+      "service": "0.1.0",
+      "python": "3.12.8",
+      "ffmpeg": "7.1.2",
+      "numpy": "2.5.5",
+      "vad": "none"
+    }
+  },
+  "canonicalJson": "{\"blockSeconds\":10,\"canonical\":{\"channels\":1,\"container\":\"wav\",\"sampleFormat\":\"s16\",\"sampleRateHz\":16000},\"limits\":{\"maxChannels\":8,\"maxDurationMs\":14400000,\"maxSampleRateHz\":192000},\"measurement\":{\"clipping\":{\"minRunSamples\":2},\"levelSeriesIntervalMs\":100,\"silenceThresholdCentiDbfs\":-5000},\"schemaVersion\":1,\"toolVersions\":{\"ffmpeg\":\"7.1.2\",\"numpy\":\"2.5.5\",\"python\":\"3.12.8\",\"service\":\"0.1.0\",\"vad\":\"none\"},\"vad\":{\"method\":\"none\"}}",
+  "expectedHash": "not-a-hash"
+}
