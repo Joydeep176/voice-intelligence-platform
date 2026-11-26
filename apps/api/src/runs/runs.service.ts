@@ -130,9 +130,10 @@ export class RunsService {
       409,
       'INVALID_STATE_TRANSITION',
       'Nothing to cancel',
-      'The run is not queued or running.',
+      'The run is not created, queued or running.',
     );
-    if (!['queued', 'running', 'cancelling'].includes(run.status)) throw nothing;
+    // `created` (ADR-0025): cancelled at once; it also stops a pending A1 stage (ADR-0044, L5).
+    if (!['created', 'queued', 'running', 'cancelling'].includes(run.status)) throw nothing;
     const outcome = await requestRunCancel(this.db, workspaceId, runId);
     if (!outcome) throw nothing;
     if (outcome === 'cancelled') {
@@ -161,6 +162,16 @@ export class RunsService {
         'INVALID_STATE_TRANSITION',
         'Cannot retry',
         'Only a failed or cancelled run can be retried.',
+      );
+    }
+    // A `created` run cancelled before submission has no preprocessing version: ADR-0025 keeps it
+    // non-retryable (the ADR-0044 amendment allows only its cancellation). Start a new run instead.
+    if (run.preprocessingId === null) {
+      throw new AppException(
+        409,
+        'INVALID_STATE_TRANSITION',
+        'Cannot retry',
+        'This run was cancelled before it was started; start a new run instead.',
       );
     }
     if (!(await resetRunForRetry(this.db, workspaceId, runId, this.settings.maxRetries))) {

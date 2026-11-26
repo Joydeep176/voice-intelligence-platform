@@ -20,6 +20,7 @@ from pydantic import (
     StrictBool,
     StrictFloat,
     StrictInt,
+    StringConstraints,
     model_validator,
 )
 
@@ -56,7 +57,7 @@ class ErrorCode(StrEnum):
     RESOURCE_EXHAUSTED = "RESOURCE_EXHAUSTED"  # a child was killed by a signal we did not send
 
 
-TaskType = Literal["probe", "preprocess", "transcribe", "diarize"]
+TaskType = Literal["probe", "preprocess", "transcribe", "diarize", "measure"]
 TaskStatus = Literal["queued", "running", "succeeded", "failed", "cancelled"]
 
 
@@ -673,3 +674,67 @@ class DiarizeResult(_Model):
         if len(keys) != self.speakerCount:
             raise ValueError("speakerCount must equal the distinct speaker keys")
         return self
+
+
+# -- Phase 3A: speech-aware objective measurements (ADR-0045) -------------------------------------
+# Numbers only (ADR-0019): no category, score, verdict or recommendation. Interpretation is the
+# Audio Quality Agent's job (A1, in the orchestrator).
+
+
+class MeasureConfig(_Model):
+    schemaVersion: Literal[1]  # noqa: N815
+    audioDurationMs: StrictInt = Field(ge=1)  # noqa: N815
+    vad: VadSettings
+    blockMs: StrictInt = Field(ge=100, le=60_000)  # noqa: N815
+    windowMs: StrictInt = Field(ge=1000, le=300_000)  # noqa: N815
+    overlapMs: StrictInt = Field(ge=0, le=60_000)  # noqa: N815
+    ltasDropDb: StrictInt = Field(ge=10, le=120)  # noqa: N815
+    ltasMinHz: StrictInt = Field(ge=0, le=4000)  # noqa: N815
+    snrNearCleanDb: StrictInt = Field(ge=20, le=80)  # noqa: N815
+
+    @model_validator(mode="after")
+    def _window(self) -> MeasureConfig:
+        if self.overlapMs * 2 >= self.windowMs:
+            raise ValueError("overlapMs must be below half of windowMs")
+        return self
+
+
+# Bounds on the Tier 1 wire contract (mirror audio-service.ts; 4 h at 100 ms blocks is 144,000).
+MAX_TIER1_QUANTITIES = 32
+MAX_SERIES_BLOCKS = 200_000
+Tier1Name = Annotated[str, StringConstraints(pattern=r"^[A-Za-z][A-Za-z0-9]{0,63}$")]
+
+
+class Tier1Quantity(_Model):
+    value: Num
+    unit: Literal["dBFS", "dB", "ratio", "ms", "Hz", "count"]
+    kind: Literal["measured", "derived", "estimate"]
+    method: str = Field(min_length=1, max_length=200)
+
+
+class Tier1Record(_Model):
+    measurementsSchemaVersion: Literal[2]  # noqa: N815
+    source: Literal["canonical"]
+    quantities: dict[Tier1Name, Tier1Quantity] = Field(max_length=MAX_TIER1_QUANTITIES)
+    unavailable: list[Unavailable] = Field(max_length=MAX_TIER1_QUANTITIES)
+
+
+class SpeechSeries(_Model):
+    schemaVersion: Literal[1]  # noqa: N815
+    blockMs: StrictInt = Field(ge=100)  # noqa: N815
+    speechMs: list[IntMs] = Field(max_length=MAX_SERIES_BLOCKS)  # noqa: N815
+    snrDb: list[Num | None] = Field(max_length=MAX_SERIES_BLOCKS)  # noqa: N815
+
+    @model_validator(mode="after")
+    def _aligned(self) -> SpeechSeries:
+        if len(self.speechMs) != len(self.snrDb):
+            raise ValueError("series arrays must have one entry per block")
+        return self
+
+
+class MeasureResult(_Model):
+    schemaVersion: Literal[1]  # noqa: N815
+    vad: VadInfo
+    record: Tier1Record
+    series: SpeechSeries
+    warnings: list[Annotated[str, Field(max_length=200)]]

@@ -1,9 +1,9 @@
 """Child-process entry point for model inference (see `isolation.py`).
 
 Reads one JSON argument (the task request, the inherited canonical-WAV descriptor and its
-manifest entry, the models directory and thread count), runs the same `transcribe` or `diarize`
-handler in-process, and writes JSON lines to stdout: `{"progress": ...}` and finally either
-`{"result": ...}` or `{"error": "<ErrorCode>"}`. No deadline here: the parent enforces it and
+manifest entry, the models directory and thread count), runs the same `transcribe`, `diarize` or
+`measure` handler in-process, and writes JSON lines to stdout: `{"progress": ...}` and finally
+either `{"result": ...}` or `{"error": "<ErrorCode>"}`. No deadline here: the parent enforces it and
 kills this process.
 """
 
@@ -43,6 +43,7 @@ class InheritedStorage:
 
 def main() -> None:
     from audio_service.domain.diarize import DiarizeHandler  # noqa: PLC0415
+    from audio_service.domain.measure import MeasureHandler  # noqa: PLC0415
     from audio_service.domain.transcribe import TranscribeHandler  # noqa: PLC0415
 
     msg = json.loads(sys.argv[1])  # stdin is /dev/null under the sandbox runner
@@ -62,6 +63,8 @@ def main() -> None:
     handler = (
         TranscribeHandler(lambda: storage, models, **common)  # type: ignore[arg-type]
         if request.type == "transcribe"
+        else MeasureHandler(lambda: storage, models, **common)  # type: ignore[arg-type]
+        if request.type == "measure"
         else DiarizeHandler(lambda: storage, models, **common)  # type: ignore[arg-type]
     )
     ctx = TaskContext(

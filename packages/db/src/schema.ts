@@ -4,12 +4,18 @@
  * cannot drift. This file has no relative imports, so drizzle-kit can load it directly.
  */
 import {
+  AUDIO_QUALITY_CLASSES,
+  CONFIDENCE_LEVELS,
+  DIAGNOSTIC_FLAG_KINDS,
+  EVIDENCE_BASES,
+  FLAG_SEVERITIES,
+  MEASUREMENT_SET_STATUSES,
   MEASUREMENT_SOURCES,
   PREPROCESSING_STATUSES,
   RAW_OUTPUT_SCOPES,
   RECORDING_STATUSES,
-  RUN_STAGES,
   RUN_STATUSES,
+  STAGE_NODES,
   STAGE_STATUSES,
   TRANSCRIPT_LANGUAGES,
   TRANSCRIPT_VERSION_KINDS,
@@ -334,6 +340,62 @@ export const audioSegments = pgTable(
   ],
 );
 
+/**
+ * Phase 3A (ADR-0045): lifecycle of one speech-aware measurement set (the audio-service `measure`
+ * task) of a preprocessing version and measure config. Results land in `audio_measurements`
+ * (schema v2, `measurement_set_id` set). Objective numbers only; no judgements (ADR-0019).
+ */
+export const audioMeasurementSets = pgTable(
+  'audio_measurement_sets',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    workspaceId: uuid('workspace_id')
+      .notNull()
+      .references(() => workspaces.id, { onDelete: 'restrict' }),
+    preprocessingId: uuid('preprocessing_id').notNull(),
+    configHash: text('config_hash').notNull(),
+    config: jsonb('config').$type<Record<string, unknown>>().notNull(),
+    status: text('status', { enum: MEASUREMENT_SET_STATUSES }).notNull().default('queued'),
+    attempt: integer('attempt').notNull().default(0),
+    /** `{ code, retryable }` only, never content. */
+    error: jsonb('error').$type<{ code: string; retryable: boolean }>(),
+    cancelRequestedAt: timestamp('cancel_requested_at', { withTimezone: true, mode: 'date' }),
+    seriesUri: text('series_uri'),
+    toolVersions: jsonb('tool_versions').$type<Record<string, unknown>>(),
+    startedAt: timestamp('started_at', { withTimezone: true, mode: 'date' }),
+    finishedAt: timestamp('finished_at', { withTimezone: true, mode: 'date' }),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    foreignKey({
+      name: 'audio_measurement_sets_preprocessing_workspace_fk',
+      columns: [t.preprocessingId, t.workspaceId],
+      foreignColumns: [audioPreprocessings.id, audioPreprocessings.workspaceId],
+    }).onDelete('cascade'),
+    uniqueIndex('audio_measurement_sets_preprocessing_config_uq').on(
+      t.preprocessingId,
+      t.configHash,
+    ),
+    uniqueIndex('audio_measurement_sets_id_preprocessing_uq').on(t.id, t.preprocessingId),
+    uniqueIndex('audio_measurement_sets_id_workspace_uq').on(t.id, t.workspaceId),
+    check('audio_measurement_sets_config_hash_hex', sql`${t.configHash} ~ ${HEX64}`),
+    check(
+      'audio_measurement_sets_status_valid',
+      sql`${t.status} IN ('queued', 'running', 'succeeded', 'failed', 'cancelled')`,
+    ),
+    check('audio_measurement_sets_attempt_nonnegative', sql`${t.attempt} >= 0`),
+    check(
+      'audio_measurement_sets_failed_has_error',
+      sql`${t.status} <> 'failed' OR ${t.error} IS NOT NULL`,
+    ),
+    check(
+      'audio_measurement_sets_succeeded_complete',
+      sql`${t.status} <> 'succeeded' OR (${t.finishedAt} IS NOT NULL AND ${t.seriesUri} IS NOT NULL)`,
+    ),
+  ],
+);
+
 /** Objective measurements per preprocessing version (ADR-0019: no judgements). Immutable. */
 export const audioMeasurements = pgTable(
   'audio_measurements',
@@ -350,6 +412,8 @@ export const audioMeasurements = pgTable(
     measurements: jsonb('measurements').$type<Record<string, unknown>>().notNull(),
     seriesUri: text('series_uri'),
     serviceVersion: text('service_version').notNull(),
+    /** Phase 3A: set for Tier 1 (speech-aware) records; null for the Phase 2B preprocess records. */
+    measurementSetId: uuid('measurement_set_id'),
     createdAt: createdAt(),
   },
   (t) => [
@@ -363,9 +427,17 @@ export const audioMeasurements = pgTable(
       columns: [t.segmentId, t.preprocessingId],
       foreignColumns: [audioSegments.id, audioSegments.preprocessingId],
     }).onDelete('cascade'),
+    foreignKey({
+      name: 'audio_measurements_set_preprocessing_fk',
+      columns: [t.measurementSetId, t.preprocessingId],
+      foreignColumns: [audioMeasurementSets.id, audioMeasurementSets.preprocessingId],
+    }).onDelete('cascade'),
     uniqueIndex('audio_measurements_whole_uq')
       .on(t.preprocessingId, t.source)
-      .where(sql`${t.segmentId} IS NULL`),
+      .where(sql`${t.segmentId} IS NULL AND ${t.measurementSetId} IS NULL`),
+    uniqueIndex('audio_measurements_set_uq')
+      .on(t.measurementSetId, t.source)
+      .where(sql`${t.measurementSetId} IS NOT NULL`),
     uniqueIndex('audio_measurements_segment_uq')
       .on(t.preprocessingId, t.segmentId, t.source)
       .where(sql`${t.segmentId} IS NOT NULL`),
@@ -388,7 +460,7 @@ export const pipelineStageRuns = pgTable(
     id: uuid('id').primaryKey().defaultRandom(),
     workspaceId: workspaceFk(),
     runId: uuid('run_id').notNull(),
-    node: text('node', { enum: RUN_STAGES }).notNull(),
+    node: text('node', { enum: STAGE_NODES }).notNull(),
     attempt: integer('attempt').notNull(),
     status: text('status', { enum: STAGE_STATUSES }).notNull().default('running'),
     progress: jsonb('progress').$type<Record<string, unknown>>(),
@@ -407,7 +479,7 @@ export const pipelineStageRuns = pgTable(
       foreignColumns: [pipelineRuns.id, pipelineRuns.workspaceId],
     }).onDelete('cascade'),
     uniqueIndex('pipeline_stage_runs_run_node_attempt_uq').on(t.runId, t.node, t.attempt),
-    check('pipeline_stage_runs_node_valid', sql`${t.node} IN (${inList(RUN_STAGES)})`),
+    check('pipeline_stage_runs_node_valid', sql`${t.node} IN (${inList(STAGE_NODES)})`),
     check('pipeline_stage_runs_status_valid', sql`${t.status} IN (${inList(STAGE_STATUSES)})`),
     check('pipeline_stage_runs_attempt_positive', sql`${t.attempt} >= 1`),
     check(
@@ -696,6 +768,9 @@ export type AudioPreprocessing = typeof audioPreprocessings.$inferSelect;
 export type AudioSegment = typeof audioSegments.$inferSelect;
 export type NewAudioSegment = typeof audioSegments.$inferInsert;
 export type AudioMeasurement = typeof audioMeasurements.$inferSelect;
+export type AudioMeasurementSet = typeof audioMeasurementSets.$inferSelect;
+export type AudioDiagnostic = typeof audioDiagnostics.$inferSelect;
+export type AudioDiagnosticFlagRow = typeof audioDiagnosticFlags.$inferSelect;
 export type NewAudioMeasurement = typeof audioMeasurements.$inferInsert;
 export type PipelineStageRun = typeof pipelineStageRuns.$inferSelect;
 export type SttRawOutput = typeof sttRawOutputs.$inferSelect;
@@ -705,3 +780,108 @@ export type TranscriptVersion = typeof transcriptVersions.$inferSelect;
 export type Speaker = typeof speakers.$inferSelect;
 export type TranscriptSegment = typeof transcriptSegments.$inferSelect;
 export type TranscriptionUncertainty = typeof transcriptionUncertainties.$inferSelect;
+
+/**
+ * Phase 3A: A1 Audio Quality output, run-scoped (ADR-0043 / ADR-0044). Written only by the A1
+ * repository; immutable after insert (trigger in 0005): a re-assessment inserts a new row.
+ */
+export const audioDiagnostics = pgTable(
+  'audio_diagnostics',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    workspaceId: workspaceFk(),
+    runId: uuid('run_id').notNull(),
+    preprocessingId: uuid('preprocessing_id').notNull(),
+    measurementSetId: uuid('measurement_set_id'),
+    attempt: integer('attempt').notNull(),
+    ruleVersion: text('rule_version').notNull(),
+    provisional: boolean('provisional').notNull(),
+    overall: text('overall', { enum: AUDIO_QUALITY_CLASSES }).notNull(),
+    confidence: text('confidence', { enum: CONFIDENCE_LEVELS }).notNull(),
+    suitability: jsonb('suitability').$type<Record<string, unknown>>().notNull(),
+    notAssessed: jsonb('not_assessed').$type<unknown[]>().notNull(),
+    recommendations: jsonb('recommendations').$type<unknown[]>().notNull(),
+    affectedRatio: doublePrecision('affected_ratio'),
+    tier1: text('tier1').notNull(),
+    ruleConfig: jsonb('rule_config').$type<Record<string, unknown>>().notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    foreignKey({
+      name: 'audio_diagnostics_run_workspace_fk',
+      columns: [t.runId, t.workspaceId],
+      foreignColumns: [pipelineRuns.id, pipelineRuns.workspaceId],
+    }).onDelete('cascade'),
+    foreignKey({
+      name: 'audio_diagnostics_preprocessing_workspace_fk',
+      columns: [t.preprocessingId, t.workspaceId],
+      foreignColumns: [audioPreprocessings.id, audioPreprocessings.workspaceId],
+    }).onDelete('cascade'),
+    foreignKey({
+      name: 'audio_diagnostics_set_preprocessing_fk',
+      columns: [t.measurementSetId, t.preprocessingId],
+      foreignColumns: [audioMeasurementSets.id, audioMeasurementSets.preprocessingId],
+    }).onDelete('cascade'),
+    uniqueIndex('audio_diagnostics_run_attempt_uq').on(t.runId, t.attempt),
+    uniqueIndex('audio_diagnostics_id_workspace_uq').on(t.id, t.workspaceId),
+    index('audio_diagnostics_run_idx').on(t.runId, t.createdAt.desc()),
+    check(
+      'audio_diagnostics_overall_valid',
+      sql`${t.overall} IN (${inList(AUDIO_QUALITY_CLASSES)})`,
+    ),
+    check(
+      'audio_diagnostics_confidence_valid',
+      sql`${t.confidence} IN (${inList(CONFIDENCE_LEVELS)})`,
+    ),
+    check('audio_diagnostics_attempt_positive', sql`${t.attempt} >= 1`),
+    check(
+      'audio_diagnostics_affected_ratio_range',
+      sql`${t.affectedRatio} IS NULL OR (${t.affectedRatio} >= 0 AND ${t.affectedRatio} <= 1)`,
+    ),
+    check('audio_diagnostics_suitability_object', sql`jsonb_typeof(${t.suitability}) = 'object'`),
+    check('audio_diagnostics_not_assessed_array', sql`jsonb_typeof(${t.notAssessed}) = 'array'`),
+    check(
+      'audio_diagnostics_recommendations_array',
+      sql`jsonb_typeof(${t.recommendations}) = 'array'`,
+    ),
+  ],
+);
+
+/** Phase 3A: A1 flags (ADR-0043). Immutable; deleted only by cascade. */
+export const audioDiagnosticFlags = pgTable(
+  'audio_diagnostic_flags',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    workspaceId: workspaceFk(),
+    diagnosticsId: uuid('diagnostics_id').notNull(),
+    kind: text('kind', { enum: DIAGNOSTIC_FLAG_KINDS }).notNull(),
+    severity: text('severity', { enum: FLAG_SEVERITIES }).notNull(),
+    startMs: bigint('start_ms', { mode: 'number' }),
+    endMs: bigint('end_ms', { mode: 'number' }),
+    basis: text('basis', { enum: EVIDENCE_BASES }).notNull(),
+    ruleId: text('rule_id').notNull(),
+    measurementRefs: jsonb('measurement_refs').$type<unknown[]>().notNull(),
+  },
+  (t) => [
+    foreignKey({
+      name: 'audio_diagnostic_flags_diagnostics_workspace_fk',
+      columns: [t.diagnosticsId, t.workspaceId],
+      foreignColumns: [audioDiagnostics.id, audioDiagnostics.workspaceId],
+    }).onDelete('cascade'),
+    index('audio_diagnostic_flags_diagnostics_start_idx').on(t.diagnosticsId, t.startMs),
+    check(
+      'audio_diagnostic_flags_kind_valid',
+      sql`${t.kind} IN (${inList(DIAGNOSTIC_FLAG_KINDS)})`,
+    ),
+    check(
+      'audio_diagnostic_flags_severity_valid',
+      sql`${t.severity} IN (${inList(FLAG_SEVERITIES)})`,
+    ),
+    check('audio_diagnostic_flags_basis_valid', sql`${t.basis} IN (${inList(EVIDENCE_BASES)})`),
+    check(
+      'audio_diagnostic_flags_range_valid',
+      sql`(${t.startMs} IS NULL AND ${t.endMs} IS NULL) OR (${t.startMs} >= 0 AND ${t.endMs} > ${t.startMs})`,
+    ),
+    check('audio_diagnostic_flags_refs_array', sql`jsonb_typeof(${t.measurementRefs}) = 'array'`),
+  ],
+);

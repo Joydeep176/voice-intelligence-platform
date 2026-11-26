@@ -28,7 +28,7 @@ Each package uses exactly one runner. Do not mix runners within a package.
 |---|---|
 | FR-4.4 raw output immutable | Update/delete attempts on raw outputs and machine versions fail; a correction creates a new version, and the raw output hash is unchanged |
 | FR-9.2 provenance | Report with an assertion lacking valid refs → rejected / QA issue |
-| FR-3.3 / FR-9.3 separation | Diagnostics and uncertainty are stored and rendered separately; A1 and A2 cannot read or write each other's tables; QA flags conflation |
+| FR-3.3 / FR-9.3 separation | Diagnostics and uncertainty are stored and rendered separately; A1 cannot read transcription tables; no other component writes diagnostics tables; A2/A3 read A1 data only through `AudioQualityReader` and never wait for it; transcription output is identical with the A1 context present, absent or failed (ADR-0046); QA flags conflation |
 | FR-2.4 / FR-2.5 deterministic preprocessing | Same input + config + tool versions → same hash and identical segments and measurements; a stored hash always has its config and tool-version metadata; the preprocessing node makes no LLM calls |
 | FR-3.5 / ADR-0021 parallel branches | Graph-level validation: A1 and A2 run concurrently after preprocessing; A3 starts without waiting for A1; A6 starts only after A1 and A5; neither branch receives the other's output; a failure in either branch blocks A6; cancellation stops both |
 | FR-12.4 corrected-transcript runs | A new run references its source version and parent run; the parent run's outputs are unchanged |
@@ -80,3 +80,17 @@ Each package uses exactly one runner. Do not mix runners within a package.
   and SNR, before adoption. Example: E7 rejected a sized `audio_ctx`
   (`stt-speed-2026-11-24/e7-audio-ctx-accuracy-2026-11-25.log`).
 - **C3 benchmark:** `services/audio/benchmarks/stt/run.py` (`report` regenerates `docs/development/phase2c-stt-benchmark/`).
+
+## 8. Phase 3A additions (A1 Audio Quality)
+
+- **Unit:** A1 rule engine (`apps/orchestrator/src/agents/audio-quality/engine.spec.ts`: table-driven rules,
+  monotonicity, determinism, not-assessed handling); static A1/A2 separation (`separation.spec.ts`); `measure` task
+  (`services/audio/tests/test_measure.py`); contracts and shared `measure-*` fixtures; web card, step and timeline
+  track tests.
+- **Integration:** migration 0005 (`packages/db/test/audio-quality.int.test.ts`); A1 worker lifecycle and Tier 1
+  (`apps/orchestrator/test/audio-quality.int-spec.ts`); API (`apps/api/test/audio-quality.int-spec.ts`).
+- **Production-task validation (not CI):** `services/audio/benchmarks/quality/task-check.mjs` (real `measure` task in
+  the production image at 2 CPUs / 768 MB, 4 h file, cancellation, determinism).
+- **Benchmarks (not CI):** M0 harness (`services/audio/benchmarks/quality/run.py`) and M6 engine evaluation, evidence in
+  `docs/development/phase3a-quality-benchmark/`. Synthetic only; never real-world accuracy.
+- **Browser E2E (manual, real stack):** `docs/development/phase3a-quality-benchmark/e2e/run-a1.mjs`.

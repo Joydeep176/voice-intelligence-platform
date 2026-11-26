@@ -1,3 +1,5 @@
+import type { DiagnosticFlagKind } from '@vip/contracts';
+
 /**
  * UI-side shapes for the transcript workspace timeline (audio-visualisation.md). They are
  * placeholders for component props only: the API contracts for segments, speakers, diagnostics
@@ -16,9 +18,9 @@ export interface SpeakerTurn {
   endMs: number;
 }
 
-/** Audio Quality Agent output (A1). Never mixed with transcription uncertainty (FR-9.3). */
+/** Audio Quality Agent output (A1, contract kinds). Never mixed with transcription uncertainty (FR-9.3). */
 export interface AudioDiagnosticFlag {
-  kind: 'noise' | 'clipping' | 'distortion' | 'dropout' | 'silence' | 'low_level';
+  kind: DiagnosticFlagKind;
   severity: 'low' | 'medium' | 'high';
   startMs: number;
   endMs: number;

@@ -1,6 +1,6 @@
 # Agent Architecture
 
-Status: **Seven agents approved (ADR-0001, amended by ADR-0019); parallel A1/A2 accepted provisionally (ADR-0021).** Items tagged *Proposed* are not approved.
+Status: **Seven agents approved (ADR-0001, amended by ADR-0019); parallel A1/A2 accepted provisionally (ADR-0021); A1 Phase 3A design accepted (ADR-0043–0047, 2026-11-26).** Items tagged *Proposed* are not approved.
 These are the product's runtime agents. They are unrelated to Claude Code's development subagents in `.claude/agents/`.
 
 ## 1. Stages and agents
@@ -9,7 +9,7 @@ These are the product's runtime agents. They are unrelated to Claude Code's deve
 |---|---|---|---|---|
 | — | Ingestion | 1 | Deterministic (API + audio-service probe) | `recordings`, `upload_sessions`, `consent_attestations` |
 | — | **Preprocessing node** | 2 | Deterministic graph node. Calls the audio service for FFmpeg decoding, normalisation, VAD and segmentation (ADR-0019) | `audio_preprocessings`, `audio_segments` |
-| A1 | **Audio Quality Agent** | 3 | Analyses objective audio measurements and produces its own diagnostic output (*Proposed*: rule-based, no LLM in v1) | `audio_measurements` (via service, preprocessing-scoped), `audio_diagnostics`, `audio_diagnostic_flags` (run-scoped) |
+| A1 | **Audio Quality Agent** | 3 | Analyses objective audio measurements and produces its own diagnostic output (rule-based, no LLM, no ML quality model in v1; ADR-0043) | `audio_measurements` (via service, preprocessing-scoped), `audio_diagnostics`, `audio_diagnostic_flags` (run-scoped) |
 | A2 | **Transcription Agent** | 4, 5 | Transcription, language identification, diarization, speaker alignment, transcription uncertainty | `stt_raw_outputs`, `diarization_raw_outputs`, `transcripts`, `transcript_versions` (machine), `transcript_segments`, `speakers`, `transcription_uncertainties` |
 | A3 | **Context Intelligence Agent** | 6 | LLM | `topics`, `entities`, `claims` |
 | A4 | **Research Agent** | 7 | Tool-using LLM via `ResearchProvider` (ADR-0017) | `research_queries`, `research_sources` |
@@ -19,8 +19,9 @@ These are the product's runtime agents. They are unrelated to Claude Code's deve
 
 ### Boundaries
 - **The preprocessing node and the audio service make no quality judgements.** They transform audio and measure it.
-- **A1 owns audio diagnostics only.** Its inputs are objective measurements (computed block-wise by the audio service at A1's request). Its output is its own diagnostic classification, flags and summary. It never reads or writes transcription data.
-- **A2 owns transcription, language identification, diarization and transcription uncertainty only.** It never reads or writes audio diagnostics. Diagnostics and uncertainty are related only at report time, by time overlap (A6). A1 and A2 cannot overwrite or consume each other's output (§2.2).
+- **A1 owns audio diagnostics only.** Its inputs are objective measurements (computed by the audio service and persisted by the preprocessing-side coordinator, which runs inside the A1 job before the A1 node; ADR-0045 as amended). Its output is its own diagnostic classification, flags and summary. It never reads or writes transcription data.
+- **A2 owns transcription, language identification, diarization and transcription uncertainty only.** It never writes audio diagnostics and never derives uncertainty from them. It may read A1's `AudioQualitySummary` / `AudioQualityContext` as optional read-only metadata, without waiting for it (ADR-0046); A3, A6, A7 and the Phase 3C capability may too. Diagnostics and uncertainty are related in reports only at report time, by time overlap (A6). Neither agent overwrites the other's output (§2.2).
+- **Capabilities outside A1–A7** (Phase 3C machinery and environmental sound intelligence) are distinct workflows in the same platform (ADR-0047, SRS C-4).
 - **A2 never modifies raw provider output.** Machine version v1 is built from raw output and references it.
 - **A3 separates quotation from interpretation.** `claims.quoted_text` is verbatim; paraphrases and topics are `inferred`.
 - **A4 is the only agent that sends data to the research provider** (ADR-0009).
@@ -72,14 +73,14 @@ START
 | A6 Reporting | **A1 and A5** (and therefore A2–A4) |
 | A7 QA | A6 |
 
-- **Independence (ADR-0021):** after preprocessing, A1 and A2 run independently and in parallel. Neither waits for, consumes or overwrites the other's output. A3–A5 do not depend on A1.
+- **Independence (ADR-0021, amended by ADR-0046):** after preprocessing, A1 and A2 run independently. Neither waits for or overwrites the other's output; A2 and A3 may read A1's summary as optional read-only metadata. A3–A5 do not depend on A1. In Phase 3A, A1 runs on the `created` run before transcription is started (ADR-0044).
 - **Waiting:** a downstream node never starts on partial upstream results. A6 is the first and only join of the two branches. The exact join mechanism (LangGraph multi-source edges/deferred node) is to be confirmed by graph-level validation.
 - **Failure:** poor audio is not a failure (ADR-0008). A technical failure of either branch, after its bounded retries, stops downstream nodes that need its result. The run fails and stays retryable from its checkpoint (ADR-0014). Cancellation stops both branches.
 - **Corrected-transcript runs** (ADR-0020) skip preprocessing, A1 and A2, and reference the parent run's diagnostics and the source transcript version (mechanism OD-26b, *Proposed*).
 - The cost ceiling is checked by the LLM factory before every call (behaviour OD-28). Nodes are idempotent, with outputs keyed by (`run_id`, node, attempt).
 
 ### 2.2 Enforcing A1/A2 separation
-- **Inputs:** A1 receives the preprocessing version only; A2 receives the preprocessing version (segments) only. Neither node's input includes the other's output.
+- **Inputs:** A1 receives the preprocessing version (and its measurement set) only, never transcription data. A2 receives the preprocessing version (segments) plus an *optional* read-only A1 context through `AudioQualityReader` (ADR-0046).
 - **State:** A1 writes only the `audioQuality` state key; A2 writes only `transcript`. Concurrent branch writes go to disjoint keys; shared keys (`errors`) use an append reducer.
 - **Persistence:** each agent's repository exposes write methods only for its own tables (AGENT §1). The A1 repository has no transcription-table access and the A2 repository has no diagnostics-table access, enforced in code and tested (TESTING §3).
 
@@ -90,7 +91,7 @@ interface PipelineState {
   runId: string; workspaceId: string; recordingId: string;
   options: { languageHints?: ('en' | 'hi')[]; reportLanguage: 'en' | 'hi'; sourceTranscriptVersionId?: string };
   preprocessingId?: string;
-  audioQuality?: { overall: 'good' | 'degraded' | 'poor'; flagCount: number };   // A1 only
+  audioQuality?: { diagnosticsId: string; overall: 'good' | 'acceptable_with_warnings' | 'poor' | 'insufficient'; confidence: 'high' | 'medium' | 'low' };   // written by A1 only; read-only for others (ADR-0046)
   transcript?: { transcriptId: string; versionId: string; speakerCount: number; languages: string[] }; // A2 only
   context?: { claimCount: number; unresolvedClaimIds?: string[] };
   research?: { attempts: number /* max 2: initial + one targeted retry */ };
@@ -107,8 +108,8 @@ interface PipelineState {
 - Calls audio-service `probe` and `preprocess` tasks. Preprocessing VAD stays `none`; Silero VAD is applied inside transcription windows (ADR-0038).
 
 ### A1 Audio Quality
-- In: preprocessing version. Requests the audio-service `measure` task (objective, block-wise measurements, stored per preprocessing version) and then classifies them.
-- Out (run-scoped): overall verdict, flags (`noise`, `clipping`, `distortion`, `dropout`, `silence`, `low_level`) with severity and timestamps, summary.
+- In: preprocessing version and its speech-aware measurement set (the preprocessing flow runs the audio-service `measure` task and the preprocessing coordinator persists it, ADR-0045); A1 only reads them and classifies.
+- Out (run-scoped): overall class (`good | acceptable_with_warnings | poor | insufficient`), categorical confidence, transcription/diarization suitability, flags (ADR-0043 kinds) with severity, basis and timestamps, a not-assessed list, summary (`AudioQualitySummary`).
 
 ### A2 Transcription
 - In: preprocessing version (segments). Out: raw outputs, machine transcript version, speakers, uncertainties.

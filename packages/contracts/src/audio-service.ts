@@ -77,7 +77,8 @@ export const AudioServiceErrorCode = z.enum([
 ]);
 export type AudioServiceErrorCode = z.infer<typeof AudioServiceErrorCode>;
 
-export const AudioTaskType = z.enum(['probe', 'preprocess', 'transcribe', 'diarize']);
+/** `measure` (Phase 3A, ADR-0045) is additive: the contract version is unchanged. */
+export const AudioTaskType = z.enum(['probe', 'preprocess', 'transcribe', 'diarize', 'measure']);
 export type AudioTaskType = z.infer<typeof AudioTaskType>;
 
 export const AudioTaskStatus = z.enum(['queued', 'running', 'succeeded', 'failed', 'cancelled']);
@@ -734,3 +735,90 @@ export const AudioDiarizeResult = z
       });
   });
 export type AudioDiarizeResult = z.infer<typeof AudioDiarizeResult>;
+
+/* ------------------------------------------------------------------------------------------------
+ * Phase 3A: speech-aware objective measurements (`measure` task, ADR-0045). Numbers only
+ * (ADR-0019): no category, score or verdict; the Audio Quality Agent interprets them.
+ * Mirrors `MeasureConfig` / `MeasureResult` in services/audio/src/audio_service/contracts.py.
+ * ---------------------------------------------------------------------------------------------- */
+
+export const AudioMeasureConfig = z
+  .object({
+    schemaVersion: z.literal(1),
+    audioDurationMs: z.number().int().min(1),
+    vad: AudioVadSettings,
+    blockMs: z.number().int().min(100).max(60_000),
+    windowMs: z.number().int().min(1000).max(300_000),
+    overlapMs: z.number().int().min(0).max(60_000),
+    ltasDropDb: z.number().int().min(10).max(120),
+    ltasMinHz: z.number().int().min(0).max(4000),
+    /** Near-clean switch (OD-52, M6): use the median noise-frame power when it gives an SNR at or
+     * above this, otherwise the mean (dB). */
+    snrNearCleanDb: z.number().int().min(20).max(80),
+  })
+  .strict()
+  .refine((c) => c.overlapMs * 2 < c.windowMs, {
+    message: 'overlapMs must be below half of windowMs',
+  });
+export type AudioMeasureConfig = z.infer<typeof AudioMeasureConfig>;
+
+export const AudioTier1Quantity = z
+  .object({
+    value: z.number().finite(),
+    unit: z.enum(['dBFS', 'dB', 'ratio', 'ms', 'Hz', 'count']),
+    kind: z.enum(['measured', 'derived', 'estimate']),
+    method: z.string().min(1).max(200),
+  })
+  .strict();
+
+/** Bounds on the Tier 1 wire contract (defence in depth; 4 h at 100 ms blocks is 144,000). */
+const MAX_TIER1_QUANTITIES = 32;
+const MAX_SERIES_BLOCKS = 200_000;
+
+export const AudioTier1Record = z
+  .object({
+    measurementsSchemaVersion: z.literal(2),
+    source: z.literal('canonical'),
+    quantities: z
+      .record(z.string().regex(/^[A-Za-z][A-Za-z0-9]{0,63}$/), AudioTier1Quantity)
+      .refine((q) => Object.keys(q).length <= MAX_TIER1_QUANTITIES, {
+        message: 'too many quantities',
+      }),
+    unavailable: z
+      .array(
+        z.object({ name: z.string().min(1).max(64), reason: z.string().min(1).max(64) }).strict(),
+      )
+      .max(MAX_TIER1_QUANTITIES),
+  })
+  .strict();
+export type AudioTier1Record = z.infer<typeof AudioTier1Record>;
+
+export const AudioSpeechSeries = z
+  .object({
+    schemaVersion: z.literal(1),
+    blockMs: z.number().int().min(100),
+    speechMs: z.array(IntMs).max(MAX_SERIES_BLOCKS),
+    snrDb: z.array(z.number().finite().nullable()).max(MAX_SERIES_BLOCKS),
+  })
+  .strict()
+  .refine((s) => s.speechMs.length === s.snrDb.length, {
+    message: 'series arrays must have one entry per block',
+  });
+export type AudioSpeechSeries = z.infer<typeof AudioSpeechSeries>;
+
+export const AudioMeasureResult = z
+  .object({
+    schemaVersion: z.literal(1),
+    vad: z
+      .object({
+        model: z.string().min(1).max(128),
+        sha256: z.string().regex(/^[0-9a-f]{64}$/),
+        settings: AudioVadSettings,
+      })
+      .strict(),
+    record: AudioTier1Record,
+    series: AudioSpeechSeries,
+    warnings: z.array(z.string().max(200)),
+  })
+  .strict();
+export type AudioMeasureResult = z.infer<typeof AudioMeasureResult>;

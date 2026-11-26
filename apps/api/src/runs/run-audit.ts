@@ -3,7 +3,12 @@ import { auditEvents, type Database } from '@vip/db';
 import { DB } from '../database/database.module';
 
 export type RunAuditAction =
-  'run.requested' | 'run.cancel_requested' | 'run.cancelled' | 'run.retried' | 'speaker.renamed';
+  | 'run.requested'
+  | 'run.cancel_requested'
+  | 'run.cancelled'
+  | 'run.retried'
+  | 'speaker.renamed'
+  | 'audio_quality.requested';
 
 export interface RunAuditEntry {
   workspaceId: string;

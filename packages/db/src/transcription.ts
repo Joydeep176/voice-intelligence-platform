@@ -204,7 +204,7 @@ export const setRunStage = (
 ) => guardedRunUpdate(tx, workspaceId, runId, ['running'], { currentNode: node });
 
 /**
- * Records the cancel request. A `queued` run is cancelled at once; a `running` one becomes
+ * Records the cancel request. A `created` (ADR-0025, lifecycle L5) or `queued` run is cancelled at once; a `running` one becomes
  * `cancelling` (the coordinator finishes it between windows, ADR-0014). `cancelling` is idempotent.
  */
 export async function requestRunCancel(
@@ -213,7 +213,7 @@ export async function requestRunCancel(
   runId: string,
 ): Promise<'cancelled' | 'cancelling' | null> {
   if (
-    await guardedRunUpdate(tx, workspaceId, runId, ['queued'], {
+    await guardedRunUpdate(tx, workspaceId, runId, ['created', 'queued'], {
       status: 'cancelled',
       finishedAt: new Date(),
     })

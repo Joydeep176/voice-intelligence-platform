@@ -29,9 +29,44 @@ describe('ProcessingStatusPanel', () => {
     expect(stepState('Ingestion and upload')).toBe('Complete');
     expect(stepState('Validation and preprocessing')).toBe('Complete');
     expect(stepState('Transcription and diarization')).toBe('Complete');
+    // Phase 3A: audio quality reports its real state (pending until assessed).
+    expect(stepState('Audio quality analysis')).toBe('Pending');
     // Steps of later phases stay honest.
-    expect(stepState('Audio quality analysis')).toBe('Not available yet');
     expect(stepState('Reporting')).toBe('Not available yet');
+  });
+
+  it('reports the audio quality analysis step from the A1 assessment state', () => {
+    const { rerender } = render(
+      <ProcessingStatusPanel
+        run={run('created')}
+        uploaded
+        processing="completed"
+        audioQuality="running"
+      />,
+    );
+    expect(stepState('Audio quality analysis')).toBe('In progress');
+    rerender(
+      <ProcessingStatusPanel
+        run={run('created')}
+        uploaded
+        processing="completed"
+        audioQuality="completed"
+      />,
+    );
+    expect(stepState('Audio quality analysis')).toBe('Complete');
+    // ADR-0025 as amended by ADR-0044: wording for an assessed, not yet transcribed run.
+    expect(
+      screen.getByText(/audio assessed; transcription has not been started/i),
+    ).toBeInTheDocument();
+    rerender(
+      <ProcessingStatusPanel
+        run={run('created')}
+        uploaded
+        processing="completed"
+        audioQuality="failed"
+      />,
+    );
+    expect(stepState('Audio quality analysis')).toBe('Failed');
   });
 
   it('shows in-progress and failed states', () => {

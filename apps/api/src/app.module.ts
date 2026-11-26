@@ -7,6 +7,7 @@ import { ProcessingModule } from './processing/processing.module';
 import { QueueModule } from './queue/queue.module';
 import { RecordingsModule } from './recordings/recordings.module';
 import { RunsModule } from './runs/runs.module';
+import { AudioQualityModule } from './audio-quality/audio-quality.module';
 import { StorageModule } from './storage/storage.module';
 import { TranscriptsModule } from './transcripts/transcripts.module';
 
@@ -38,6 +39,7 @@ export class AppModule {
         RecordingsModule,
         ProcessingModule,
         RunsModule,
+        AudioQualityModule,
         TranscriptsModule,
       ],
     };

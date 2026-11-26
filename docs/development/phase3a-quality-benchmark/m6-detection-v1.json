@@ -1,0 +1,2682 @@
+{
+ "ruleVersion": "a1-rules-1.0",
+ "note": "Real preprocess + measure tasks (production image, 2 CPUs / 768 MB) and the real A1 engine; synthetic corpus only.",
+ "summary": {
+  "clipping@any": {
+   "positives": 24,
+   "tp": 24,
+   "recall": 1,
+   "fp": 0,
+   "precision": 1
+  },
+  "clipping@medium+": {
+   "positives": 24,
+   "tp": 24,
+   "recall": 1,
+   "fp": 0,
+   "precision": 1
+  },
+  "low_level@any": {
+   "positives": 24,
+   "tp": 24,
+   "recall": 1,
+   "fp": 0,
+   "precision": 1
+  },
+  "low_level@medium+": {
+   "positives": 24,
+   "tp": 24,
+   "recall": 1,
+   "fp": 0,
+   "precision": 1
+  },
+  "narrowband@any": {
+   "positives": 24,
+   "tp": 24,
+   "recall": 1,
+   "fp": 0,
+   "precision": 1
+  },
+  "narrowband@medium+": {
+   "positives": 24,
+   "tp": 12,
+   "recall": 0.5,
+   "fp": 0,
+   "precision": 1
+  },
+  "dropout@any": {
+   "positives": 12,
+   "tp": 12,
+   "recall": 1,
+   "fp": 0,
+   "precision": 1
+  },
+  "dropout@medium+": {
+   "positives": 12,
+   "tp": 0,
+   "recall": 0,
+   "fp": 0,
+   "precision": null
+  }
+ },
+ "byCondition": {
+  "clean": {
+   "good": 12
+  },
+  "clip_moderate": {
+   "acceptable_with_warnings": 12
+  },
+  "clip_heavy": {
+   "poor": 12
+  },
+  "low_30": {
+   "acceptable_with_warnings": 12
+  },
+  "low_45": {
+   "poor": 12
+  },
+  "narrow_5500": {
+   "good": 12
+  },
+  "narrow_3400": {
+   "acceptable_with_warnings": 12
+  },
+  "dropout_5x300ms": {
+   "good": 12
+  }
+ },
+ "rows": [
+  {
+   "id": "english-s0-clean",
+   "language": "english",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -19.102,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.906,
+    "speechRatio": 0.594212
+   }
+  },
+  {
+   "id": "english-s0-clip_moderate",
+   "language": "english",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.029549548,
+    "activeSpeechLevelDbfs": -8.417,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 49.552,
+    "speechRatio": 0.590793
+   }
+  },
+  {
+   "id": "english-s0-clip_heavy",
+   "language": "english",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.16685798,
+    "activeSpeechLevelDbfs": -3.947,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 44.468,
+    "speechRatio": 0.588961
+   }
+  },
+  {
+   "id": "english-s0-low_30",
+   "language": "english",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -48.77,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.156,
+    "speechRatio": 0.528636
+   }
+  },
+  {
+   "id": "english-s0-low_45",
+   "language": "english",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 3,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -63.616,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 8.975,
+    "speechRatio": 0.465625
+   }
+  },
+  {
+   "id": "english-s0-narrow_5500",
+   "language": "english",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -19.111,
+    "bandwidthEdgeHz": 5531.25,
+    "snrDb": 52.517,
+    "speechRatio": 0.594578
+   }
+  },
+  {
+   "id": "english-s0-narrow_3400",
+   "language": "english",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.785,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 54.537,
+    "speechRatio": 0.525949
+   }
+  },
+  {
+   "id": "english-s0-dropout_5x300ms",
+   "language": "english",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": 4,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -19.193,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.81,
+    "speechRatio": 0.576139
+   }
+  },
+  {
+   "id": "english-s1-clean",
+   "language": "english",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -19.362,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.627,
+    "speechRatio": 0.619979
+   }
+  },
+  {
+   "id": "english-s1-clip_moderate",
+   "language": "english",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.026845713,
+    "activeSpeechLevelDbfs": -8.578,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 49.399,
+    "speechRatio": 0.640577
+   }
+  },
+  {
+   "id": "english-s1-clip_heavy",
+   "language": "english",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.177645469,
+    "activeSpeechLevelDbfs": -4.148,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 44.272,
+    "speechRatio": 0.644954
+   }
+  },
+  {
+   "id": "english-s1-low_30",
+   "language": "english",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -49.059,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 49.674,
+    "speechRatio": 0.570675
+   }
+  },
+  {
+   "id": "english-s1-low_45",
+   "language": "english",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 1,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -64.133,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 11.01,
+    "speechRatio": 0.559346
+   }
+  },
+  {
+   "id": "english-s1-narrow_5500",
+   "language": "english",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -19.365,
+    "bandwidthEdgeHz": 5531.25,
+    "snrDb": 52.233,
+    "speechRatio": 0.619464
+   }
+  },
+  {
+   "id": "english-s1-narrow_3400",
+   "language": "english",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -19.057,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 54.375,
+    "speechRatio": 0.567456
+   }
+  },
+  {
+   "id": "english-s1-dropout_5x300ms",
+   "language": "english",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": 4,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -19.39,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.599,
+    "speechRatio": 0.603115
+   }
+  },
+  {
+   "id": "english-s2-clean",
+   "language": "english",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -19.744,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.232,
+    "speechRatio": 0.648073
+   }
+  },
+  {
+   "id": "english-s2-clip_moderate",
+   "language": "english",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.025013473,
+    "activeSpeechLevelDbfs": -8.745,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 49.188,
+    "speechRatio": 0.647804
+   }
+  },
+  {
+   "id": "english-s2-clip_heavy",
+   "language": "english",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 1,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.181853779,
+    "activeSpeechLevelDbfs": -4.109,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 17.187,
+    "speechRatio": 0.651846
+   }
+  },
+  {
+   "id": "english-s2-low_30",
+   "language": "english",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -49.127,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 49.244,
+    "speechRatio": 0.524252
+   }
+  },
+  {
+   "id": "english-s2-low_45",
+   "language": "english",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 3,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -64.098,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 8.61,
+    "speechRatio": 0.497979
+   }
+  },
+  {
+   "id": "english-s2-narrow_5500",
+   "language": "english",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -19.821,
+    "bandwidthEdgeHz": 5531.25,
+    "snrDb": 51.717,
+    "speechRatio": 0.645244
+   }
+  },
+  {
+   "id": "english-s2-narrow_3400",
+   "language": "english",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -19.105,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 54.082,
+    "speechRatio": 0.519402
+   }
+  },
+  {
+   "id": "english-s2-dropout_5x300ms",
+   "language": "english",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": 5,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -19.868,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.108,
+    "speechRatio": 0.641741
+   }
+  },
+  {
+   "id": "english-s3-clean",
+   "language": "english",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -20.032,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 49.908,
+    "speechRatio": 0.608701
+   }
+  },
+  {
+   "id": "english-s3-clip_moderate",
+   "language": "english",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.023437899,
+    "activeSpeechLevelDbfs": -9.133,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 48.781,
+    "speechRatio": 0.61827
+   }
+  },
+  {
+   "id": "english-s3-clip_heavy",
+   "language": "english",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 2,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.149184263,
+    "activeSpeechLevelDbfs": -4.495,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 12.282,
+    "speechRatio": 0.590712
+   }
+  },
+  {
+   "id": "english-s3-low_30",
+   "language": "english",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 2,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -48.835,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 49.366,
+    "speechRatio": 0.388364
+   }
+  },
+  {
+   "id": "english-s3-low_45",
+   "language": "english",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 3,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -63.854,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 6.732,
+    "speechRatio": 0.351365
+   }
+  },
+  {
+   "id": "english-s3-narrow_5500",
+   "language": "english",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -20.108,
+    "bandwidthEdgeHz": 5500,
+    "snrDb": 51.457,
+    "speechRatio": 0.619291
+   }
+  },
+  {
+   "id": "english-s3-narrow_3400",
+   "language": "english",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.827,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 54.056,
+    "speechRatio": 0.385047
+   }
+  },
+  {
+   "id": "english-s3-dropout_5x300ms",
+   "language": "english",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": 4,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -20.064,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 49.858,
+    "speechRatio": 0.592243
+   }
+  },
+  {
+   "id": "hindi-s0-clean",
+   "language": "hindi",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 1
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -17.726,
+    "bandwidthEdgeHz": 7968.75,
+    "snrDb": 52.276,
+    "speechRatio": 0.633382
+   }
+  },
+  {
+   "id": "hindi-s0-clip_moderate",
+   "language": "hindi",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 1
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.042335191,
+    "activeSpeechLevelDbfs": -7.27,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.691,
+    "speechRatio": 0.638068
+   }
+  },
+  {
+   "id": "hindi-s0-clip_heavy",
+   "language": "hindi",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 1
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.230354258,
+    "activeSpeechLevelDbfs": -3.194,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 45.224,
+    "speechRatio": 0.641945
+   }
+  },
+  {
+   "id": "hindi-s0-low_30",
+   "language": "hindi",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 1
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -47.808,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.32,
+    "speechRatio": 0.6455
+   }
+  },
+  {
+   "id": "hindi-s0-low_45",
+   "language": "hindi",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 1
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -62.904,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": null,
+    "speechRatio": 0.653741
+   }
+  },
+  {
+   "id": "hindi-s0-narrow_5500",
+   "language": "hindi",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 1
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -17.733,
+    "bandwidthEdgeHz": 5531.25,
+    "snrDb": 53.89,
+    "speechRatio": 0.634028
+   }
+  },
+  {
+   "id": "hindi-s0-narrow_3400",
+   "language": "hindi",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 1
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -17.747,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 55.83,
+    "speechRatio": 0.634998
+   }
+  },
+  {
+   "id": "hindi-s0-dropout_5x300ms",
+   "language": "hindi",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 1
+   },
+   "dropoutRegionsMatched": 4,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -17.803,
+    "bandwidthEdgeHz": 7968.75,
+    "snrDb": 52.195,
+    "speechRatio": 0.625626
+   }
+  },
+  {
+   "id": "hindi-s1-clean",
+   "language": "hindi",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -17.669,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 52.358,
+    "speechRatio": 0.479838
+   }
+  },
+  {
+   "id": "hindi-s1-clip_moderate",
+   "language": "hindi",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.032935741,
+    "activeSpeechLevelDbfs": -7.116,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.869,
+    "speechRatio": 0.479077
+   }
+  },
+  {
+   "id": "hindi-s1-clip_heavy",
+   "language": "hindi",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.17786029,
+    "activeSpeechLevelDbfs": -3.084,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 45.359,
+    "speechRatio": 0.478316
+   }
+  },
+  {
+   "id": "hindi-s1-low_30",
+   "language": "hindi",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -47.711,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.417,
+    "speechRatio": 0.484403
+   }
+  },
+  {
+   "id": "hindi-s1-low_45",
+   "language": "hindi",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 1,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -62.841,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 18.576,
+    "speechRatio": 0.478443
+   }
+  },
+  {
+   "id": "hindi-s1-narrow_5500",
+   "language": "hindi",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -17.672,
+    "bandwidthEdgeHz": 5531.25,
+    "snrDb": 53.989,
+    "speechRatio": 0.479838
+   }
+  },
+  {
+   "id": "hindi-s1-narrow_3400",
+   "language": "hindi",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -17.686,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 55.821,
+    "speechRatio": 0.480345
+   }
+  },
+  {
+   "id": "hindi-s1-dropout_5x300ms",
+   "language": "hindi",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": 4,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -17.781,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 52.247,
+    "speechRatio": 0.478316
+   }
+  },
+  {
+   "id": "hindi-s2-clean",
+   "language": "hindi",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.035,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.985,
+    "speechRatio": 0.532943
+   }
+  },
+  {
+   "id": "hindi-s2-clip_moderate",
+   "language": "hindi",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.031652447,
+    "activeSpeechLevelDbfs": -7.489,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.49,
+    "speechRatio": 0.533815
+   }
+  },
+  {
+   "id": "hindi-s2-clip_heavy",
+   "language": "hindi",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.185430159,
+    "activeSpeechLevelDbfs": -3.354,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 45.082,
+    "speechRatio": 0.53369
+   }
+  },
+  {
+   "id": "hindi-s2-low_30",
+   "language": "hindi",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -48.07,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.058,
+    "speechRatio": 0.537178
+   }
+  },
+  {
+   "id": "hindi-s2-low_45",
+   "language": "hindi",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 1,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -63.229,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 14.233,
+    "speechRatio": 0.527587
+   }
+  },
+  {
+   "id": "hindi-s2-narrow_5500",
+   "language": "hindi",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.037,
+    "bandwidthEdgeHz": 5531.25,
+    "snrDb": 53.586,
+    "speechRatio": 0.532943
+   }
+  },
+  {
+   "id": "hindi-s2-narrow_3400",
+   "language": "hindi",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.045,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 55.541,
+    "speechRatio": 0.532694
+   }
+  },
+  {
+   "id": "hindi-s2-dropout_5x300ms",
+   "language": "hindi",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": 3,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.095,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.924,
+    "speechRatio": 0.523353
+   }
+  },
+  {
+   "id": "hindi-s3-clean",
+   "language": "hindi",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.208,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.809,
+    "speechRatio": 0.560774
+   }
+  },
+  {
+   "id": "hindi-s3-clip_moderate",
+   "language": "hindi",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.032317223,
+    "activeSpeechLevelDbfs": -7.664,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.313,
+    "speechRatio": 0.559933
+   }
+  },
+  {
+   "id": "hindi-s3-clip_heavy",
+   "language": "hindi",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.188451563,
+    "activeSpeechLevelDbfs": -3.423,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 45.011,
+    "speechRatio": 0.564419
+   }
+  },
+  {
+   "id": "hindi-s3-low_30",
+   "language": "hindi",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -48.26,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.868,
+    "speechRatio": 0.567503
+   }
+  },
+  {
+   "id": "hindi-s3-low_45",
+   "language": "hindi",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 1,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -63.415,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 13.362,
+    "speechRatio": 0.560634
+   }
+  },
+  {
+   "id": "hindi-s3-narrow_5500",
+   "language": "hindi",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.207,
+    "bandwidthEdgeHz": 5531.25,
+    "snrDb": 53.419,
+    "speechRatio": 0.560353
+   }
+  },
+  {
+   "id": "hindi-s3-narrow_3400",
+   "language": "hindi",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.215,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 55.279,
+    "speechRatio": 0.559933
+   }
+  },
+  {
+   "id": "hindi-s3-dropout_5x300ms",
+   "language": "hindi",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": 3,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.3,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.718,
+    "speechRatio": 0.557269
+   }
+  },
+  {
+   "id": "hinglish-s0-clean",
+   "language": "hinglish",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.417,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.608,
+    "speechRatio": 0.572271
+   }
+  },
+  {
+   "id": "hinglish-s0-clip_moderate",
+   "language": "hinglish",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.031442746,
+    "activeSpeechLevelDbfs": -7.794,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.189,
+    "speechRatio": 0.571869
+   }
+  },
+  {
+   "id": "hinglish-s0-clip_heavy",
+   "language": "hinglish",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.185303533,
+    "activeSpeechLevelDbfs": -3.604,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 44.821,
+    "speechRatio": 0.575892
+   }
+  },
+  {
+   "id": "hinglish-s0-low_30",
+   "language": "hinglish",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -48.483,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.645,
+    "speechRatio": 0.574551
+   }
+  },
+  {
+   "id": "hinglish-s0-low_45",
+   "language": "hinglish",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 1,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -63.566,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 12.543,
+    "speechRatio": 0.559265
+   }
+  },
+  {
+   "id": "hinglish-s0-narrow_5500",
+   "language": "hinglish",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.423,
+    "bandwidthEdgeHz": 5531.25,
+    "snrDb": 53.215,
+    "speechRatio": 0.572674
+   }
+  },
+  {
+   "id": "hinglish-s0-narrow_3400",
+   "language": "hinglish",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.44,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 55.115,
+    "speechRatio": 0.573612
+   }
+  },
+  {
+   "id": "hinglish-s0-dropout_5x300ms",
+   "language": "hinglish",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": 2,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.529,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.499,
+    "speechRatio": 0.567981
+   }
+  },
+  {
+   "id": "hinglish-s1-clean",
+   "language": "hinglish",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.142,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.893,
+    "speechRatio": 0.548242
+   }
+  },
+  {
+   "id": "hinglish-s1-clip_moderate",
+   "language": "hinglish",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.032313318,
+    "activeSpeechLevelDbfs": -7.618,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.377,
+    "speechRatio": 0.546959
+   }
+  },
+  {
+   "id": "hinglish-s1-clip_heavy",
+   "language": "hinglish",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.182717475,
+    "activeSpeechLevelDbfs": -3.437,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 45.015,
+    "speechRatio": 0.542853
+   }
+  },
+  {
+   "id": "hinglish-s1-low_30",
+   "language": "hinglish",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -48.157,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.971,
+    "speechRatio": 0.547857
+   }
+  },
+  {
+   "id": "hinglish-s1-low_45",
+   "language": "hinglish",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 1,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -63.265,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 13.736,
+    "speechRatio": 0.528227
+   }
+  },
+  {
+   "id": "hinglish-s1-narrow_5500",
+   "language": "hinglish",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.142,
+    "bandwidthEdgeHz": 5531.25,
+    "snrDb": 53.501,
+    "speechRatio": 0.547857
+   }
+  },
+  {
+   "id": "hinglish-s1-narrow_3400",
+   "language": "hinglish",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.143,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 55.487,
+    "speechRatio": 0.546318
+   }
+  },
+  {
+   "id": "hinglish-s1-dropout_5x300ms",
+   "language": "hinglish",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": 4,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.292,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.743,
+    "speechRatio": 0.544521
+   }
+  },
+  {
+   "id": "hinglish-s2-clean",
+   "language": "hinglish",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.153,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.847,
+    "speechRatio": 0.589733
+   }
+  },
+  {
+   "id": "hinglish-s2-clip_moderate",
+   "language": "hinglish",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.035570896,
+    "activeSpeechLevelDbfs": -7.573,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.385,
+    "speechRatio": 0.589865
+   }
+  },
+  {
+   "id": "hinglish-s2-clip_heavy",
+   "language": "hinglish",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.198630905,
+    "activeSpeechLevelDbfs": -3.431,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 44.978,
+    "speechRatio": 0.589865
+   }
+  },
+  {
+   "id": "hinglish-s2-low_30",
+   "language": "hinglish",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -48.174,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.752,
+    "speechRatio": 0.590129
+   }
+  },
+  {
+   "id": "hinglish-s2-low_45",
+   "language": "hinglish",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 1,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -63.235,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 17.667,
+    "speechRatio": 0.58617
+   }
+  },
+  {
+   "id": "hinglish-s2-narrow_5500",
+   "language": "hinglish",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.16,
+    "bandwidthEdgeHz": 5531.25,
+    "snrDb": 53.472,
+    "speechRatio": 0.590261
+   }
+  },
+  {
+   "id": "hinglish-s2-narrow_3400",
+   "language": "hinglish",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.176,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 55.373,
+    "speechRatio": 0.590393
+   }
+  },
+  {
+   "id": "hinglish-s2-dropout_5x300ms",
+   "language": "hinglish",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": 5,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.189,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.815,
+    "speechRatio": 0.580892
+   }
+  },
+  {
+   "id": "hinglish-s3-clean",
+   "language": "hinglish",
+   "condition": "clean",
+   "truth": null,
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.057,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.952,
+    "speechRatio": 0.599762
+   }
+  },
+  {
+   "id": "hinglish-s3-clip_moderate",
+   "language": "hinglish",
+   "condition": "clip_moderate",
+   "truth": "clipping",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 2,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.037104942,
+    "activeSpeechLevelDbfs": -7.486,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 50.484,
+    "speechRatio": 0.598839
+   }
+  },
+  {
+   "id": "hinglish-s3-clip_heavy",
+   "language": "hinglish",
+   "condition": "clip_heavy",
+   "truth": "clipping",
+   "overall": "poor",
+   "confidence": "high",
+   "maxSeverity": {
+    "clipping": 3,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 1,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0.205012866,
+    "activeSpeechLevelDbfs": -3.434,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 18.318,
+    "speechRatio": 0.596463
+   }
+  },
+  {
+   "id": "hinglish-s3-low_30",
+   "language": "hinglish",
+   "condition": "low_30",
+   "truth": "low_level",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 2,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 1,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -48.116,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.012,
+    "speechRatio": 0.608076
+   }
+  },
+  {
+   "id": "hinglish-s3-low_45",
+   "language": "hinglish",
+   "condition": "low_45",
+   "truth": "low_level",
+   "overall": "poor",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 3,
+    "narrowband": 0,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 3,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -63.174,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 24.207,
+    "speechRatio": 0.603853
+   }
+  },
+  {
+   "id": "hinglish-s3-narrow_5500",
+   "language": "hinglish",
+   "condition": "narrow_5500",
+   "truth": "narrowband",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 1,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.066,
+    "bandwidthEdgeHz": 5531.25,
+    "snrDb": 53.561,
+    "speechRatio": 0.600686
+   }
+  },
+  {
+   "id": "hinglish-s3-narrow_3400",
+   "language": "hinglish",
+   "condition": "narrow_3400",
+   "truth": "narrowband",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 2,
+    "dropout": 0,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": null,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.075,
+    "bandwidthEdgeHz": 3437.5,
+    "snrDb": 55.589,
+    "speechRatio": 0.60029
+   }
+  },
+  {
+   "id": "hinglish-s3-dropout_5x300ms",
+   "language": "hinglish",
+   "condition": "dropout_5x300ms",
+   "truth": "dropout",
+   "overall": "good",
+   "confidence": "medium",
+   "maxSeverity": {
+    "clipping": 0,
+    "low_level": 0,
+    "narrowband": 0,
+    "dropout": 1,
+    "noise": 0,
+    "silence": 0,
+    "low_speech_presence": 0,
+    "level_inconsistency": 0,
+    "fragmented_speech": 0
+   },
+   "dropoutRegionsMatched": 5,
+   "quantities": {
+    "clippedRatio": 0,
+    "activeSpeechLevelDbfs": -18.174,
+    "bandwidthEdgeHz": 8000,
+    "snrDb": 51.835,
+    "speechRatio": 0.596331
+   }
+  }
+ ]
+}

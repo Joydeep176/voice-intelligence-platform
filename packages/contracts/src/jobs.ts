@@ -15,6 +15,10 @@ export const QueueName = {
   RunTranscription: 'run-transcription',
   /** Phase 2C: repeatable stuck-run sweeper. */
   RunSweep: 'run-sweep',
+  /** Phase 3A: speech-aware `measure` task of one measurement set (ADR-0045); jobId = measure-<setId>. */
+  AudioMeasure: 'audio-measure',
+  /** Phase 3A: one A1 Audio Quality assessment of a run (ADR-0044); jobId = aq-<runId>-<attempt>. */
+  RunAudioQuality: 'run-audio-quality',
 } as const;
 
 /**
@@ -25,6 +29,8 @@ export const JobIds = {
   probe: (recordingId: string) => `probe-${recordingId}`,
   preprocess: (preprocessingId: string) => preprocessingId,
   run: (runId: string) => runId,
+  measure: (measurementSetId: string) => `measure-${measurementSetId}`,
+  audioQuality: (runId: string, attempt: number) => `aq-${runId}-${attempt}`,
 } as const;
 
 /** Payloads carry IDs only (backend rule). */
@@ -83,3 +89,24 @@ export const RunTranscriptionJob = z.object({
   runId: Uuid,
 });
 export type RunTranscriptionJob = z.infer<typeof RunTranscriptionJob>;
+
+/** `audio-measure` payload (IDs only, ADR-0045); task bookkeeping is written back by the worker. */
+export const AudioMeasureJob = z.object({
+  workspaceId: Uuid,
+  measurementSetId: Uuid,
+  taskId: Uuid.optional(),
+  resubmit: z.boolean().optional(),
+  attempt: z.number().int().min(0).optional(),
+  submittedAt: z.number().int().min(0).optional(),
+  deadlineAt: z.number().int().min(0).optional(),
+  runningSince: z.number().int().min(0).optional(),
+});
+export type AudioMeasureJob = z.infer<typeof AudioMeasureJob>;
+
+/** `run-audio-quality` payload (IDs only, ADR-0044). `attempt` is the A1 stage attempt it executes. */
+export const RunAudioQualityJob = z.object({
+  workspaceId: Uuid,
+  runId: Uuid,
+  attempt: z.number().int().min(1),
+});
+export type RunAudioQualityJob = z.infer<typeof RunAudioQualityJob>;

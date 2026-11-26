@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "vad": {
+    "model": "silero_vad_v6.2.3.onnx",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "settings": {
+      "threshold": 0.4,
+      "minSilenceMs": 300,
+      "minSpeechMs": 250,
+      "paddingMs": 200
+    }
+  },
+  "record": {
+    "measurementsSchemaVersion": 2,
+    "source": "canonical",
+    "quantities": {
+      "speechMs": {
+        "value": 54000,
+        "unit": "ms",
+        "kind": "derived",
+        "method": "speech frames"
+      },
+      "snrDb": {
+        "value": 12.4,
+        "unit": "dB",
+        "kind": "estimate",
+        "method": "VAD split"
+      },
+      "bandwidthEdgeHz": {
+        "value": 8000,
+        "unit": "Hz",
+        "kind": "estimate",
+        "method": "LTAS edge"
+      }
+    },
+    "unavailable": [
+      {
+        "name": "levelSpreadDb",
+        "reason": "too_few_speech_blocks"
+      }
+    ]
+  },
+  "series": {
+    "schemaVersion": 1,
+    "blockMs": 1000,
+    "speechMs": [600, 0, 1000],
+    "snrDb": [12.1, null, 13.0]
+  },
+  "warnings": []
+}

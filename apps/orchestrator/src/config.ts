@@ -89,6 +89,22 @@ const EnvSchema = z.object({
   RUN_SWEEP_INTERVAL_MS: z.coerce.number().int().min(50).default(60_000),
   /** A run row untouched for longer than this with no live job is stuck. */
   RUN_STUCK_AFTER_MS: z.coerce.number().int().min(100).default(600_000),
+  /** Phase 3A A1 Audio Quality (ADR-0044). Queue bounds per ADR-0010. */
+  QUEUE_AUDIO_QUALITY_CONCURRENCY: z.coerce.number().int().min(1).max(4).default(1),
+  QUEUE_AUDIO_QUALITY_ATTEMPTS: z.coerce.number().int().min(1).max(10).default(3),
+  QUEUE_AUDIO_QUALITY_BACKOFF_MS: z.coerce.number().int().min(10).max(600_000).default(5000),
+  /** How often the A1 trigger sweep looks for runs to assess (lifecycle L2 / L3). */
+  AUDIO_QUALITY_SWEEP_INTERVAL_MS: z.coerce.number().int().min(50).default(15_000),
+  AUDIO_QUALITY_SWEEP_BATCH: z.coerce.number().int().min(1).max(500).default(50),
+  /** Cap on A1 attempts per run (automatic re-assessments and user retries together). */
+  AUDIO_QUALITY_MAX_ATTEMPTS: z.coerce.number().int().min(1).max(20).default(5),
+  /** A running A1 stage untouched for longer than this has lost its job. */
+  AUDIO_QUALITY_STUCK_AFTER_MS: z.coerce.number().int().min(100).default(120_000),
+  /**
+   * Tier 1 (speech-aware measure task, ADR-0045). If the audio service does not offer `measure`,
+   * the measurement set fails permanently and A1 falls back to Tier 0 with low confidence.
+   */
+  AUDIO_QUALITY_TIER1: z.enum(['on', 'off']).default('on'),
 });
 
 export interface OrchestratorConfig {
@@ -106,6 +122,22 @@ export interface OrchestratorConfig {
   audioService: { url: string; timeoutMs: number; token: string | undefined };
   processing: ProcessingConfig;
   runs: RunsConfig;
+  audioQuality: AudioQualityConfig;
+}
+
+/** A1 Audio Quality bounds (ADR-0044, ADR-0010). Rule thresholds live in the agent's rule config. */
+export interface AudioQualityConfig {
+  concurrency: number;
+  attempts: number;
+  backoffMs: number;
+  sweepIntervalMs: number;
+  sweepBatch: number;
+  maxAttempts: number;
+  stuckAfterMs: number;
+  tier1Enabled: boolean;
+  stalledIntervalMs: number;
+  maxStalledCount: number;
+  lockDurationMs: number;
 }
 
 /** Bounds and provider keys of the transcription run coordinator (D-2C-01, ADR-0010). */
@@ -263,6 +295,19 @@ export function loadConfig(env: NodeJS.ProcessEnv): OrchestratorConfig {
       sweepIntervalMs: e.RUN_SWEEP_INTERVAL_MS,
       sweepBatch: e.PROCESSING_SWEEP_BATCH,
       stuckAfterMs: e.RUN_STUCK_AFTER_MS,
+      stalledIntervalMs: e.QUEUE_STALLED_INTERVAL_MS,
+      maxStalledCount: e.QUEUE_MAX_STALLED_COUNT,
+      lockDurationMs: e.QUEUE_LOCK_DURATION_MS,
+    },
+    audioQuality: {
+      concurrency: e.QUEUE_AUDIO_QUALITY_CONCURRENCY,
+      attempts: e.QUEUE_AUDIO_QUALITY_ATTEMPTS,
+      backoffMs: e.QUEUE_AUDIO_QUALITY_BACKOFF_MS,
+      sweepIntervalMs: e.AUDIO_QUALITY_SWEEP_INTERVAL_MS,
+      sweepBatch: e.AUDIO_QUALITY_SWEEP_BATCH,
+      maxAttempts: e.AUDIO_QUALITY_MAX_ATTEMPTS,
+      stuckAfterMs: e.AUDIO_QUALITY_STUCK_AFTER_MS,
+      tier1Enabled: e.AUDIO_QUALITY_TIER1 === 'on',
       stalledIntervalMs: e.QUEUE_STALLED_INTERVAL_MS,
       maxStalledCount: e.QUEUE_MAX_STALLED_COUNT,
       lockDurationMs: e.QUEUE_LOCK_DURATION_MS,

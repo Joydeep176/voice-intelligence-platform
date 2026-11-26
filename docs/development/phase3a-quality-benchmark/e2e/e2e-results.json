@@ -1,0 +1,508 @@
+{
+ "startedAt": "2026-11-26T08:13:02.614Z",
+ "clips": {
+  "clean-en.wav": {
+   "label": "clean-en",
+   "runStatusBefore": "created",
+   "secondsFromProcessedToAssessment": 4,
+   "state": "completed",
+   "overall": "good",
+   "confidence": "medium",
+   "tier1": "available",
+   "provisional": true,
+   "transcription": "suitable",
+   "transcriptionReasons": [],
+   "diarization": "suitable",
+   "flagCounts": {},
+   "rangedFlags": 0,
+   "notAssessed": [
+    "distortion",
+    "reverberation"
+   ],
+   "recommendations": [],
+   "measurementSet": {
+    "status": "succeeded",
+    "error": null
+   },
+   "ui": {
+    "classShown": true,
+    "provisionalShown": true,
+    "stepComplete": true,
+    "timelineBars": 0,
+    "createdRunWording": true,
+    "timelineMatchesApi": true
+   },
+   "runStatusAfter": "created",
+   "axe": [],
+   "otherWorkspaceStatus": 404
+  },
+  "clean-hi.wav": {
+   "label": "clean-hi",
+   "runStatusBefore": "created",
+   "secondsFromProcessedToAssessment": 6,
+   "state": "completed",
+   "overall": "good",
+   "confidence": "medium",
+   "tier1": "available",
+   "provisional": true,
+   "transcription": "suitable",
+   "transcriptionReasons": [],
+   "diarization": "suitable",
+   "flagCounts": {
+    "fragmented_speech": {
+     "low": 1
+    }
+   },
+   "rangedFlags": 0,
+   "notAssessed": [
+    "distortion",
+    "reverberation"
+   ],
+   "recommendations": [],
+   "measurementSet": {
+    "status": "succeeded",
+    "error": null
+   },
+   "ui": {
+    "classShown": true,
+    "provisionalShown": true,
+    "stepComplete": true,
+    "timelineBars": 0,
+    "createdRunWording": true,
+    "timelineMatchesApi": true
+   },
+   "runStatusAfter": "created",
+   "otherWorkspaceStatus": 404
+  },
+  "clean-hinglish.wav": {
+   "label": "clean-hinglish",
+   "runStatusBefore": "created",
+   "secondsFromProcessedToAssessment": 6,
+   "state": "completed",
+   "overall": "good",
+   "confidence": "medium",
+   "tier1": "available",
+   "provisional": true,
+   "transcription": "suitable",
+   "transcriptionReasons": [],
+   "diarization": "suitable",
+   "flagCounts": {},
+   "rangedFlags": 0,
+   "notAssessed": [
+    "distortion",
+    "reverberation"
+   ],
+   "recommendations": [],
+   "measurementSet": {
+    "status": "succeeded",
+    "error": null
+   },
+   "ui": {
+    "classShown": true,
+    "provisionalShown": true,
+    "stepComplete": true,
+    "timelineBars": 0,
+    "createdRunWording": true,
+    "timelineMatchesApi": true
+   },
+   "runStatusAfter": "created",
+   "otherWorkspaceStatus": 404
+  },
+  "clipped-en.wav": {
+   "label": "clipped-en",
+   "runStatusBefore": "created",
+   "secondsFromProcessedToAssessment": 8,
+   "state": "completed",
+   "overall": "poor",
+   "confidence": "high",
+   "tier1": "available",
+   "provisional": true,
+   "transcription": "unreliable",
+   "transcriptionReasons": [
+    "clipping"
+   ],
+   "diarization": "suitable",
+   "flagCounts": {
+    "clipping": {
+     "high": 31
+    }
+   },
+   "rangedFlags": 30,
+   "notAssessed": [
+    "distortion",
+    "reverberation"
+   ],
+   "recommendations": [
+    "lower_input_gain"
+   ],
+   "measurementSet": {
+    "status": "succeeded",
+    "error": null
+   },
+   "ui": {
+    "classShown": true,
+    "provisionalShown": true,
+    "stepComplete": true,
+    "timelineBars": 30,
+    "createdRunWording": true,
+    "timelineMatchesApi": true
+   },
+   "runStatusAfter": "created",
+   "otherWorkspaceStatus": 404
+  },
+  "fragmented-16x1s.wav": {
+   "label": "fragmented-16x1s",
+   "runStatusBefore": "created",
+   "secondsFromProcessedToAssessment": 4,
+   "state": "completed",
+   "overall": "acceptable_with_warnings",
+   "confidence": "high",
+   "tier1": "available",
+   "provisional": true,
+   "transcription": "suitable",
+   "transcriptionReasons": [
+    "deadline_risk"
+   ],
+   "diarization": "suitable",
+   "flagCounts": {
+    "dropout": {
+     "low": 15
+    },
+    "fragmented_speech": {
+     "medium": 1
+    },
+    "noise": {
+     "low": 1
+    }
+   },
+   "rangedFlags": 15,
+   "notAssessed": [
+    "distortion",
+    "reverberation"
+   ],
+   "recommendations": [
+    "expect_slower_transcription"
+   ],
+   "measurementSet": {
+    "status": "succeeded",
+    "error": null
+   },
+   "ui": {
+    "classShown": true,
+    "provisionalShown": true,
+    "stepComplete": true,
+    "timelineBars": 15,
+    "createdRunWording": true,
+    "timelineMatchesApi": true
+   },
+   "runStatusAfter": "created",
+   "otherWorkspaceStatus": 404
+  },
+  "low-level-en.wav": {
+   "label": "low-level-en",
+   "runStatusBefore": "created",
+   "secondsFromProcessedToAssessment": 8,
+   "state": "completed",
+   "overall": "poor",
+   "confidence": "high",
+   "tier1": "available",
+   "provisional": true,
+   "transcription": "limited",
+   "transcriptionReasons": [
+    "low_level",
+    "noise"
+   ],
+   "diarization": "limited",
+   "flagCounts": {
+    "silence": {
+     "low": 2,
+     "high": 1
+    },
+    "noise": {
+     "medium": 2,
+     "low": 1
+    },
+    "low_level": {
+     "medium": 1
+    }
+   },
+   "rangedFlags": 4,
+   "notAssessed": [
+    "distortion",
+    "reverberation"
+   ],
+   "recommendations": [
+    "check_long_silences",
+    "move_closer_or_raise_gain",
+    "reduce_background_noise"
+   ],
+   "measurementSet": {
+    "status": "succeeded",
+    "error": null
+   },
+   "ui": {
+    "classShown": true,
+    "provisionalShown": true,
+    "stepComplete": true,
+    "timelineBars": 4,
+    "createdRunWording": true,
+    "timelineMatchesApi": true
+   },
+   "runStatusAfter": "created",
+   "otherWorkspaceStatus": 404
+  },
+  "narrowband-en.wav": {
+   "label": "narrowband-en",
+   "runStatusBefore": "created",
+   "secondsFromProcessedToAssessment": 6,
+   "state": "completed",
+   "overall": "acceptable_with_warnings",
+   "confidence": "medium",
+   "tier1": "available",
+   "provisional": true,
+   "transcription": "limited",
+   "transcriptionReasons": [
+    "narrowband"
+   ],
+   "diarization": "limited",
+   "flagCounts": {
+    "narrowband": {
+     "medium": 1
+    },
+    "noise": {
+     "low": 1
+    }
+   },
+   "rangedFlags": 0,
+   "notAssessed": [
+    "distortion",
+    "reverberation"
+   ],
+   "recommendations": [
+    "use_wideband_or_lossless_format"
+   ],
+   "measurementSet": {
+    "status": "succeeded",
+    "error": null
+   },
+   "ui": {
+    "classShown": true,
+    "provisionalShown": true,
+    "stepComplete": true,
+    "timelineBars": 0,
+    "createdRunWording": true,
+    "timelineMatchesApi": true
+   },
+   "runStatusAfter": "created",
+   "otherWorkspaceStatus": 404
+  },
+  "noise-only-30s.wav": {
+   "label": "noise-only-30s",
+   "runStatusBefore": "created",
+   "secondsFromProcessedToAssessment": 4,
+   "state": "completed",
+   "overall": "insufficient",
+   "confidence": "high",
+   "tier1": "available",
+   "provisional": true,
+   "transcription": "not_assessable",
+   "transcriptionReasons": [
+    "no_usable_speech"
+   ],
+   "diarization": "not_assessable",
+   "flagCounts": {
+    "low_speech_presence": {
+     "high": 1
+    }
+   },
+   "rangedFlags": 0,
+   "notAssessed": [
+    "distortion",
+    "reverberation"
+   ],
+   "recommendations": [
+    "new_recording_recommended",
+    "upload_recording_with_speech"
+   ],
+   "measurementSet": {
+    "status": "succeeded",
+    "error": null
+   },
+   "ui": {
+    "classShown": true,
+    "provisionalShown": true,
+    "stepComplete": true,
+    "timelineBars": 0,
+    "createdRunWording": true,
+    "timelineMatchesApi": true
+   },
+   "runStatusAfter": "created",
+   "otherWorkspaceStatus": 404
+  },
+  "noisy-0db-hi.wav": {
+   "label": "noisy-0db-hi",
+   "runStatusBefore": "created",
+   "secondsFromProcessedToAssessment": 4,
+   "state": "completed",
+   "overall": "poor",
+   "confidence": "medium",
+   "tier1": "available",
+   "provisional": true,
+   "transcription": "unreliable",
+   "transcriptionReasons": [
+    "noise",
+    "language_id_risk"
+   ],
+   "diarization": "unreliable",
+   "flagCounts": {
+    "noise": {
+     "high": 13
+    }
+   },
+   "rangedFlags": 12,
+   "notAssessed": [
+    "distortion",
+    "reverberation"
+   ],
+   "recommendations": [
+    "reduce_background_noise"
+   ],
+   "measurementSet": {
+    "status": "succeeded",
+    "error": null
+   },
+   "ui": {
+    "classShown": true,
+    "provisionalShown": true,
+    "stepComplete": true,
+    "timelineBars": 12,
+    "createdRunWording": true,
+    "timelineMatchesApi": true
+   },
+   "runStatusAfter": "created",
+   "axe": [],
+   "otherWorkspaceStatus": 404
+  },
+  "noisy-5db-en.wav": {
+   "label": "noisy-5db-en",
+   "runStatusBefore": "created",
+   "secondsFromProcessedToAssessment": 6,
+   "state": "completed",
+   "overall": "poor",
+   "confidence": "medium",
+   "tier1": "available",
+   "provisional": true,
+   "transcription": "unreliable",
+   "transcriptionReasons": [
+    "noise",
+    "language_id_risk"
+   ],
+   "diarization": "unreliable",
+   "flagCounts": {
+    "noise": {
+     "high": 10,
+     "medium": 2
+    }
+   },
+   "rangedFlags": 11,
+   "notAssessed": [
+    "distortion",
+    "reverberation"
+   ],
+   "recommendations": [
+    "reduce_background_noise"
+   ],
+   "measurementSet": {
+    "status": "succeeded",
+    "error": null
+   },
+   "ui": {
+    "classShown": true,
+    "provisionalShown": true,
+    "stepComplete": true,
+    "timelineBars": 11,
+    "createdRunWording": true,
+    "timelineMatchesApi": true
+   },
+   "runStatusAfter": "created",
+   "otherWorkspaceStatus": 404
+  },
+  "silence-30s.wav": {
+   "label": "silence-30s",
+   "runStatusBefore": "created",
+   "secondsFromProcessedToAssessment": 4,
+   "state": "completed",
+   "overall": "insufficient",
+   "confidence": "high",
+   "tier1": "available",
+   "provisional": true,
+   "transcription": "not_assessable",
+   "transcriptionReasons": [
+    "no_usable_audio"
+   ],
+   "diarization": "not_assessable",
+   "flagCounts": {
+    "silence": {
+     "low": 1,
+     "high": 1
+    },
+    "low_speech_presence": {
+     "high": 1
+    }
+   },
+   "rangedFlags": 1,
+   "notAssessed": [
+    "distortion",
+    "reverberation"
+   ],
+   "recommendations": [
+    "check_long_silences",
+    "new_recording_recommended",
+    "upload_recording_with_speech"
+   ],
+   "measurementSet": {
+    "status": "succeeded",
+    "error": null
+   },
+   "ui": {
+    "classShown": true,
+    "provisionalShown": true,
+    "stepComplete": true,
+    "timelineBars": 1,
+    "createdRunWording": true,
+    "timelineMatchesApi": true
+   },
+   "runStatusAfter": "created",
+   "axe": [],
+   "otherWorkspaceStatus": 404
+  }
+ },
+ "consoleErrors": [],
+ "transcriptUnchanged": {
+  "referenceRunId": "f8d08080-3d77-4e66-ad56-9d89f3bc8375",
+  "newRunId": "1d40b6c0-fd86-42b9-b425-ea1f7b963408",
+  "newRunStatus": "completed",
+  "segmentsBefore": 17,
+  "segmentsAfter": 17,
+  "identicalSegments": true,
+  "identicalSpeakerPartition": true,
+  "transcriptionStage": [
+   {
+    "node": "transcription",
+    "status": "completed",
+    "startedAt": "2026-11-26T08:15:46.869Z",
+    "finishedAt": "2026-11-26T08:23:09.693Z"
+   },
+   {
+    "node": "diarization",
+    "status": "completed",
+    "startedAt": "2026-11-26T08:23:09.695Z",
+    "finishedAt": "2026-11-26T08:24:00.006Z"
+   }
+  ],
+  "a1State": "completed",
+  "a1Overall": "poor",
+  "a1Tier1": "available"
+ },
+ "finishedAt": "2026-11-26T08:25:33.394Z"
+}

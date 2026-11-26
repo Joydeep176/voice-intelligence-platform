@@ -349,6 +349,9 @@ export async function getMeasurements(
   const conditions: SQL[] = [
     eq(audioMeasurements.workspaceId, workspaceId),
     eq(audioMeasurements.preprocessingId, preprocessingId),
+    // Phase 2B (preprocess) records only: Phase 3A Tier 1 records belong to measurement sets and
+    // must not change the accepted processing snapshot (ADR-0045).
+    isNull(audioMeasurements.measurementSetId),
   ];
   if (options.segmentId === null) conditions.push(isNull(audioMeasurements.segmentId));
   else if (options.segmentId !== undefined)

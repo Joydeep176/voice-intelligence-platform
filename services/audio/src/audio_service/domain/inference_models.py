@@ -56,6 +56,8 @@ CAMPPLUS_EN_VOXCELEB = ModelFile(
 )
 
 STT_MODELS: tuple[ModelFile, ...] = (WHISPER_SMALL_Q5_1, SILERO_VAD_V6_2_3)
+# Phase 3A `measure` (ADR-0045): only the pinned Silero VAD.
+MEASURE_MODELS: tuple[ModelFile, ...] = (SILERO_VAD_V6_2_3,)
 DIARIZATION_MODELS: tuple[ModelFile, ...] = (PYANNOTE_SEGMENTATION_3_0, CAMPPLUS_EN_VOXCELEB)
 
 

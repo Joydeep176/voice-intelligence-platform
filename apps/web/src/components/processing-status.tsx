@@ -1,4 +1,9 @@
-import type { ProcessingState, ProcessingStatus, RecordingStatus } from '@vip/contracts';
+import type {
+  AudioDiagnosticsSnapshot,
+  ProcessingState,
+  ProcessingStatus,
+  RecordingStatus,
+} from '@vip/contracts';
 import { ArrowRight, CheckCircle2, CircleDashed } from 'lucide-react';
 import {
   Card,
@@ -10,10 +15,11 @@ import {
 } from '@/components/ui/card';
 import { formatDateTime } from '@/lib/format';
 import { Link } from '@/lib/router';
+import { DIAGNOSTICS_STEP } from './audio-quality/model';
 import { RunStatusBadge } from './status-badge';
 
-/** Workflow steps (HLD §3). Ingestion, preprocessing (Phase 2B) and transcription with diarization
- * (Phase 2C) report their real state; the steps of later phases are shown as planned. */
+/** Workflow steps (HLD §3). Ingestion, preprocessing (Phase 2B), audio quality analysis (Phase 3A)
+ * and transcription with diarization (Phase 2C) report their real state; later phases are planned. */
 const STEPS = [
   'Ingestion and upload',
   'Validation and preprocessing',
@@ -58,9 +64,11 @@ function stepState(
   uploaded: boolean,
   processing: ProcessingState | null | undefined,
   run: ProcessingStatus | null,
+  audioQuality: AudioDiagnosticsSnapshot['state'] | null | undefined,
 ): StepState | null {
   if (i === 0) return uploaded ? 'Complete' : 'Pending';
   if (i === 1) return processing ? PROCESSING_STEP[processing] : 'Pending';
+  if (i === 2) return audioQuality ? DIAGNOSTICS_STEP[audioQuality] : 'Pending';
   if (i === 3) return run ? RUN_STEP[run.status] : 'Pending';
   return null; // a later phase
 }
@@ -70,12 +78,15 @@ export function ProcessingStatusPanel({
   uploaded,
   recordingId,
   processing,
+  audioQuality,
 }: {
   run: ProcessingStatus | null;
   uploaded: boolean;
   recordingId?: string;
   /** Audio processing state, as reported by the processing card. */
   processing?: ProcessingState | null;
+  /** A1 audio-quality assessment state of the run (Phase 3A). */
+  audioQuality?: AudioDiagnosticsSnapshot['state'] | null;
 }) {
   return (
     <Card>
@@ -83,7 +94,9 @@ export function ProcessingStatusPanel({
         <CardTitle>Processing status</CardTitle>
         <CardDescription>
           {run?.status === 'created'
-            ? 'Stored and recorded. Transcription has not been started.'
+            ? audioQuality === 'completed'
+              ? 'Audio assessed; transcription has not been started.'
+              : 'Stored and recorded. Transcription has not been started.'
             : run
               ? `Last updated ${formatDateTime(run.updatedAt)}`
               : 'A processing run is created once the upload completes.'}
@@ -97,7 +110,7 @@ export function ProcessingStatusPanel({
       <CardContent>
         <ol aria-label="Workflow steps" className="grid gap-2">
           {STEPS.map((step, i) => {
-            const state = stepState(i, uploaded, processing, run);
+            const state = stepState(i, uploaded, processing, run, audioQuality);
             const done = state === 'Complete';
             return (
               <li key={step} className="flex items-center gap-3 text-sm">

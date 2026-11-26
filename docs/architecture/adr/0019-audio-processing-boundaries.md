@@ -1,6 +1,6 @@
 # ADR-0019: Deterministic audio-processing service and agent boundaries
 
-- Status: Accepted
+- Status: Accepted; amended by ADR-0046 (2026-11-26)
 - Date: 2026-11-19
 - Resolves: corrects OD-01 step assignment (amends ADR-0001)
 - Affects: HLD §3–5, AGENT_ARCHITECTURE §1–4, LLD §2–4, DATABASE §2, SRS C-4, FR-2.x, FR-3.1, FR-4.2
@@ -13,3 +13,8 @@
 
 ## Consequences
 The audio service computes objective measurements but makes no quality judgements. The VAD implementation is OD-29 (Open; WebRTC VAD and Silero VAD approved for benchmarking). Parallel execution of A1 and A2: ADR-0021.
+
+## Amendment (2026-11-26, ADR-0046)
+Neither agent writes the other's data, and A1 never reads transcription data. A2 (and A3, A6, A7) may read A1's
+`AudioQualitySummary` / `AudioQualityContext` read-only through `AudioQualityReader`, without waiting for it and
+without deriving uncertainty from it.

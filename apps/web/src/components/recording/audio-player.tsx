@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TimelinePlaceholder } from '@/components/timeline/timeline-placeholder';
+import type { TimelineData } from '@/components/timeline/types';
 import { issuePlaybackUrl } from './playback-url';
 
 type Phase = 'issuing' | 'loading' | 'ready' | 'error';
@@ -31,10 +32,13 @@ export function RecordingPlayback({
   recordingId,
   status,
   durationMs,
+  diagnostics = [],
 }: {
   recordingId: string;
   status: RecordingStatus;
   durationMs: number | null;
+  /** Timestamped A1 flags of the run (Phase 3A); whole-recording flags are not drawn on a track. */
+  diagnostics?: TimelineData['diagnostics'];
 }) {
   const [position, setPosition] = useState(0);
   const [fileDuration, setFileDuration] = useState<number | null>(null);
@@ -49,7 +53,7 @@ export function RecordingPlayback({
         onDuration={setFileDuration}
       />
       <TimelinePlaceholder
-        data={{ durationMs: known, speakers: [], diagnostics: [], uncertainties: [] }}
+        data={{ durationMs: known, speakers: [], diagnostics, uncertainties: [] }}
         positionMs={position * 1000}
       />
     </>

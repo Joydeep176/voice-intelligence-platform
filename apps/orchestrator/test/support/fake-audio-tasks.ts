@@ -73,6 +73,7 @@ export class FakeAudioTasks implements AudioTasks {
     preprocess: [],
     transcribe: [],
     diarize: [],
+    measure: [],
   };
   private readonly byKey = new Map<string, string>();
   private readonly tasks = new Map<

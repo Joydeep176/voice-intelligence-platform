@@ -35,7 +35,7 @@ Users belong to workspaces. Authentication provider deferred (OD-08b). The works
 - C-1: Technology stack per [HLD §2](architecture/HLD.md#2-approved-technology-baseline).
 - C-2: Anthropic Claude API is the primary LLM. **Conflict flagged (2026-11-21):** ADR-0034 does not allow a paid runtime AI API; production LLM inference is OD-47 (Open).
 - C-3: STT and diarization go through provider adapters. Fake adapters until production providers are selected by benchmark (ADR-0012).
-- C-4: Exactly seven product agents: Audio Quality, Transcription (including language identification and diarization), Context Intelligence, Research, Fact Validation, Reporting, QA (ADR-0001). Ingestion and preprocessing (decoding, normalisation, VAD, segmentation) are deterministic and are not agents (ADR-0019).
+- C-4: The seven product agents A1–A7 and their responsibilities are fixed: Audio Quality, Transcription (including language identification and diarization), Context Intelligence, Research, Fact Validation, Reporting, QA (ADR-0001). Ingestion and preprocessing (decoding, normalisation, VAD, segmentation) are deterministic and are not agents (ADR-0019). Additional intelligence capabilities, starting with Phase 3C machinery and environmental sound intelligence, are distinct workflows within the same platform; they share its audio service, storage, contracts, orchestration and observability, and do not take over any A1–A7 responsibility. Whether such a capability is modelled as an additional agent is decided, through an ADR, in its own phase (ADR-0047).
 - C-5: Docker Compose locally; AWS ECS, RDS and S3 in production. **Conflict flagged (2026-11-21):** paid cloud infrastructure is not allowed by ADR-0034; the production deployment target is OD-48 (Open).
 - C-6: Development uses only synthetic or explicitly consented audio (ADR-0004).
 
@@ -64,7 +64,7 @@ Users belong to workspaces. Authentication provider deferred (OD-08b). The works
 - FR-3.2: Problem regions are flagged with timestamps, kind and severity.
 - FR-3.3: Audio diagnostics are a separate data model from transcription uncertainty (FR-4.7) and are never inferred from transcript confidence.
 - FR-3.4: Poor audio quality does not automatically stop processing. The pipeline continues where possible and the report states the limitations (ADR-0008). A run fails only when no usable audio can be decoded.
-- FR-3.5: After preprocessing, audio quality analysis and transcription run independently (ADR-0021). Neither consumes or overwrites the other's output. Downstream stages start only when their required upstream results are complete.
+- FR-3.5: After preprocessing, audio quality analysis and transcription run independently (ADR-0021). Neither waits for or overwrites the other's output. Transcription and later agents may read the Audio Quality Agent's versioned summary as optional, read-only metadata (ADR-0046); transcription output is never an input to audio quality analysis. Downstream stages start only when their required upstream results are complete.
 
 ### 3.4 Transcription and diarization (Steps 4 and 5)
 - FR-4.1: Speech is transcribed with timestamps (word-level where available).

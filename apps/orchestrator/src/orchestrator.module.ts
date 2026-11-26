@@ -11,10 +11,12 @@ import type { AudioTasks } from './processing/audio-client';
 import type { RawStore } from './providers/raw-store';
 import type { ResolvedProviders } from './providers/registry';
 import { RUN_PROVIDERS_OVERRIDE, RunWorkers } from './runs/run.workers';
+import { AudioQualityWorkers } from './agents/audio-quality/audio-quality.workers';
 
 /**
  * Foundation check worker, the Phase 2B audio processing coordinator and the Phase 2C
- * transcription run coordinator (D-2C-01). Agents and LangGraph arrive in later phases.
+ * transcription run coordinator (D-2C-01) and the Phase 3A A1 Audio Quality worker (ADR-0044).
+ * LangGraph remains the shared orchestration target (OD-04b); it arrives with Phase 3B.
  */
 @Module({})
 export class OrchestratorModule {
@@ -34,8 +36,9 @@ export class OrchestratorModule {
         FoundationCheckWorker,
         ProcessingWorkers,
         RunWorkers,
+        AudioQualityWorkers,
       ],
-      exports: [FoundationCheckWorker, ProcessingWorkers, RunWorkers],
+      exports: [FoundationCheckWorker, ProcessingWorkers, RunWorkers, AudioQualityWorkers],
     };
   }
 }

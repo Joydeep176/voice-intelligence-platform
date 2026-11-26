@@ -42,10 +42,16 @@ from audio_service.domain.capabilities import measure_capabilities
 from audio_service.domain.diarize import DiarizeHandler
 from audio_service.domain.errors import RequestRejected
 from audio_service.domain.handshake import ContractVersionMismatchError, handshake
-from audio_service.domain.inference_models import DIARIZATION_MODELS, STT_MODELS, ModelStore
+from audio_service.domain.inference_models import (
+    DIARIZATION_MODELS,
+    MEASURE_MODELS,
+    STT_MODELS,
+    ModelStore,
+)
 from audio_service.domain.isolation import inference_runner as inference_runner_for
 from audio_service.domain.isolation import models_readable
 from audio_service.domain.landlock import disable_dumping
+from audio_service.domain.measure import MeasureHandler
 from audio_service.domain.preprocess import PreprocessHandler, ToolVersions
 from audio_service.domain.probe import ProbeHandler
 from audio_service.domain.runner import SandboxRunner
@@ -229,11 +235,21 @@ def create_app(  # noqa: PLR0915 - application factory: lifespan, middleware, ro
                     deadline_per_audio_permille=settings.inference_deadline_per_audio_ms_permille,
                     runner=lambda: resources.inference_runner,
                 )
+            if models.available(MEASURE_MODELS):
+                # Phase 3A (ADR-0045): speech-aware measurements; a media-style deadline factor.
+                registered["measure"] = MeasureHandler(
+                    lambda: resources.storage,
+                    models,
+                    threads=settings.inference_threads,
+                    deadline_per_audio_permille=settings.task_deadline_per_audio_ms_permille,
+                    runner=lambda: resources.inference_runner,
+                )
             log.info(
                 "inference_models",
                 extra={
                     "transcribe": "transcribe" in registered,
                     "diarize": "diarize" in registered,
+                    "measure": "measure" in registered,
                 },
             )
     executor = TaskExecutor(
@@ -260,15 +276,22 @@ def create_app(  # noqa: PLR0915 - application factory: lifespan, middleware, ro
             log.info("stale_temp_cleanup", extra={"removed": removed})
         await asyncio.to_thread(runner.verify_enforcement)
         inference_runner: SandboxRunner | None = None
-        if settings.models_dir is not None and ({"transcribe", "diarize"} & registered.keys()):
+        if settings.models_dir is not None and (
+            {"transcribe", "diarize", "measure"} & registered.keys()
+        ):
             inference_runner = inference_runner_for(settings.landlock, settings.models_dir)
             await asyncio.to_thread(inference_runner.verify_enforcement)
             relpaths = [
                 m.relpath
-                for task, specs in (("transcribe", STT_MODELS), ("diarize", DIARIZATION_MODELS))
+                for task, specs in (
+                    ("transcribe", STT_MODELS),
+                    ("diarize", DIARIZATION_MODELS),
+                    ("measure", MEASURE_MODELS),
+                )
                 if task in registered
                 for m in specs
             ]
+            relpaths = list(dict.fromkeys(relpaths))
             app.state.inference_models_readable = await asyncio.to_thread(
                 models_readable, inference_runner, settings.models_dir, relpaths
             )

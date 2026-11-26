@@ -36,6 +36,13 @@
       "when": 1795511865329,
       "tag": "0004_transcription_integrity",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795678035630,
+      "tag": "0005_audio_quality",
+      "breakpoints": true
     }
   ]
 }

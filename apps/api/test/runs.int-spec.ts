@@ -370,10 +370,19 @@ describe('transcription runs and transcript endpoints (integration: Postgres + R
       expect((await audits(body.id)).map((a) => a.action)).toContain('run.cancel_requested');
     });
 
-    it('409 for a created or terminal run; 404 for another workspace', async () => {
+    it('cancels a created run at once (ADR-0025, amended by ADR-0044 L5)', async () => {
       const rec = await addRecording();
       const created = await insertCreatedRun(handle.db, W, rec.id);
-      await http().post(`${base}/runs/${created.id}/cancel`).expect(409);
+      const res = await http().post(`${base}/runs/${created.id}/cancel`).expect(202);
+      expect(res.body.status).toBe('cancelled');
+      expect((await audits(created.id)).map((a) => a.action)).toContain('run.cancelled');
+      // ...and it stays non-retryable (ADR-0025): it never had a preprocessing version.
+      const retry = await http().post(`${base}/runs/${created.id}/retry`).expect(409);
+      expect(retry.body.code).toBe('INVALID_STATE_TRANSITION');
+      expect((await getRun(handle.db, W, created.id))?.status).toBe('cancelled');
+    });
+
+    it('409 for a terminal run; 404 for another workspace', async () => {
       const done = await completedRun();
       const res = await http().post(`${base}/runs/${done.runId}/cancel`).expect(409);
       expect(res.body.code).toBe('INVALID_STATE_TRANSITION');

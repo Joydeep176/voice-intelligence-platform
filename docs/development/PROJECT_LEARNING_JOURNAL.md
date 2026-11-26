@@ -366,7 +366,8 @@ recognising machine or equipment sounds and changes in them.
 | # | Step | Passes when |
 | --- | --- | --- |
 | 1 | **Done 2026-11-26:** formal acceptance of Phase 2B and 2C; ADR-0041 confirmed; dense-speech limitation temporarily accepted | Recorded in all authoritative records |
-| 2 | Phase 3A **planning** (no implementation): define scope, requirements, architecture, acceptance criteria and plan | User approval of each before implementation |
+| 2 | **Done 2026-11-26:** Phase 3A planned and approved (ADR-0043–0047); A1 Audio Quality implemented (M0–M5, M7) | `docs/development/phase3a/`, `docs/development/phase3a-quality-benchmark/` |
+| 2b | Phase 3A open: M6 threshold decision (OD-52, user gate) and M8 closure (reviews, matrix, completion report) | User decision; evidence for every AC |
 | 2a | Still open: NFR-3 / NFR-4 thresholds (ADR-0042 Proposed); not tested: phase2b e2e re-run, Graphify, over 2 h | User decision / run when scheduled |
 | 3 | Optional robustness follow-ups (not blocking) | Cancel abandoned audio tasks (`DELETE /v1/tasks/{id}`); treat a deterministic `TIMEOUT` / `RESOURCE_EXHAUSTED` as non-retryable; fail-closed readiness instead of a crash |
 
@@ -375,4 +376,71 @@ recognising machine or equipment sounds and changes in them.
 - no commits or pushes without a request;
 - preserve existing data and the completed UI work;
 - keep the fake providers for tests;
-- do not start Phase 3 or the agent phase.
+- do not start Phase 3B or later agents without approval.
+
+## 9. Phase 3A: A1 Audio Quality, in plain English (2026-11-26)
+
+**What it does.** After a recording is preprocessed, A1 decides whether the audio is fit for processing, before you
+start transcription.
+- **Output:** a class (good / acceptable with warnings / poor / insufficient), a rule-based confidence, whether the
+  audio suits transcription and speaker separation, timestamped problems, and recommendations.
+- **Never** stops, delays or changes transcription (ADR-0008, ADR-0021, ADR-0046).
+
+**How.**
+- **Tier 0:** the numbers Phase 2B already measured (levels, clipping, silence, loudness, gaps).
+- **Tier 1:** a new `measure` task in the audio service. It runs the same Silero speech detector transcription uses,
+  to estimate SNR, speech share, speech level, bandwidth and fragmentation. Numbers only; A1 judges them in the
+  orchestrator.
+
+**Lessons.**
+- **Estimators against ground truth.** Compare an estimator with the known reference, never with another estimator.
+  WADA-SNR looked plausible but was 13 dB off on average (60 dB off on clicks).
+- **Harness versus task.** Measure the real task, not only a harness. The production task's 4 h figures (170 s, 140 MiB
+  anonymous) confirmed the M0 extrapolation.
+- **cgroup memory.** `memory.peak` includes page cache. Read anonymous memory for the working set.
+- **Dev watchers.** Rebuilding packages reloads the dev API and orchestrators: check active work and migrate first.
+- **Synthetic fixtures.** Digital-silence pauses look like dropouts. Low severity keeps them from changing the class.
+
+**M6 decision (ADR-0048).** The production STT sweeps (24 clips, about 2.4 h, local) showed the provisional rules
+were mis-ranked:
+- ×4 clipping was classed `poor`, yet it cost about as much as 10 dB noise;
+- −30 dB attenuation was classed `good`, yet it cost +4 to +8 points;
+- the mean-based SNR falsely flagged one clean English scene.
+
+The user chose a hybrid estimator (median noise power when near-clean, switch at 45 dB chosen on the dev split) and
+two band changes. In the re-run, clean speech is 12 of 12 `good`, and the class ranks WER better (Spearman 0.53–0.73,
+up from 0.32–0.52).
+
+**Lessons (M6)**
+- **Anchor severities on downstream impact.** Anchor each degradation's severity on what it costs downstream (here,
+  WER). Agreement with intuition is not enough.
+- **Quote acceptance figures at the criterion's granularity.** A pooled MAE (1.47 dB) hid a per-level miss: 3.05 dB
+  at 20 dB against Y = 2.0 dB.
+- **Mean-based noise estimates need a leak guard.** On near-clean audio, a mean noise estimate is dominated by
+  speech the VAD misses.
+
+**M8 (closure).** Both independent reviews found nothing blocking. Two real defects did come out:
+- a stuck-set sweep that could discard live measurements queued behind transcription (fixed with a heartbeat);
+- a cancelled `created` run that could be retried against ADR-0025.
+
+Lessons:
+- **Liveness heartbeats:** a staleness sweep needs one for any work that can legitimately wait in a queue.
+- **New transitions:** every newly allowed state transition needs its follow-on transitions checked.
+- **Dev watchers:** with `tsc --watch`, source edits restart the dev services, so don't edit code while an E2E is
+  running against them.
+
+**Acceptance and closure (2026-11-26).** The user formally accepted Phase 3A:
+- The product owner confirmed it on a real-world recording. That is additional evidence, not an accuracy
+  validation.
+- The three lifecycle deviations were accepted (ADR-0044 Amendment 2).
+- A Graphify refresh (code-only) found no import cycles and no defects. Two placement concerns were noted for the
+  agent phase (`STAGE_NODES`, the run/stage helpers in the transcription module), and nothing was refactored.
+
+Lessons:
+- **Record deviations when they are made.** As-built deviations should be put to the user at the time, not only
+  documented. Three accepted-rule deviations sat in a notes list until the final review flagged them.
+- **Verify graph edges.** Treat graph edges as leads: two "API → web" edges were decorator-name artefacts.
+
+**Still open.**
+- AC-8 at 20 dB is partially met: Y stays at 2.0 dB, and the follow-up is OD-55.
+- Synthetic-only evaluation is not real-world accuracy (D-3A-13).

@@ -25,6 +25,8 @@ from audio_service.contracts import (
     HandshakeRequest,
     HandshakeResponse,
     LevelSeries,
+    MeasureConfig,
+    MeasureResult,
     PreprocessConfig,
     PreprocessResult,
     ProbeResponse,
@@ -72,6 +74,8 @@ SCHEMAS: dict[str, type[BaseModel]] = {
     "transcribe-result": TranscribeResult,
     "diarize-config": DiarizeConfig,
     "diarize-result": DiarizeResult,
+    "measure-config": MeasureConfig,
+    "measure-result": MeasureResult,
 }
 
 
@@ -230,3 +234,18 @@ def test_landlock_scoped_is_a_strict_boolean_with_a_false_default() -> None:
     assert CapabilitiesResponse.model_validate(scoped).landlock.scoped is True
     with pytest.raises(ValidationError):
         CapabilitiesResponse.model_validate({**caps, "landlock": {**caps["landlock"], "scoped": 1}})
+
+
+def test_tier1_wire_contract_is_bounded_and_finite() -> None:
+    """Security review (Phase 3A M8): series length and quantity values are bounded/finite."""
+    valid = load(FIXTURES / "measure-result.valid.json")
+    long = json.loads(json.dumps(valid))
+    long["series"]["speechMs"] = [0] * 200_001
+    long["series"]["snrDb"] = [None] * 200_001
+    with pytest.raises(ValidationError):
+        MeasureResult.model_validate(long)
+    nan = json.loads(json.dumps(valid))
+    name = next(iter(nan["record"]["quantities"]))
+    nan["record"]["quantities"][name]["value"] = float("nan")
+    with pytest.raises(ValidationError):
+        MeasureResult.model_validate(nan)

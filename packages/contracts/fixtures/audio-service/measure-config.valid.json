@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "audioDurationMs": 90000,
+  "vad": {
+    "threshold": 0.4,
+    "minSilenceMs": 300,
+    "minSpeechMs": 250,
+    "paddingMs": 200
+  },
+  "blockMs": 1000,
+  "windowMs": 30000,
+  "overlapMs": 1000,
+  "ltasDropDb": 50,
+  "ltasMinHz": 300,
+  "snrNearCleanDb": 45
+}

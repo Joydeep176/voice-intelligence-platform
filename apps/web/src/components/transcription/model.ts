@@ -58,6 +58,7 @@ export function runActions(s: RunSnapshot | null): RunActions {
     retry:
       s !== null &&
       (s.status === 'failed' || s.status === 'cancelled') &&
+      s.preprocessingId !== null && // a created run cancelled before start is not retried (ADR-0025)
       s.retryCount < s.maxRetries,
     cancel: s !== null && (s.status === 'queued' || (s.status === 'running' && !s.cancelRequested)),
   };

@@ -1,0 +1,109 @@
+{
+ "image": "vip-audio-service:phase3a",
+ "limits": {
+  "cpus": 2,
+  "memory": "768m",
+  "landlock": "required",
+  "readOnly": true
+ },
+ "cases": {
+  "white10-76s": {
+   "audioS": 81.89,
+   "status": "succeeded",
+   "error": null,
+   "wallS": 1.78,
+   "rtf": 0.0217,
+   "peakAnonMiB": 113.9,
+   "liveProbes": 4,
+   "liveFailures": 0,
+   "resultValid": true,
+   "snrDb": 7.954,
+   "knownSnrDb": 10,
+   "speechRatio": 0.534497,
+   "bandwidthEdgeHz": 8000,
+   "maxSpansPerWindow": 5,
+   "levelSpreadDb": 2.972,
+   "seriesBlocks": 82,
+   "unavailable": [],
+   "warnings": [],
+   "determinism": true
+  },
+  "clean-76s": {
+   "audioS": 81.89,
+   "status": "succeeded",
+   "error": null,
+   "wallS": 1.77,
+   "rtf": 0.0216,
+   "peakAnonMiB": 114.4,
+   "liveProbes": 4,
+   "liveFailures": 0,
+   "resultValid": true,
+   "snrDb": 50.896,
+   "knownSnrDb": null,
+   "speechRatio": 0.594212,
+   "bandwidthEdgeHz": 8000,
+   "maxSpansPerWindow": 5,
+   "levelSpreadDb": 3.666,
+   "seriesBlocks": 82,
+   "unavailable": [],
+   "warnings": []
+  },
+  "long-120min": {
+   "audioS": 7202.22,
+   "status": "succeeded",
+   "error": null,
+   "wallS": 92.1,
+   "rtf": 0.0128,
+   "peakAnonMiB": 131.4,
+   "liveProbes": 160,
+   "liveFailures": 0,
+   "resultValid": true,
+   "snrDb": 4.379,
+   "knownSnrDb": null,
+   "speechRatio": 0.565746,
+   "bandwidthEdgeHz": 8000,
+   "maxSpansPerWindow": 7,
+   "levelSpreadDb": 3.316,
+   "seriesBlocks": 7203,
+   "unavailable": [],
+   "warnings": []
+  },
+  "generated-4h": {
+   "audioS": 14399,
+   "status": "succeeded",
+   "error": null,
+   "wallS": 170.05,
+   "rtf": 0.0118,
+   "peakAnonMiB": 139.9,
+   "liveProbes": 308,
+   "liveFailures": 0,
+   "resultValid": true,
+   "snrDb": 4.397,
+   "knownSnrDb": null,
+   "speechRatio": 0.565663,
+   "bandwidthEdgeHz": 8000,
+   "maxSpansPerWindow": 7,
+   "levelSpreadDb": 3.366,
+   "seriesBlocks": 14399,
+   "unavailable": [],
+   "warnings": [],
+   "cancellation": {
+    "status": "cancelled",
+    "wallS": 4
+   }
+  }
+ },
+ "capabilities": {
+  "taskTypes": [
+   "diarize",
+   "measure",
+   "preprocess",
+   "probe",
+   "transcribe"
+  ],
+  "landlockEnforced": true
+ },
+ "containerOomKilled": false,
+ "cgroupMemoryPeakMiB": 768,
+ "note": "peakAnonMiB is sampled every ~0.5 s via docker exec (each sample adds a short-lived cat process to the cgroup); memory.peak includes page cache of the files read."
+}

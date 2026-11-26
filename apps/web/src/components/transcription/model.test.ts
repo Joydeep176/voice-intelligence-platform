@@ -30,6 +30,9 @@ describe('runActions', () => {
     expect(runActions(failed({ retryCount: 2 })).retry).toBe(true);
     expect(runActions(failed({ retryCount: 3 })).retry).toBe(false);
   });
+  it('does not offer retry for a created run cancelled before start (ADR-0025)', () => {
+    expect(runActions(run({ status: 'cancelled', preprocessingId: null })).retry).toBe(false);
+  });
   it('does not offer cancel once requested', () => {
     expect(runActions(running(0.1)).cancel).toBe(true);
     expect(runActions({ ...running(0.1), cancelRequested: true }).cancel).toBe(false);

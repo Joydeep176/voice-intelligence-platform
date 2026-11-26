@@ -1,0 +1,515 @@
+{
+ "ruleVersion": "a1-rules-0.1-provisional",
+ "provisional": true,
+ "snrBands": {
+  "low": 20,
+  "medium": 10,
+  "high": 5
+ },
+ "note": "Engine run on M0 harness estimates (same algorithms as the measure task); synthetic corpus; not real-world accuracy. Tier 0 inputs are neutral, so only the noise and speech-presence rules decide.",
+ "cleanFalseNoiseFlagRate": 0.25,
+ "groups": {
+  "snr:clean": {
+   "n": 12,
+   "overall": {
+    "good": 12
+   },
+   "noiseFlag": {
+    "none": 9,
+    "low": 3
+   }
+  },
+  "noise:none:clean": {
+   "n": 12,
+   "overall": {
+    "good": 12
+   },
+   "noiseFlag": {
+    "none": 9,
+    "low": 3
+   }
+  },
+  "lang:english:clean": {
+   "n": 4,
+   "overall": {
+    "good": 4
+   },
+   "noiseFlag": {
+    "none": 1,
+    "low": 3
+   }
+  },
+  "snr:20": {
+   "n": 84,
+   "overall": {
+    "good": 75,
+    "acceptable_with_warnings": 9
+   },
+   "noiseFlag": {
+    "low": 62,
+    "none": 13,
+    "medium": 9
+   }
+  },
+  "noise:white:20": {
+   "n": 12,
+   "overall": {
+    "good": 10,
+    "acceptable_with_warnings": 2
+   },
+   "noiseFlag": {
+    "low": 10,
+    "medium": 2
+   }
+  },
+  "lang:english:20": {
+   "n": 28,
+   "overall": {
+    "good": 19,
+    "acceptable_with_warnings": 9
+   },
+   "noiseFlag": {
+    "low": 18,
+    "none": 1,
+    "medium": 9
+   }
+  },
+  "snr:10": {
+   "n": 84,
+   "overall": {
+    "acceptable_with_warnings": 68,
+    "good": 16
+   },
+   "noiseFlag": {
+    "medium": 68,
+    "low": 16
+   }
+  },
+  "noise:white:10": {
+   "n": 12,
+   "overall": {
+    "acceptable_with_warnings": 12
+   },
+   "noiseFlag": {
+    "medium": 12
+   }
+  },
+  "lang:english:10": {
+   "n": 28,
+   "overall": {
+    "acceptable_with_warnings": 24,
+    "good": 4
+   },
+   "noiseFlag": {
+    "medium": 24,
+    "low": 4
+   }
+  },
+  "snr:5": {
+   "n": 84,
+   "overall": {
+    "poor": 67,
+    "acceptable_with_warnings": 17
+   },
+   "noiseFlag": {
+    "high": 67,
+    "medium": 17
+   }
+  },
+  "noise:white:5": {
+   "n": 12,
+   "overall": {
+    "poor": 12
+   },
+   "noiseFlag": {
+    "high": 12
+   }
+  },
+  "lang:english:5": {
+   "n": 28,
+   "overall": {
+    "poor": 22,
+    "acceptable_with_warnings": 6
+   },
+   "noiseFlag": {
+    "high": 22,
+    "medium": 6
+   }
+  },
+  "snr:0": {
+   "n": 84,
+   "overall": {
+    "poor": 84
+   },
+   "noiseFlag": {
+    "high": 84
+   }
+  },
+  "noise:white:0": {
+   "n": 12,
+   "overall": {
+    "poor": 12
+   },
+   "noiseFlag": {
+    "high": 12
+   }
+  },
+  "lang:english:0": {
+   "n": 28,
+   "overall": {
+    "poor": 28
+   },
+   "noiseFlag": {
+    "high": 28
+   }
+  },
+  "noise:pink:20": {
+   "n": 12,
+   "overall": {
+    "good": 10,
+    "acceptable_with_warnings": 2
+   },
+   "noiseFlag": {
+    "low": 7,
+    "medium": 2,
+    "none": 3
+   }
+  },
+  "noise:pink:10": {
+   "n": 12,
+   "overall": {
+    "acceptable_with_warnings": 9,
+    "good": 3
+   },
+   "noiseFlag": {
+    "medium": 9,
+    "low": 3
+   }
+  },
+  "noise:pink:5": {
+   "n": 12,
+   "overall": {
+    "acceptable_with_warnings": 4,
+    "poor": 8
+   },
+   "noiseFlag": {
+    "medium": 4,
+    "high": 8
+   }
+  },
+  "noise:pink:0": {
+   "n": 12,
+   "overall": {
+    "poor": 12
+   },
+   "noiseFlag": {
+    "high": 12
+   }
+  },
+  "noise:brown:20": {
+   "n": 12,
+   "overall": {
+    "good": 12
+   },
+   "noiseFlag": {
+    "none": 6,
+    "low": 6
+   }
+  },
+  "noise:brown:10": {
+   "n": 12,
+   "overall": {
+    "good": 8,
+    "acceptable_with_warnings": 4
+   },
+   "noiseFlag": {
+    "low": 8,
+    "medium": 4
+   }
+  },
+  "noise:brown:5": {
+   "n": 12,
+   "overall": {
+    "acceptable_with_warnings": 8,
+    "poor": 4
+   },
+   "noiseFlag": {
+    "medium": 8,
+    "high": 4
+   }
+  },
+  "noise:brown:0": {
+   "n": 12,
+   "overall": {
+    "poor": 12
+   },
+   "noiseFlag": {
+    "high": 12
+   }
+  },
+  "noise:hum:20": {
+   "n": 12,
+   "overall": {
+    "good": 12
+   },
+   "noiseFlag": {
+    "low": 12
+   }
+  },
+  "noise:hum:10": {
+   "n": 12,
+   "overall": {
+    "acceptable_with_warnings": 12
+   },
+   "noiseFlag": {
+    "medium": 12
+   }
+  },
+  "noise:hum:5": {
+   "n": 12,
+   "overall": {
+    "poor": 12
+   },
+   "noiseFlag": {
+    "high": 12
+   }
+  },
+  "noise:hum:0": {
+   "n": 12,
+   "overall": {
+    "poor": 12
+   },
+   "noiseFlag": {
+    "high": 12
+   }
+  },
+  "noise:am_pink:20": {
+   "n": 12,
+   "overall": {
+    "good": 10,
+    "acceptable_with_warnings": 2
+   },
+   "noiseFlag": {
+    "low": 9,
+    "medium": 2,
+    "none": 1
+   }
+  },
+  "noise:am_pink:10": {
+   "n": 12,
+   "overall": {
+    "acceptable_with_warnings": 11,
+    "good": 1
+   },
+   "noiseFlag": {
+    "medium": 11,
+    "low": 1
+   }
+  },
+  "noise:am_pink:5": {
+   "n": 12,
+   "overall": {
+    "acceptable_with_warnings": 2,
+    "poor": 10
+   },
+   "noiseFlag": {
+    "medium": 2,
+    "high": 10
+   }
+  },
+  "noise:am_pink:0": {
+   "n": 12,
+   "overall": {
+    "poor": 12
+   },
+   "noiseFlag": {
+    "high": 12
+   }
+  },
+  "noise:clicks:20": {
+   "n": 12,
+   "overall": {
+    "good": 10,
+    "acceptable_with_warnings": 2
+   },
+   "noiseFlag": {
+    "low": 7,
+    "medium": 2,
+    "none": 3
+   }
+  },
+  "noise:clicks:10": {
+   "n": 12,
+   "overall": {
+    "acceptable_with_warnings": 9,
+    "good": 3
+   },
+   "noiseFlag": {
+    "medium": 9,
+    "low": 3
+   }
+  },
+  "noise:clicks:5": {
+   "n": 12,
+   "overall": {
+    "poor": 10,
+    "acceptable_with_warnings": 2
+   },
+   "noiseFlag": {
+    "high": 10,
+    "medium": 2
+   }
+  },
+  "noise:clicks:0": {
+   "n": 12,
+   "overall": {
+    "poor": 12
+   },
+   "noiseFlag": {
+    "high": 12
+   }
+  },
+  "noise:music:20": {
+   "n": 12,
+   "overall": {
+    "good": 11,
+    "acceptable_with_warnings": 1
+   },
+   "noiseFlag": {
+    "low": 11,
+    "medium": 1
+   }
+  },
+  "noise:music:10": {
+   "n": 12,
+   "overall": {
+    "good": 1,
+    "acceptable_with_warnings": 11
+   },
+   "noiseFlag": {
+    "low": 1,
+    "medium": 11
+   }
+  },
+  "noise:music:5": {
+   "n": 12,
+   "overall": {
+    "acceptable_with_warnings": 1,
+    "poor": 11
+   },
+   "noiseFlag": {
+    "medium": 1,
+    "high": 11
+   }
+  },
+  "noise:music:0": {
+   "n": 12,
+   "overall": {
+    "poor": 12
+   },
+   "noiseFlag": {
+    "high": 12
+   }
+  },
+  "lang:hindi:clean": {
+   "n": 4,
+   "overall": {
+    "good": 4
+   },
+   "noiseFlag": {
+    "none": 4
+   }
+  },
+  "lang:hindi:20": {
+   "n": 28,
+   "overall": {
+    "good": 28
+   },
+   "noiseFlag": {
+    "low": 22,
+    "none": 6
+   }
+  },
+  "lang:hindi:10": {
+   "n": 28,
+   "overall": {
+    "acceptable_with_warnings": 22,
+    "good": 6
+   },
+   "noiseFlag": {
+    "medium": 22,
+    "low": 6
+   }
+  },
+  "lang:hindi:5": {
+   "n": 28,
+   "overall": {
+    "poor": 22,
+    "acceptable_with_warnings": 6
+   },
+   "noiseFlag": {
+    "high": 22,
+    "medium": 6
+   }
+  },
+  "lang:hindi:0": {
+   "n": 28,
+   "overall": {
+    "poor": 28
+   },
+   "noiseFlag": {
+    "high": 28
+   }
+  },
+  "lang:hinglish:clean": {
+   "n": 4,
+   "overall": {
+    "good": 4
+   },
+   "noiseFlag": {
+    "none": 4
+   }
+  },
+  "lang:hinglish:20": {
+   "n": 28,
+   "overall": {
+    "good": 28
+   },
+   "noiseFlag": {
+    "low": 22,
+    "none": 6
+   }
+  },
+  "lang:hinglish:10": {
+   "n": 28,
+   "overall": {
+    "acceptable_with_warnings": 22,
+    "good": 6
+   },
+   "noiseFlag": {
+    "medium": 22,
+    "low": 6
+   }
+  },
+  "lang:hinglish:5": {
+   "n": 28,
+   "overall": {
+    "poor": 23,
+    "acceptable_with_warnings": 5
+   },
+   "noiseFlag": {
+    "high": 23,
+    "medium": 5
+   }
+  },
+  "lang:hinglish:0": {
+   "n": 28,
+   "overall": {
+    "poor": 28
+   },
+   "noiseFlag": {
+    "high": 28
+   }
+  }
+ }
+}

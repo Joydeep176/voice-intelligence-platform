@@ -38,9 +38,11 @@ const MAX_FRESH_KEYS = 3;
  */
 export async function runAudioTask(
   deps: AudioTaskDeps,
-  type: Extract<AudioTaskType, 'transcribe' | 'diarize'>,
+  type: Extract<AudioTaskType, 'transcribe' | 'diarize' | 'measure'>,
   source: AudioSourceRef | undefined,
   config: Record<string, unknown>,
+  /** Called after each poll while the task is queued or running (for example a liveness heartbeat). */
+  onPoll?: () => Promise<void>,
 ): Promise<Record<string, unknown>> {
   if (!source) throw new ProviderError('AUDIO_SOURCE_REQUIRED', false);
   const request: AudioTaskCreateRequest = {
@@ -74,6 +76,7 @@ export async function runAudioTask(
     while (state.status === 'queued' || state.status === 'running') {
       await sleep(deps.pollMs);
       state = await deps.audio.get(accepted.taskId);
+      if (onPoll && (state.status === 'queued' || state.status === 'running')) await onPoll();
     }
   } catch (error) {
     throw toProviderError(error);

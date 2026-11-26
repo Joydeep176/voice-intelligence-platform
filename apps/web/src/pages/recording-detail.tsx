@@ -1,6 +1,6 @@
 import type { ProcessingState, RecordingMetadata } from '@vip/contracts';
 import { ArrowLeft } from 'lucide-react';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ProcessingStatusPanel, uploadCompleted } from '@/components/processing-status';
@@ -16,6 +16,8 @@ import { RecordingPlayback } from '@/components/recording/audio-player';
 import { RecordingOverview } from '@/components/recording/recording-overview';
 import { ReportCard } from '@/components/reports/report-card';
 import { TranscriptSection } from '@/components/transcription/transcript-section';
+import { AudioQualityCard } from '@/components/audio-quality/audio-quality-card';
+import { useAudioDiagnostics } from '@/components/audio-quality/use-audio-diagnostics';
 import { api } from '@/lib/api';
 import { Link } from '@/lib/router';
 import { useAsync } from '@/lib/use-async';
@@ -61,6 +63,15 @@ export default function RecordingDetailPage({ id }: { id: string }) {
     lastRun.current = next;
   };
 
+  // A1 audio-quality assessment of the recording's run (Phase 3A, ADR-0044). Hooks run before any
+  // early return; refreshed when processing changes so a finished preprocessing shows up at once.
+  const diagnosticsRunId =
+    (fresh && fresh.base === state.data ? fresh.rec : state.data)?.latestRun?.id ?? null;
+  const diagnostics = useAudioDiagnostics(diagnosticsRunId);
+  const refreshDiagnostics = diagnostics.refresh;
+  useEffect(() => {
+    if (processingState === 'completed') refreshDiagnostics();
+  }, [processingState]); // eslint-disable-line react-hooks/exhaustive-deps
   const fallback = recordingStateFallback(state, {
     loadingLabel: 'Loading recording',
     backTo: '/recordings',
@@ -92,6 +103,22 @@ export default function RecordingDetailPage({ id }: { id: string }) {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="grid min-w-0 content-start gap-6">
           <RecordingPlayback
+            diagnostics={
+              diagnostics.load.status === 'ready' && diagnostics.load.snapshot.diagnostics
+                ? diagnostics.load.snapshot.diagnostics.flags.flatMap((f) =>
+                    f.startMs === null || f.endMs === null
+                      ? []
+                      : [
+                          {
+                            kind: f.kind,
+                            severity: f.severity,
+                            startMs: f.startMs,
+                            endMs: f.endMs,
+                          },
+                        ],
+                  )
+                : []
+            }
             key={r.id}
             recordingId={r.id}
             status={r.status}
@@ -111,9 +138,11 @@ export default function RecordingDetailPage({ id }: { id: string }) {
           />
           {/* Audio limitations and transcription uncertainty are separate sections (FR-9.3). */}
           <div className="grid gap-4 sm:grid-cols-2">
-            <SeparateChannel
-              title="Audio quality"
-              description="Signal-level diagnostics from the Audio Quality Agent. Not available yet."
+            <AudioQualityCard
+              load={diagnostics.load}
+              onRetry={() => void diagnostics.retry()}
+              busy={diagnostics.busy}
+              actionError={diagnostics.actionError}
             />
             <SeparateChannel
               title="Transcription uncertainty"
@@ -127,6 +156,9 @@ export default function RecordingDetailPage({ id }: { id: string }) {
             recordingId={r.id}
             uploaded={uploadCompleted(r.status)}
             processing={processingState}
+            audioQuality={
+              diagnostics.load.status === 'ready' ? diagnostics.load.snapshot.state : null
+            }
           />
           <ReportCard r={r} />
           <RecordingOverview r={r} />

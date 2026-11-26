@@ -10,12 +10,17 @@ const Env = z.object({
   /** Automatic BullMQ attempts for transient failures. */
   QUEUE_RUN_ATTEMPTS: z.coerce.number().int().min(1).max(10).default(3),
   QUEUE_RUN_BACKOFF_MS: z.coerce.number().int().min(10).max(600_000).default(5000),
+  /** Phase 3A A1 (ADR-0044); same variable names as the orchestrator. */
+  QUEUE_AUDIO_QUALITY_ATTEMPTS: z.coerce.number().int().min(1).max(10).default(3),
+  QUEUE_AUDIO_QUALITY_BACKOFF_MS: z.coerce.number().int().min(10).max(600_000).default(5000),
+  AUDIO_QUALITY_MAX_ATTEMPTS: z.coerce.number().int().min(1).max(20).default(5),
 });
 
 export interface RunSettings {
   maxRetries: number;
   attempts: number;
   backoffMs: number;
+  audioQuality: { attempts: number; backoffMs: number; maxAttempts: number };
 }
 
 export const RUN_SETTINGS = Symbol('RUN_SETTINGS');
@@ -30,5 +35,10 @@ export function loadRunSettings(env: NodeJS.ProcessEnv = process.env): RunSettin
     maxRetries: parsed.data.RUN_MAX_RETRIES,
     attempts: parsed.data.QUEUE_RUN_ATTEMPTS,
     backoffMs: parsed.data.QUEUE_RUN_BACKOFF_MS,
+    audioQuality: {
+      attempts: parsed.data.QUEUE_AUDIO_QUALITY_ATTEMPTS,
+      backoffMs: parsed.data.QUEUE_AUDIO_QUALITY_BACKOFF_MS,
+      maxAttempts: parsed.data.AUDIO_QUALITY_MAX_ATTEMPTS,
+    },
   };
 }

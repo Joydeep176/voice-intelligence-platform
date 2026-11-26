@@ -1,7 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatDuration } from '@/lib/format';
 import { cn } from 'cn';
-import type { TimelineData } from './types';
+import { FLAG_LABEL, SEVERITY_LABEL, flagRange } from '@/components/audio-quality/model';
+import type { AudioDiagnosticFlag, TimelineData } from './types';
+
+const DIAG_BAR: Record<AudioDiagnosticFlag['severity'], string> = {
+  low: 'bg-diag-low/60',
+  medium: 'bg-diag-medium/80',
+  high: 'bg-diag-high',
+};
 
 interface Track {
   id: string;
@@ -28,7 +35,7 @@ const TRACKS: Track[] = [
     id: 'diagnostics',
     label: 'Audio quality',
     swatch: 'bg-diag-medium',
-    empty: 'Produced by the Audio Quality Agent (later phase).',
+    empty: 'No timestamped audio problems for this run (or no assessment yet).',
   },
   {
     id: 'uncertainty',
@@ -61,7 +68,8 @@ export function TimelinePlaceholder({
       <CardHeader>
         <CardTitle>Timeline</CardTitle>
         <CardDescription>
-          Aligned tracks are not drawn yet. Audio quality arrives in a later phase.
+          One shared time axis. The audio quality track shows the Audio Quality Agent's timestamped
+          findings; the other tracks are not drawn yet.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -95,7 +103,11 @@ export function TimelinePlaceholder({
                     {track.label}
                   </span>
                   <div className="bg-muted/50 text-muted-foreground relative flex min-h-9 items-center rounded-md border border-dashed px-3 py-1.5 text-xs">
-                    {track.empty}
+                    {track.id === 'diagnostics' && data.durationMs && data.diagnostics.length ? (
+                      <DiagnosticsBars flags={data.diagnostics} durationMs={data.durationMs} />
+                    ) : (
+                      track.empty
+                    )}
                     {playheadPct !== null ? (
                       <div
                         aria-hidden
@@ -123,5 +135,44 @@ export function TimelinePlaceholder({
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+/**
+ * Timestamped A1 flags on the shared axis (dependency-free; no chart library, OD-36). Severity is
+ * in each bar's accessible name and in the list alternative, never conveyed by colour alone.
+ */
+function DiagnosticsBars({
+  flags,
+  durationMs,
+}: {
+  flags: AudioDiagnosticFlag[];
+  durationMs: number;
+}) {
+  const pct = (ms: number) => Math.min(100, Math.max(0, (ms / durationMs) * 100));
+  return (
+    <>
+      <div aria-hidden className="absolute inset-x-3 inset-y-1.5">
+        {flags.map((f, i) => (
+          <span
+            key={`${f.kind}-${f.startMs}-${i}`}
+            data-testid="diagnostic-bar"
+            title={`${SEVERITY_LABEL[f.severity]} · ${FLAG_LABEL[f.kind]} · ${flagRange(f.startMs, f.endMs)}`}
+            className={cn('absolute inset-y-0 min-w-0.5 rounded-sm', DIAG_BAR[f.severity])}
+            style={{
+              left: `${pct(f.startMs)}%`,
+              width: `${Math.max(0.3, pct(f.endMs) - pct(f.startMs))}%`,
+            }}
+          />
+        ))}
+      </div>
+      <ul className="sr-only" aria-label="Timestamped audio problems">
+        {flags.map((f, i) => (
+          <li key={`${f.kind}-${f.startMs}-${i}`}>
+            {SEVERITY_LABEL[f.severity]} {FLAG_LABEL[f.kind]}, {flagRange(f.startMs, f.endMs)}
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { JobIds, QueueName, RunTranscriptionJob } from '@vip/contracts';
+import { JobIds, QueueName, RunAudioQualityJob, RunTranscriptionJob } from '@vip/contracts';
 import { Queue } from 'bullmq';
 import type { AppConfig } from '../config/app-config';
 import { redisConnection } from './redis-connection';
@@ -12,6 +12,8 @@ import type { RunSettings } from './run-settings';
  */
 export class RunQueues {
   readonly run: Queue<RunTranscriptionJob>;
+  /** Phase 3A A1 queue (ADR-0044): one job per (run, attempt). */
+  readonly audioQuality: Queue<RunAudioQualityJob>;
   private readonly logger = new Logger('Queue');
   private lastErrorLogAt = 0;
 
@@ -22,6 +24,15 @@ export class RunQueues {
         attempts: settings.attempts,
         backoff: { type: 'exponential' as const, delay: settings.backoffMs },
         removeOnComplete: { count: 100, age: 24 * 3600 },
+        removeOnFail: { count: 1000 },
+      },
+    });
+    this.audioQuality = new Queue(QueueName.RunAudioQuality, {
+      connection: redisConnection(config.redis.url),
+      defaultJobOptions: {
+        attempts: settings.audioQuality.attempts,
+        backoff: { type: 'exponential' as const, delay: settings.audioQuality.backoffMs },
+        removeOnComplete: { count: 200, age: 24 * 3600 },
         removeOnFail: { count: 1000 },
       },
     });
@@ -61,7 +72,21 @@ export class RunQueues {
     }
   }
 
+  /** A1-only (re-)assessment of a run (lifecycle L6). Never touches the transcription job. */
+  async enqueueAudioQuality(workspaceId: string, runId: string, attempt: number): Promise<void> {
+    const data = RunAudioQualityJob.parse({ workspaceId, runId, attempt });
+    const jobId = JobIds.audioQuality(runId, attempt);
+    const existing = await this.audioQuality.getJob(jobId);
+    if (existing) {
+      const state = await existing.getState();
+      if (state !== 'completed' && state !== 'failed') return;
+      await existing.remove().catch(() => undefined);
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await this.audioQuality.add('assess', data as any, { jobId });
+  }
+
   async close(): Promise<void> {
-    await Promise.allSettled([this.run.close()]);
+    await Promise.allSettled([this.run.close(), this.audioQuality.close()]);
   }
 }

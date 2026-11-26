@@ -1,6 +1,6 @@
 # Project status
 
-Updated 2026-11-26 (Phase 2B and 2C formally accepted by the user). Concise index; details live in the linked records.
+Updated 2026-11-26 (Phase 2B and 2C formally accepted by the user; Phase 3A formally accepted the same day). Concise index; details live in the linked records.
 
 | Phase / milestone | Status | Record |
 | --- | --- | --- |
@@ -9,7 +9,7 @@ Updated 2026-11-26 (Phase 2B and 2C formally accepted by the user). Concise inde
 | Phase 2A consolidated validation | **Passed** (post-remediation) | `docs/design/phase2a-validation/README.md` §6–§7 |
 | Phase 2B: audio processing foundation | **ACCEPTED** (user acceptance, 2026-11-26) | `docs/development/PHASE2B_2C_FINAL_ACCEPTANCE_REPORT.md`, `PHASE2B_COMPLETION.md` |
 | Phase 2C: transcription and diarization foundation | **ACCEPTED** (user acceptance, 2026-11-26). Self-hosted providers: whisper.cpp small (ADR-0036), sherpa-onnx + CAM++ (ADR-0037), 2 CPUs (ADR-0041). Open: NFR-3/NFR-4 accuracy thresholds TBD (ADR-0042 Proposed); dense-speech limitation temporarily accepted; not tested: `pnpm test:phase2b:e2e` re-run, Graphify refresh, transcription over 2 h | `docs/development/PHASE2B_2C_FINAL_ACCEPTANCE_REPORT.md`, `PHASE2B_2C_REQUIREMENT_EVIDENCE_MATRIX.md` |
-| Phase 3A | **Ready for planning only.** Scope, requirements, architecture, acceptance criteria and plan must be defined and approved by the user before any implementation | — |
+| Phase 3A: A1 Audio Quality Intelligence | **ACCEPTED** (user acceptance, 2026-11-26). Implemented and integrated (ADR-0043–0048; lifecycle deviations accepted as ADR-0044 Amendment 2). Evidence: unit, integration, browser E2E (11 categories), 2C transcript identity with A1 active, 4 h performance test, independent security and architecture reviews (0 blocking). Additional evidence: a real-world recording smoke test by the product owner (successful; not a comprehensive real-world accuracy validation). **Kept open:** AC-8 partially met (20 dB SNR MAE 3.05 dB against 2.0 dB; OD-55 Open); benchmark evaluation primarily synthetic; recording deletion and derived-file cleanup (privacy follow-up before production); measurement cancellation, backfill and the snapshot `measurementSet` field not implemented | `docs/development/phase3a/PHASE3A_COMPLETION_REPORT.md`, `PHASE3A_REQUIREMENT_EVIDENCE_MATRIX.md` |
 | Agent phase | Not approved | — |
 
 ## Phase 2B in one paragraph
@@ -58,14 +58,16 @@ Development database: **27 recordings** (verified 2026-11-22).
 **Not production-ready.** Open: OD-48 production deployment target (ADR-0034); OD-08b/OD-27 authentication and
 authorisation; OD-23c production service authentication; OD-09b/OD-10 retention, consent version, upload limits,
 cleanup and rate limiting; R2-04 filename hardening; SEC-06 security headers; SEC-08 permission deny-rule review;
-deletion of derived audio (no deletion endpoint yet).
+deletion of recordings and their derived audio, including A1 measurement series (no deletion endpoint yet; privacy and
+retention follow-up before launch).
 
 Key constraints: ADR-0034 zero additional spending; all open decisions are in `docs/architecture/HLD.md` §10.
 
-Baseline: commit `b407c38` on `main` (Phase 1 and Phase 2A are committed). All Phase 2B and Phase 2C work since then is
-**uncommitted** in the working tree.
-Graphify graph refreshed 2026-11-24 against the working tree (`graphify-out/`, gitignored); SQL migrations are not
-parsed (no SQL grammar installed). Refresh with `graphify update .` after code changes.
+Baseline: commit `b3c90f5` on `main` (Phase 1, 2A, 2B and 2C are committed). All Phase 3A work is **uncommitted** in
+the working tree; the user commits manually.
+Graphify graph refreshed 2026-11-26 against the working tree (`graphify update .`, code only, no LLM; 5,577 nodes,
+16,372 edges, 217 communities, no import cycles; `graphify-out/`, gitignored). SQL migrations are not parsed (the
+optional SQL grammar is not installed). Architectural review: `docs/development/phase3a/PHASE3A_COMPLETION_REPORT.md` §6.
 
 ## Where to find things
 

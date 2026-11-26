@@ -55,7 +55,7 @@ describe('schema', () => {
       expect(composite.length).toBeGreaterThanOrEqual(1);
       for (const fk of composite) expect(fk.onDelete).toBe('cascade');
     }
-    expect(getTableConfig(audioMeasurements).foreignKeys).toHaveLength(3);
+    expect(getTableConfig(audioMeasurements).foreignKeys).toHaveLength(4);
     const mediaProbe = getTableConfig(recordings).columns.find((c) => c.name === 'media_probe');
     expect(mediaProbe?.notNull).toBe(false);
   });

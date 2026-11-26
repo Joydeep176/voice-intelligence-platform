@@ -17,6 +17,8 @@ import {
   AudioTimeline,
   AudioDiarizeConfig,
   AudioDiarizeResult,
+  AudioMeasureConfig,
+  AudioMeasureResult,
   AudioTranscribeConfig,
   AudioTranscribeResult,
   HandshakeRequest,
@@ -54,6 +56,8 @@ const SCHEMAS: Record<string, ZodType> = {
   'transcribe-result': AudioTranscribeResult,
   'diarize-config': AudioDiarizeConfig,
   'diarize-result': AudioDiarizeResult,
+  'measure-config': AudioMeasureConfig,
+  'measure-result': AudioMeasureResult,
 };
 
 const dir = new URL('../fixtures/audio-service/', import.meta.url);
@@ -158,5 +162,24 @@ describe('review remediation additions (task deadline, RESOURCE_EXHAUSTED, Landl
     expect(AudioServiceCapabilities.safeParse(caps(undefined)).success).toBe(true);
     expect(AudioServiceCapabilities.safeParse(caps(true)).success).toBe(true);
     expect(AudioServiceCapabilities.safeParse(caps('yes')).success).toBe(false);
+  });
+});
+
+describe('Tier 1 wire contract bounds (Phase 3A security review)', () => {
+  const valid = JSON.parse(readFileSync(new URL('measure-result.valid.json', dir), 'utf8')) as {
+    record: { quantities: Record<string, { value: number }> };
+    series: { speechMs: number[]; snrDb: (number | null)[] };
+  };
+  it('rejects a series longer than 200,000 blocks', () => {
+    const long = structuredClone(valid);
+    long.series.speechMs = Array(200_001).fill(0);
+    long.series.snrDb = Array(200_001).fill(null);
+    expect(AudioMeasureResult.safeParse(long).success).toBe(false);
+  });
+  it('rejects more than 32 quantities', () => {
+    const many = structuredClone(valid);
+    const [first] = Object.values(many.record.quantities);
+    for (let i = 0; i < 33; i++) many.record.quantities[`q${i}`] = first!;
+    expect(AudioMeasureResult.safeParse(many).success).toBe(false);
   });
 });
